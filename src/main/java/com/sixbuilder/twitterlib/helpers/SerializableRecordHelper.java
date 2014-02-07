@@ -1,4 +1,4 @@
-package com.sixbuilder.helpers;
+package com.sixbuilder.twitterlib.helpers;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;

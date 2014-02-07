@@ -1,4 +1,4 @@
-package com.sixbuilder.helpers;
+package com.sixbuilder.twitterlib.helpers;
 
 import java.util.ArrayList;
 import java.util.List;
