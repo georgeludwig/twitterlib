@@ -1,0 +1,64 @@
+<div xmlns:t="http://tapestry.apache.org/schema/tapestry_5_3.xsd" xmlns:p="tapestry:parameter" 
+	class="recommendedTweet" data-tweet-id="${tweet.tweetId}" id="${clientId}" data-mode="summary"
+	data-original-url="${tweet.url}">
+
+	<form autocomplete="off">
+
+		<div class="recommendedTweetSummaryView">
+	
+			<div class="tweetPublishColumn">
+				<input type="checkbox" class="publishTweet" id="publishTweet_${tweet.tweetId}"/>
+			</div>
+			
+			<div class="tweetSummaryColumn">
+				<div class="tweetText">
+					<p>
+						${tweet.summary}
+					</p>
+				</div>
+				<div class="tweetUrl">
+					<p title="${tweet.url}">
+						${tweet.url}
+					</p>
+				</div>
+			</div>
+	
+			<div class="tweetDetailColumn">
+				<div class="tweetText">
+					<textarea>${tweet.summary}</textarea>
+				</div>
+				<div class="tweetEditSecondRow">
+					<ul class="tweetSuggestedHashtags">
+						<li t:type="Loop" t:source="recommendedHashtags" t:value="var:hashtag" data-hashtag="${var:hashtag}">
+							<a href="#">${var:hashtag}</a>
+						</li>
+					</ul>
+					<p class="tweetCharacterCount"></p>
+				</div>
+				<div class="tweetUrlRow">
+					<input class="tweetUrl" type="text" value="${tweet.url}"/>
+					<input class="tweetShortenUrl" type="submit" value="Shorten"/>
+				</div>
+			</div>
+				
+			<div class="tweetSnapshotColumn">
+				<a href="${tweet.url}" target="_blank">
+					<img src="${tweet.snapshotUrl}"/>
+				</a>
+				<div class="tweetActionButtons">
+					<input class="tweetSave" type="submit" value="Save"/>
+					<input class="tweetCancel" type="submit" value="Cancel"/>
+				</div>
+			</div>
+	
+			<div class="tweetDeleteLink">
+				<a href="#" t:type="EventLink" t:event="delete" t:context="tweet.tweetId" t:zone="^">
+					<img src="${asset:classpath:com/sixbuilder/twitterlib/components/closeButton.png}" height="25" width="25"/>
+				</a>
+			</div>
+		
+		</div>
+		
+	</form>
+
+</div>

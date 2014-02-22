@@ -24,12 +24,28 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-package com.sixbuilder.pages;
+package com.sixbuilder.twitterlib.helpers;
+
+import org.apache.tapestry5.ComponentEventCallback;
 
 /**
  * @author Thiago H. de Paula Figueiredo (http://machina.com.br/thiago)
- *
  */
-public class About {
+public class HolderComponentEventCallback<T> implements ComponentEventCallback<T> {
+	
+	private T result;
+
+	public boolean handleResult(T result) {
+		this.result = result;
+		return result != null;
+	}
+
+	/**
+	 * Returns the value of the result field.
+	 * @return a {@link T}.
+	 */
+	final public T getResult() {
+		return result;
+	}
 
 }

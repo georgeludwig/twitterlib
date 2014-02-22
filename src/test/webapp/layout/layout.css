@@ -1,4 +1,4 @@
-/*
+
 Design by Free CSS Templates
 http://www.freecsstemplates.org
 Released for free under a Creative Commons Attribution 2.5 License
@@ -366,4 +366,27 @@ div.footer .css {
 
 div.footer .legal a {
     padding: 0;
+}
+
+li {
+	list-style-type: none;
+}
+
+#curateZone ul, #publishingZone ul, #curateZone li, #publishingZone li {
+	margin: 0;
+	padding: 0;
+}
+
+#curateZone {
+	margin-right: 50px;
+}
+
+#curateZone, #publishingZone {
+	display: table-cell;
+	width: 375px;
+	border: solid black 1px;
+}
+
+div.displayTable {
+	display: table;
 }

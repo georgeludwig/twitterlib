@@ -10,7 +10,7 @@ Version    : 1.0
 Released   : 20080825
 Description: A Web 2.0 design with fluid width suitable for blogs and small websites.
 -->
-        <html xmlns="http://www.w3.org/1999/xhtml"
+<html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:t="http://tapestry.apache.org/schema/tapestry_5_3.xsd"
       xmlns:p="tapestry:parameter">
     <head>
@@ -43,9 +43,9 @@ Description: A Web 2.0 design with fluid width suitable for blogs and small webs
                 <ul>
                     <li class="search" style="background: none;">
                     </li>
-                    <li>
-                        <t:alerts/>
-                    </li>
+<!--                     <li> -->
+<!--                         <t:alerts/> -->
+<!--                     </li> -->
                     <li t:type="if" test="sidebar">
                         <h2>${sidebarTitle}</h2>
 

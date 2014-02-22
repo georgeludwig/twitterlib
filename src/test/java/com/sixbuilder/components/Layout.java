@@ -1,4 +1,4 @@
-package com.sixbuilder.twitterlib.components;
+package com.sixbuilder.components;
 
 import org.apache.tapestry5.*;
 import org.apache.tapestry5.annotations.*;
