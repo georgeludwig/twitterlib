@@ -3,16 +3,20 @@ function initializeRecommendedTweet(options) {
 	var SUMMARY_MODE = 'summary';
 	var DETAIL_MODE = 'detail';
 	var MODE_ATTRIBUTE = 'data-mode';
+	var DIRTY_ATTRIBUTE = 'data-dirty';
 	
 	var outerDiv = $('#' + options.id);
 	
-	// publish checkbox
-	T5.initializers.updateZoneOnEvent('click', outerDiv.find('input.publishTweet').attr('id'), '^', options.publishUrl);
-	
-	
+	var publishTweetButton = outerDiv.find('input.publishTweet');
 	var shortenUrlButton = outerDiv.find('input.tweetShortenUrl');
 	var textarea = outerDiv.find('div.tweetText textarea');
 	var summaryText = outerDiv.find('div.tweetText p');
+	var characterCount = outerDiv.find('.tweetCharacterCount');
+	var summaryView = outerDiv.find('div.tweetSummaryColumn');
+	var hashtags = outerDiv.find('ul.tweetSuggestedHashtags li');
+	
+	// publish checkbox
+	T5.initializers.updateZoneOnEvent('click', publishTweetButton.attr('id'), '^', options.publishUrl);
 	
 	outerDiv.find('input.tweetCancel').click(function(event) {
 		modeSummary();
@@ -22,36 +26,59 @@ function initializeRecommendedTweet(options) {
 	outerDiv.find('input.tweetShortenUrl').click(function(event) {
 		$.ajax(options.shortenUrlUrl).done(function(result) {
 			var shortenedUrl = result.url;
-			var newSummary = textarea.text() + ' ' + shortenedUrl; 
-			textarea.text(newSummary);
+			var newSummary = textarea.val().replace(outerDiv.attr('data-original-url'), shortenedUrl);
+			if (!newSummary.contains(shortenedUrl)) {
+				newSummary = newSummary + ' ' + shortenedUrl;
+			}
+			textarea.val(newSummary);
 			summaryText.text(newSummary);
-			shortenUrlButton[0].disabled = true;
+			handleSummaryChange();
 		});
 		event.preventDefault();
 	});
 	
 	outerDiv.find('input.tweetSave').click(function(event) {
-		console.log('textarea: ' + textarea.text());
-		$.ajax(options.saveUrl, { data : { summary : textarea.text() } }).done(function(result) {
-			// FIXME: what to do now? nothing? show some confirmation?
-			modeSummary();
-		});
+		save();
 		event.preventDefault();
 	});
 	
 	// switch to detail view
-	var summaryView = outerDiv.find('div.tweetSummaryColumn');
-	summaryView.click(function() {
-	
+	summaryView.click(function(event) {
 		if (outerDiv.attr(MODE_ATTRIBUTE) === SUMMARY_MODE) {
-		
 			// expand into detail mode
 			outerDiv.attr(MODE_ATTRIBUTE, DETAIL_MODE);
 		}
-		
-		// else ignore
-		
+		event.preventDefault();
 	});
+	
+	// character count
+	textarea.keyup(handleSummaryChange);
+	
+	hashtags.click(function(event) {
+		var hashtag = $(this).text();
+		var summary = textarea.val().trim();
+		if (!summary.contains(hashtag)) {
+			summary = summary + ' ' + hashtag;
+			textarea.val(summary);
+			handleSummaryChange();
+		}
+		event.preventDefault();
+	});
+	
+	function save() {
+		handleSummaryChange();
+		$.ajax(options.saveUrl, { data : { summary : textarea.text() } }).done(function(result) {
+			// FIXME: what to do now? nothing? show some confirmation?
+			modeSummary();
+			publishTweetButton[0].disabled = false;
+		});
+	}
+	
+	function handleSummaryChange() {
+		publishTweetButton[0].disabled = true;
+		summaryText.text(textarea.val());
+		characterCount.text(textarea.val().length);
+	}
 	
 	function modeSummary() {
 		outerDiv.attr(MODE_ATTRIBUTE, SUMMARY_MODE);

@@ -1,6 +1,6 @@
 <div xmlns:t="http://tapestry.apache.org/schema/tapestry_5_3.xsd" xmlns:p="tapestry:parameter" 
 	class="recommendedTweet" data-tweet-id="${tweet.tweetId}" id="${clientId}" data-mode="summary"
-	data-original-url="${tweet.url}">
+	data-original-url="${tweet.url}" data-dirty="false">
 
 	<form autocomplete="off">
 
@@ -25,15 +25,15 @@
 	
 			<div class="tweetDetailColumn">
 				<div class="tweetText">
-					<textarea>${tweet.summary}</textarea>
+					<textarea id="textarea_${tweet.tweetId}">${tweet.summary}</textarea>
 				</div>
 				<div class="tweetEditSecondRow">
+					<p class="tweetCharacterCount">${tweet.summary.length()}</p>
 					<ul class="tweetSuggestedHashtags">
 						<li t:type="Loop" t:source="recommendedHashtags" t:value="var:hashtag" data-hashtag="${var:hashtag}">
 							<a href="#">${var:hashtag}</a>
 						</li>
 					</ul>
-					<p class="tweetCharacterCount"></p>
 				</div>
 				<div class="tweetUrlRow">
 					<input class="tweetUrl" type="text" value="${tweet.url}"/>

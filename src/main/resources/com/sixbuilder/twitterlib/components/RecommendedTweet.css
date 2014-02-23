@@ -141,3 +141,8 @@ div.recommendedTweet input.tweetCancel {
 	margin-left: 0.5em;
 	font-size: 12px;
 }
+
+div.recommendedTweet p.tweetCharacterCount {
+	display: inline;
+	float: left;
+}

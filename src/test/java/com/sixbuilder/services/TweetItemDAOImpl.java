@@ -38,9 +38,9 @@ public class TweetItemDAOImpl implements TweetItemDAO {
 		item.setSearchName("searchName" + i);
 //		item.setShortenedUrl("http://bit.ly/tweet" + i);
 		item.setSnapshotUrl("http://lorempixel.com/75/75/sports/" + (i + 1));
-		item.setSummary("Summary #" + i + ". Some cool web page somewhere in the Internet.");
-		item.setTweetId(String.valueOf(i));
 		item.setUrl("http://www.6builder.com/url/" + i + "/something/long/just/for/testing");
+		item.setSummary("Summary #" + i + ". Some cool web page somewhere in the Internet. " + item.getUrl());
+		item.setTweetId(String.valueOf(i));
 		return item;
 	}
 

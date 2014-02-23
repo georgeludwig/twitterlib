@@ -390,3 +390,7 @@ li {
 div.displayTable {
 	display: table;
 }
+
+.recommendedTweet {
+	border-bottom: solid black 1px;
+}
