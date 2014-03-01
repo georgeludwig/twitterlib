@@ -25,7 +25,7 @@ import com.sixbuilder.twitterlib.helpers.TweetItem;
  * 
  * @author Thiago H. de Paula Figueiredo (http://machina.com.br/thiago)
  */
-@Import(stylesheet="RecommendedTweet.css", library="RecommendedTweet.js")
+@Import(stylesheet="RecommendedTweet.css", library={"RecommendedTweet.js", "twitter-text-1.8.0.min.js"})
 @Events({RecommendedTweetConstants.PUBLISH_TWEET_EVENT, RecommendedTweetConstants.DELETE_TWEET_EVENT,
 	RecommendedTweetConstants.SHORTEN_URL_EVENT, RecommendedTweetConstants.SAVE_TWEET_EVENT})
 public class RecommendedTweet implements ClientElement {
@@ -92,9 +92,13 @@ public class RecommendedTweet implements ClientElement {
 	/**
 	 * Handles the save event.
 	 */
-	public Object onSave(String id, @RequestParameter("summary") String summary) {
+	public Object onSave(
+			String id, 
+			@RequestParameter("summary") String summary,
+			@RequestParameter("attachSnapshot") boolean attachSnapshot) {
 		final TweetItem item = dao.findById(id);
-		item.setSummary(summary);;
+		item.setSummary(summary);
+		item.setAttachSnapshot(attachSnapshot);
 		return triggerEvent(RecommendedTweetConstants.SAVE_TWEET_EVENT, item);
 	}
 

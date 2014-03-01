@@ -4,9 +4,10 @@ function initializeRecommendedTweet(options) {
 	var DETAIL_MODE = 'detail';
 	var MODE_ATTRIBUTE = 'data-mode';
 	var DIRTY_ATTRIBUTE = 'data-dirty';
+	var TWEET_COUNT_WARNING = 'tweetCharacterCountWarning';
+	var TWEET_COUNT_ERROR = 'tweetCharacterCountError'; 
 	
 	var outerDiv = $('#' + options.id);
-	
 	var publishCheckbox = outerDiv.find('input.publishTweet');
 	var shortenUrlButton = outerDiv.find('input.tweetShortenUrl');
 	var textarea = outerDiv.find('div.tweetText textarea');
@@ -14,6 +15,9 @@ function initializeRecommendedTweet(options) {
 	var characterCount = outerDiv.find('.tweetCharacterCount');
 	var summaryView = outerDiv.find('div.tweetSummaryColumn');
 	var hashtags = outerDiv.find('ul.tweetSuggestedHashtags li');
+	var attachSnapshotsCheckbox = outerDiv.find('input.tweetAttachSnapshotCheckbox');
+	
+	updateCharacterCount();
 	
 	// publish checkbox
 	T5.initializers.updateZoneOnEvent('click', publishCheckbox.attr('id'), '^', options.publishUrl);
@@ -69,7 +73,8 @@ function initializeRecommendedTweet(options) {
 	
 	function save() {
 		handleSummaryChange();
-		$.ajax(options.saveUrl, { data : { summary : textarea.text() } }).done(function(result) {
+		var data = { summary : textarea.val(), attachSnapshot : attachSnapshotsCheckbox[0].checked };
+		$.ajax(options.saveUrl, { data : data }).done(function(result) {
 			// FIXME: what to do now? nothing? show some confirmation?
 			modeSummary();
 			enablePublishCheckbox();
@@ -79,7 +84,24 @@ function initializeRecommendedTweet(options) {
 	function handleSummaryChange() {
 		publishCheckbox[0].disabled = true;
 		summaryText.text(textarea.val());
-		characterCount.text(textarea.val().length);
+		updateCharacterCount();
+	}
+	
+	function updateCharacterCount() {
+		var count = twttr.txt.getTweetLength(textarea.val());
+		characterCount.text(count);
+		if (count < 137) {
+			characterCount.removeClass(TWEET_COUNT_WARNING);
+			characterCount.removeClass(TWEET_COUNT_ERROR);
+		}
+		else if (count <= 140) {
+			characterCount.addClass(TWEET_COUNT_WARNING);
+			characterCount.removeClass(TWEET_COUNT_ERROR);
+		}
+		else {
+			characterCount.addClass(TWEET_COUNT_ERROR);
+			characterCount.removeClass(TWEET_COUNT_WARNING);
+		}
 	}
 	
 	function modeSummary() {

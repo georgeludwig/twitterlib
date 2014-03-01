@@ -39,6 +39,17 @@
 							<a href="#">${var:hashtag}</a>
 						</li>
 					</ul>
+					<p class="tweetAttachSnapshot">
+						<span class="tweetAttachSnapshot">
+							<img src="${asset:classpath:/com/sixbuilder/twitterlib/components/upload-page-red.gif}"/>
+						</span>
+						<t:if test="tweet.attachSnapshot">
+							<input type="checkbox" class="tweetAttachSnapshotCheckbox" checked="checked"/>
+						</t:if>
+						<t:if test="!tweet.attachSnapshot">
+							<input type="checkbox" class="tweetAttachSnapshotCheckbox"/>
+						</t:if>
+					</p>
 				</div>
 				<div class="tweetUrlRow">
 					<input class="tweetUrl" type="text" value="${tweet.url}"/>
