@@ -27,7 +27,7 @@ function initializeRecommendedTweet(options) {
 		$.ajax(options.shortenUrlUrl).done(function(result) {
 			var shortenedUrl = result.url;
 			var newSummary = textarea.val().replace(outerDiv.attr('data-original-url'), shortenedUrl);
-			if (!newSummary.contains(shortenedUrl)) {
+			if (newSummary.indexOf(shortenedUrl) < 0) {
 				newSummary = newSummary + ' ' + shortenedUrl;
 			}
 			textarea.val(newSummary);
@@ -57,7 +57,7 @@ function initializeRecommendedTweet(options) {
 	hashtags.click(function(event) {
 		var hashtag = $(this).text();
 		var summary = textarea.val().trim();
-		if (!summary.contains(hashtag)) {
+		if (summary.indexOf(hashtag) < 0) {
 			summary = summary + ' ' + hashtag;
 			textarea.val(summary);
 			handleSummaryChange();
