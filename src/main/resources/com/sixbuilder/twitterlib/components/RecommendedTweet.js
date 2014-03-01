@@ -7,7 +7,7 @@ function initializeRecommendedTweet(options) {
 	
 	var outerDiv = $('#' + options.id);
 	
-	var publishTweetButton = outerDiv.find('input.publishTweet');
+	var publishCheckbox = outerDiv.find('input.publishTweet');
 	var shortenUrlButton = outerDiv.find('input.tweetShortenUrl');
 	var textarea = outerDiv.find('div.tweetText textarea');
 	var summaryText = outerDiv.find('div.tweetText p');
@@ -16,10 +16,11 @@ function initializeRecommendedTweet(options) {
 	var hashtags = outerDiv.find('ul.tweetSuggestedHashtags li');
 	
 	// publish checkbox
-	T5.initializers.updateZoneOnEvent('click', publishTweetButton.attr('id'), '^', options.publishUrl);
+	T5.initializers.updateZoneOnEvent('click', publishCheckbox.attr('id'), '^', options.publishUrl);
 	
 	outerDiv.find('input.tweetCancel').click(function(event) {
 		modeSummary();
+		enablePublishCheckbox();
 		event.preventDefault();
 	});
 	
@@ -47,6 +48,7 @@ function initializeRecommendedTweet(options) {
 		if (outerDiv.attr(MODE_ATTRIBUTE) === SUMMARY_MODE) {
 			// expand into detail mode
 			outerDiv.attr(MODE_ATTRIBUTE, DETAIL_MODE);
+			disablePublishCheckbox();
 		}
 		event.preventDefault();
 	});
@@ -70,12 +72,12 @@ function initializeRecommendedTweet(options) {
 		$.ajax(options.saveUrl, { data : { summary : textarea.text() } }).done(function(result) {
 			// FIXME: what to do now? nothing? show some confirmation?
 			modeSummary();
-			publishTweetButton[0].disabled = false;
+			enablePublishCheckbox();
 		});
 	}
 	
 	function handleSummaryChange() {
-		publishTweetButton[0].disabled = true;
+		publishCheckbox[0].disabled = true;
 		summaryText.text(textarea.val());
 		characterCount.text(textarea.val().length);
 	}
@@ -86,6 +88,16 @@ function initializeRecommendedTweet(options) {
 	
 	function modeDetail() {
 		outerDiv.attr(MODE_ATTRIBUTE, DETAIL_MODE);
+	}
+	
+	function enablePublishCheckbox() {
+		if (outerDiv.attr('data-publish') != 'true') {
+			publishCheckbox[0].disabled = false;
+		}
+	}
+	
+	function disablePublishCheckbox() {
+		publishCheckbox[0].disabled = true;
 	}
 	
 }

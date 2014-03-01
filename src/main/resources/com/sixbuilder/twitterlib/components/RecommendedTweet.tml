@@ -1,13 +1,18 @@
 <div xmlns:t="http://tapestry.apache.org/schema/tapestry_5_3.xsd" xmlns:p="tapestry:parameter" 
 	class="recommendedTweet" data-tweet-id="${tweet.tweetId}" id="${clientId}" data-mode="summary"
-	data-original-url="${tweet.url}" data-dirty="false">
+	data-original-url="${tweet.url}" data-dirty="false" data-publish="${tweet.publish}">
 
 	<form autocomplete="off">
 
 		<div class="recommendedTweetSummaryView">
 	
 			<div class="tweetPublishColumn">
-				<input type="checkbox" class="publishTweet" id="publishTweet_${tweet.tweetId}"/>
+				<t:if test="tweet.publish">
+					<input type="checkbox" class="publishTweet" id="publishTweet_${tweet.tweetId}" checked="checked" disabled="disabled"/>
+				</t:if>
+				<t:if test="!tweet.publish">
+					<input type="checkbox" class="publishTweet" id="publishTweet_${tweet.tweetId}"/>
+				</t:if>
 			</div>
 			
 			<div class="tweetSummaryColumn">
