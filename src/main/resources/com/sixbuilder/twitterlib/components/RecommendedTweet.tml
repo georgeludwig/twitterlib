@@ -8,7 +8,7 @@
 	
 			<div class="tweetPublishColumn">
 				<t:if test="tweet.publish">
-					<input type="checkbox" class="publishTweet" id="publishTweet_${tweet.tweetId}" checked="checked" disabled="disabled"/>
+					<input type="checkbox" class="publishTweet" id="publishTweet_${tweet.tweetId}" checked="checked"/>
 				</t:if>
 				<t:if test="!tweet.publish">
 					<input type="checkbox" class="publishTweet" id="publishTweet_${tweet.tweetId}"/>

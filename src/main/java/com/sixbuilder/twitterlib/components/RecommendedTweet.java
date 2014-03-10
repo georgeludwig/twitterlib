@@ -106,7 +106,9 @@ public class RecommendedTweet implements ClientElement {
 	 * Handles the publish event
 	 */
 	public Object onPublish(String id) {
-		return triggerEvent(RecommendedTweetConstants.PUBLISH_TWEET_EVENT, id);
+		final TweetItem item = dao.findById(id);
+		item.setPublish(!item.isPublish());
+		return triggerEvent(RecommendedTweetConstants.PUBLISH_TWEET_EVENT, item);
 	}
 	
 	/**

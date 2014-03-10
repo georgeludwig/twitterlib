@@ -78,9 +78,14 @@ public class Index {
 
 	@OnEvent(RecommendedTweetConstants.PUBLISH_TWEET_EVENT)
 	public void publish(TweetItem tweetItem) {
-		curating.remove(tweetItem);
-		publishing.add(tweetItem);
-		tweetItem.setPublish(true);
+		if (tweetItem.isPublish()) {
+			curating.remove(tweetItem);
+			publishing.add(tweetItem);
+		}
+		else {
+			publishing.remove(tweetItem);
+			curating.add(tweetItem);
+		}
 		tweetItemDAO.update(tweetItem);
 		alertManager.success(String.format("Message with id %s was successfully selected to be published", tweetItem.getTweetId()));
 		ajaxResponseRenderer.addRender(curateZone);
