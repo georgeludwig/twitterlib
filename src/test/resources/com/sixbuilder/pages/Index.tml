@@ -10,7 +10,7 @@
 		<div t:type="Alerts"/>
 	</div>
 
-	<div class="displayTable">
+	<%-- <div class="displayTable">
 
 		<div class="curateTweets" t:type="Zone" t:id="curateZone" id="curateZone">
 			<p>Tweets to curate: ${curating.size()}</p>
@@ -30,7 +30,9 @@
 			</ul>
 		</div>
 	
-	</div>  
+	</div>   --%>
+	
+	<div t:type="twitterlib/TweetRecommender" />
 	
 	<hr/>
 	<h2>Published:</h2>

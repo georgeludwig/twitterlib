@@ -1,0 +1,25 @@
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_3.xsd">
+
+	<div class="displayTable">
+
+		<div class="curateTweets" t:type="Zone" t:id="curateZone" id="curateZone">
+			<p>Tweets to curate: ${curating.size()}</p>
+			<ul>
+				<li t:type="Loop" t:source="curating" t:value="tweet">
+					<div t:type="twitterlib/RecommendedTweet" tweet="tweet"/>
+				</li>
+			</ul>
+		</div>  
+	
+		<div class="publishTweets" t:type="Zone" t:id="publishingZone" id="publishingZone">
+			<p>Tweets to publish: ${publishing.size()}</p>
+			<ul>
+				<li t:type="Loop" t:source="publishing" t:value="tweet">
+					<div t:type="twitterlib/RecommendedTweet" tweet="tweet"/>
+				</li>
+			</ul>
+		</div>
+	
+	</div>  
+
+</t:container>
