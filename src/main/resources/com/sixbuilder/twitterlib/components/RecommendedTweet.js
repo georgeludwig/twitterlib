@@ -4,22 +4,27 @@ function initializeRecommendedTweet(options) {
 	var DETAIL_MODE = 'detail';
 	var MODE_ATTRIBUTE = 'data-mode';
 	var DIRTY_ATTRIBUTE = 'data-dirty';
+	var TWEET_COUNT_WARNING = 'tweetCharacterCountWarning';
+	var TWEET_COUNT_ERROR = 'tweetCharacterCountError'; 
 	
 	var outerDiv = $('#' + options.id);
-	
-	var publishTweetButton = outerDiv.find('input.publishTweet');
+	var publishCheckbox = outerDiv.find('input.publishTweet');
 	var shortenUrlButton = outerDiv.find('input.tweetShortenUrl');
 	var textarea = outerDiv.find('div.tweetText textarea');
 	var summaryText = outerDiv.find('div.tweetText p');
 	var characterCount = outerDiv.find('.tweetCharacterCount');
 	var summaryView = outerDiv.find('div.tweetSummaryColumn');
 	var hashtags = outerDiv.find('ul.tweetSuggestedHashtags li');
+	var attachSnapshotsCheckbox = outerDiv.find('input.tweetAttachSnapshotCheckbox');
+	
+	updateCharacterCount();
 	
 	// publish checkbox
-	T5.initializers.updateZoneOnEvent('click', publishTweetButton.attr('id'), '^', options.publishUrl);
+	T5.initializers.updateZoneOnEvent('click', publishCheckbox.attr('id'), '^', options.publishUrl);
 	
 	outerDiv.find('input.tweetCancel').click(function(event) {
 		modeSummary();
+		enablePublishCheckbox();
 		event.preventDefault();
 	});
 	
@@ -27,7 +32,7 @@ function initializeRecommendedTweet(options) {
 		$.ajax(options.shortenUrlUrl).done(function(result) {
 			var shortenedUrl = result.url;
 			var newSummary = textarea.val().replace(outerDiv.attr('data-original-url'), shortenedUrl);
-			if (!newSummary.contains(shortenedUrl)) {
+			if (newSummary.indexOf(shortenedUrl) < 0) {
 				newSummary = newSummary + ' ' + shortenedUrl;
 			}
 			textarea.val(newSummary);
@@ -47,6 +52,7 @@ function initializeRecommendedTweet(options) {
 		if (outerDiv.attr(MODE_ATTRIBUTE) === SUMMARY_MODE) {
 			// expand into detail mode
 			outerDiv.attr(MODE_ATTRIBUTE, DETAIL_MODE);
+			disablePublishCheckbox();
 		}
 		event.preventDefault();
 	});
@@ -57,7 +63,7 @@ function initializeRecommendedTweet(options) {
 	hashtags.click(function(event) {
 		var hashtag = $(this).text();
 		var summary = textarea.val().trim();
-		if (!summary.contains(hashtag)) {
+		if (summary.indexOf(hashtag) < 0) {
 			summary = summary + ' ' + hashtag;
 			textarea.val(summary);
 			handleSummaryChange();
@@ -67,17 +73,35 @@ function initializeRecommendedTweet(options) {
 	
 	function save() {
 		handleSummaryChange();
-		$.ajax(options.saveUrl, { data : { summary : textarea.text() } }).done(function(result) {
+		var data = { summary : textarea.val(), attachSnapshot : attachSnapshotsCheckbox[0].checked };
+		$.ajax(options.saveUrl, { data : data }).done(function(result) {
 			// FIXME: what to do now? nothing? show some confirmation?
 			modeSummary();
-			publishTweetButton[0].disabled = false;
+			enablePublishCheckbox();
 		});
 	}
 	
 	function handleSummaryChange() {
-		publishTweetButton[0].disabled = true;
+		publishCheckbox[0].disabled = true;
 		summaryText.text(textarea.val());
-		characterCount.text(textarea.val().length);
+		updateCharacterCount();
+	}
+	
+	function updateCharacterCount() {
+		var count = twttr.txt.getTweetLength(textarea.val());
+		characterCount.text(count);
+		if (count < 137) {
+			characterCount.removeClass(TWEET_COUNT_WARNING);
+			characterCount.removeClass(TWEET_COUNT_ERROR);
+		}
+		else if (count <= 140) {
+			characterCount.addClass(TWEET_COUNT_WARNING);
+			characterCount.removeClass(TWEET_COUNT_ERROR);
+		}
+		else {
+			characterCount.addClass(TWEET_COUNT_ERROR);
+			characterCount.removeClass(TWEET_COUNT_WARNING);
+		}
 	}
 	
 	function modeSummary() {
@@ -86,6 +110,16 @@ function initializeRecommendedTweet(options) {
 	
 	function modeDetail() {
 		outerDiv.attr(MODE_ATTRIBUTE, DETAIL_MODE);
+	}
+	
+	function enablePublishCheckbox() {
+		if (outerDiv.attr('data-publish') != 'true') {
+			publishCheckbox[0].disabled = false;
+		}
+	}
+	
+	function disablePublishCheckbox() {
+		publishCheckbox[0].disabled = true;
 	}
 	
 }

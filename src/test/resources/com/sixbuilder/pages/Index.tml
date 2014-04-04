@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <html t:type="Layout" title="twitterlib Index"
       t:sidebarTitle="Framework Version"
       xmlns:t="http://tapestry.apache.org/schema/tapestry_5_3.xsd"
@@ -49,3 +50,54 @@
 	</div>  
 
 </html>
+=======
+<html t:type="Layout" title="twitterlib Index"
+      t:sidebarTitle="Framework Version"
+      xmlns:t="http://tapestry.apache.org/schema/tapestry_5_3.xsd"
+      xmlns:p="tapestry:parameter">
+        <!-- Most of the page content, including <head>, <body>, etc. tags, comes from Layout.tml -->
+
+    <h1>Twitter Library Component Demo</h1>
+
+	<div class="message">
+		<div t:type="Alerts"/>
+	</div>
+
+	<div class="displayTable">
+
+		<div class="curateTweets" t:type="Zone" t:id="curateZone" id="curateZone">
+			<p>Tweets to curate: ${curating.size()}</p>
+			<ul>
+				<li t:type="Loop" t:source="curating" t:value="tweet">
+					<div t:type="twitterlib/RecommendedTweet" tweet="tweet"/>
+				</li>
+			</ul>
+		</div>  
+	
+		<div class="publishTweets" t:type="Zone" t:id="publishingZone" id="publishingZone">
+			<p>Tweets to publish: ${publishing.size()}</p>
+			<ul>
+				<li t:type="Loop" t:source="publishing" t:value="tweet">
+					<div t:type="twitterlib/RecommendedTweet" tweet="tweet"/>
+				</li>
+			</ul>
+		</div>
+	
+	</div>  
+	
+	<hr/>
+	<h2>Published:</h2>
+
+	<div class="publishTweets" t:type="Zone" t:id="publishedZone">
+		<ul>
+			<li t:type="Loop" t:source="published" t:value="tweet">
+				<p>
+					<span class="tweetId">${tweet.tweetid}</span>: 
+					<span class="text">${tweet.summary}</span>
+				</p>
+			</li>
+		</ul>
+	</div>  
+
+</html>
+>>>>>>> FETCH_HEAD

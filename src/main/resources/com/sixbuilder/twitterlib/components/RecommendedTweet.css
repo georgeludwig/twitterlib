@@ -145,4 +145,17 @@ div.recommendedTweet input.tweetCancel {
 div.recommendedTweet p.tweetCharacterCount {
 	display: inline;
 	float: left;
+	color: green;
+}
+
+div.recommendedTweet p.tweetCharacterCountWarning {
+	color: yellow;
+}
+
+div.recommendedTweet p.tweetCharacterCountError {
+	color: red;
+}
+
+/* Icon from http://icondock.com/free/mini-pixel-icons */
+div.recommendedTweet .tweetAttachSnapshot {
 }
