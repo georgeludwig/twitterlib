@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 package com.sixbuilder.pages;
 
 import java.util.ArrayList;
@@ -221,4 +220,3 @@ public class Index {
 	}
 
 }
->>>>>>> FETCH_HEAD
