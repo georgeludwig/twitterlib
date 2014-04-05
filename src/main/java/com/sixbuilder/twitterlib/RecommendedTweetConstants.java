@@ -37,4 +37,11 @@ final public class RecommendedTweetConstants {
 	 */
 	public static final String SAVE_TWEET_EVENT = "saveTweet";
 
+	/**
+	 * Name of the event triggered by {@link RecommendedTweet} when it needs to load a {@link TweetItem}
+	 * based on its id. The event context will be the tweet id and the handler method must
+	 * return a {@link TweetItem} instance. 
+	 */
+	public static final String LOAD_TWEET_EVENT = "loadTweet";
+
 }

@@ -1,29 +1,19 @@
 package com.sixbuilder.twitterlib.components;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
-import org.apache.tapestry5.ClientElement;
-import org.apache.tapestry5.ComponentResources;
 import org.apache.tapestry5.alerts.AlertManager;
-import org.apache.tapestry5.annotations.Events;
-import org.apache.tapestry5.annotations.Import;
 import org.apache.tapestry5.annotations.InjectComponent;
 import org.apache.tapestry5.annotations.OnEvent;
-import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Persist;
 import org.apache.tapestry5.annotations.Property;
-import org.apache.tapestry5.annotations.RequestParameter;
 import org.apache.tapestry5.corelib.components.Zone;
 import org.apache.tapestry5.ioc.annotations.Inject;
-import org.apache.tapestry5.json.JSONObject;
 import org.apache.tapestry5.services.ajax.AjaxResponseRenderer;
-import org.apache.tapestry5.services.javascript.JavaScriptSupport;
 
 import com.sixbuilder.services.TweetItemDAO;
 import com.sixbuilder.twitterlib.RecommendedTweetConstants;
-import com.sixbuilder.twitterlib.helpers.HolderComponentEventCallback;
 import com.sixbuilder.twitterlib.helpers.TweetItem;
 
 /**
