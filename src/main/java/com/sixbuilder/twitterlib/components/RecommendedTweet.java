@@ -15,7 +15,6 @@ import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.json.JSONObject;
 import org.apache.tapestry5.services.javascript.JavaScriptSupport;
 
-import com.sixbuilder.services.TweetItemDAO;
 import com.sixbuilder.twitterlib.RecommendedTweetConstants;
 import com.sixbuilder.twitterlib.helpers.HolderComponentEventCallback;
 import com.sixbuilder.twitterlib.helpers.TweetItem;
@@ -27,7 +26,8 @@ import com.sixbuilder.twitterlib.helpers.TweetItem;
  */
 @Import(stylesheet="RecommendedTweet.css", library={"RecommendedTweet.js", "twitter-text-1.8.0.min.js"})
 @Events({RecommendedTweetConstants.PUBLISH_TWEET_EVENT, RecommendedTweetConstants.DELETE_TWEET_EVENT,
-	RecommendedTweetConstants.SHORTEN_URL_EVENT, RecommendedTweetConstants.SAVE_TWEET_EVENT})
+	RecommendedTweetConstants.SHORTEN_URL_EVENT, RecommendedTweetConstants.SAVE_TWEET_EVENT,
+	RecommendedTweetConstants.LOAD_TWEET_EVENT})
 public class RecommendedTweet implements ClientElement {
 
 	@Parameter(required = true, allowNull = false)
@@ -36,9 +36,6 @@ public class RecommendedTweet implements ClientElement {
 	
 	@Inject
 	private ComponentResources resources;
-	
-	@Inject
-	private TweetItemDAO dao;
 	
 	@Inject
 	private JavaScriptSupport javaScriptSupport;
@@ -96,7 +93,7 @@ public class RecommendedTweet implements ClientElement {
 			String id, 
 			@RequestParameter("summary") String summary,
 			@RequestParameter("attachSnapshot") boolean attachSnapshot) {
-		final TweetItem item = dao.findById(id);
+		final TweetItem item = findById(id);
 		item.setSummary(summary);
 		item.setAttachSnapshot(attachSnapshot);
 		return triggerEvent(RecommendedTweetConstants.SAVE_TWEET_EVENT, item);
@@ -106,7 +103,7 @@ public class RecommendedTweet implements ClientElement {
 	 * Handles the publish event
 	 */
 	public Object onPublish(String id) {
-		final TweetItem item = dao.findById(id);
+		final TweetItem item = findById(id);
 		item.setPublish(!item.isPublish());
 		return triggerEvent(RecommendedTweetConstants.PUBLISH_TWEET_EVENT, item);
 	}
@@ -120,13 +117,19 @@ public class RecommendedTweet implements ClientElement {
 	}
 	
 	private Object triggerEvent(final String event, final String id) {
-		return triggerEvent(event, dao.findById(id));
+		return triggerEvent(event, findById(id));
 	}
 
 	private Object triggerEvent(final String event, final TweetItem item) {
 		final HolderComponentEventCallback<Object> callback = new HolderComponentEventCallback<Object>();
 		resources.triggerEvent(event, new Object[]{item}, callback);
 		return callback.getResult();
+	}
+	
+	private TweetItem findById(String id) {
+		final HolderComponentEventCallback<Object> callback = new HolderComponentEventCallback<Object>();
+		resources.triggerEvent(RecommendedTweetConstants.LOAD_TWEET_EVENT, new Object[]{id}, callback);
+		return (TweetItem) callback.getResult();
 	}
 	
 }
