@@ -1,0 +1,35 @@
+<html t:type="Layout" title="twitterlib Index"
+      t:sidebarTitle="Framework Version"
+      xmlns:t="http://tapestry.apache.org/schema/tapestry_5_3.xsd"
+      xmlns:p="tapestry:parameter">
+        <!-- Most of the page content, including <head>, <body>, etc. tags, comes from Layout.tml -->
+
+    <h1>Twitter Library Component Demo: Tweet Engagement</h1>
+
+	<div class="message">
+		<div t:type="Alerts"/>
+	</div>
+
+	<div class="displayTable">
+
+		<div class="actionTweets" t:type="Zone" t:id="actionZone" id="actionZone">
+			<p>Action (${actions.size()})</p>
+			<ul>
+				<li t:type="Loop" t:source="actions" t:value="tweet">
+					<div t:type="twitterlib/TweetEngagement" tweet="tweet"/>
+				</li>
+			</ul>
+		</div>  
+	
+		<div class="queueTweets" t:type="Zone" t:id="queueZone" id="queueZone">
+			<p>Queue (${queue.size()})</p>
+			<ul>
+				<li t:type="Loop" t:source="queue" t:value="tweet">
+					<div t:type="twitterlib/TweetEngagement" tweet="tweet"/>
+				</li>
+			</ul>
+		</div>
+	
+	</div>
+	  
+</html>

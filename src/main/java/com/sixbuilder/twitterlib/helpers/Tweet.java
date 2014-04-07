@@ -82,10 +82,14 @@ public class Tweet {
 	private boolean clearEnabled;
 
 	private boolean conversationEnabled;
-
+	
 	private boolean deleteEnabled;
 	private boolean deleteQueued;
 	private boolean deleteCompleted;
+	
+	private boolean followEnabled;
+	private boolean followQueued;
+	private boolean followCompleted;
 
 	private boolean replyEnabled;
 	private boolean replyQueued;
@@ -103,13 +107,17 @@ public class Tweet {
 	private boolean favoriteQueued;
 	private boolean favoriteCompleted;
 
+	private boolean listEnabled;
+	private boolean listQueued;
+	private boolean listCompleted;
+
 	/**
 	 * URL of 6BU profile image.
 	 */
 	private String profilePictureUrl;
 
 	/**
-	 * URL of 6BU profile image.
+	 * 6BU user name.
 	 */
 	private String username;
 
@@ -454,6 +462,54 @@ public class Tweet {
 	public void setDeleteCompleted(boolean deleteCompleted) {
 		this.deleteCompleted = deleteCompleted;
 	}
+	
+	/**
+	 * Returns the value of the followEnabled field.
+	 * @return a {@link boolean}.
+	 */
+	public boolean isFollowEnabled() {
+		return followEnabled;
+	}
+
+	/**
+	 * Sets the value of the followEnabled field.
+	 * @param followEnabled a {@link boolean}.
+	 */
+	public void setFollowEnabled(boolean followEnabled) {
+		this.followEnabled = followEnabled;
+	}
+
+	/**
+	 * Returns the value of the followQueued field.
+	 * @return a {@link boolean}.
+	 */
+	public boolean isFollowQueued() {
+		return followQueued;
+	}
+
+	/**
+	 * Sets the value of the followQueued field.
+	 * @param followQueued a {@link boolean}.
+	 */
+	public void setFollowQueued(boolean followQueued) {
+		this.followQueued = followQueued;
+	}
+
+	/**
+	 * Returns the value of the followCompleted field.
+	 * @return a {@link boolean}.
+	 */
+	public boolean isFollowCompleted() {
+		return followCompleted;
+	}
+
+	/**
+	 * Sets the value of the followCompleted field.
+	 * @param followCompleted a {@link boolean}.
+	 */
+	public void setFollowCompleted(boolean followCompleted) {
+		this.followCompleted = followCompleted;
+	}
 
 	/**
 	 * Returns the value of the replyEnabled field.
@@ -681,6 +737,54 @@ public class Tweet {
 	 */
 	public void setFavoriteCompleted(boolean favoriteCompleted) {
 		this.favoriteCompleted = favoriteCompleted;
+	}
+
+	/**
+	 * Returns the value of the listCompleted field.
+	 * @return a {@link boolean}.
+	 */
+	public boolean isListCompleted() {
+		return listCompleted;
+	}
+
+	/**
+	 * Returns the value of the listEnabled field.
+	 * @return a {@link boolean}.
+	 */
+	public boolean isListEnabled() {
+		return listEnabled;
+	}
+
+	/**
+	 * Sets the value of the listEnabled field.
+	 * @param listEnabled a {@link boolean}.
+	 */
+	public void setListEnabled(boolean listEnabled) {
+		this.listEnabled = listEnabled;
+	}
+
+	/**
+	 * Returns the value of the listQueued field.
+	 * @return a {@link boolean}.
+	 */
+	public boolean isListQueued() {
+		return listQueued;
+	}
+
+	/**
+	 * Sets the value of the listQueued field.
+	 * @param listQueued a {@link boolean}.
+	 */
+	public void setListQueued(boolean listQueued) {
+		this.listQueued = listQueued;
+	}
+
+	/**
+	 * Sets the value of the listCompleted field.
+	 * @param listCompleted a {@link boolean}.
+	 */
+	public void setListCompleted(boolean listCompleted) {
+		this.listCompleted = listCompleted;
 	}
 
 	/**

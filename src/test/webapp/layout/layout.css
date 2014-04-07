@@ -372,16 +372,16 @@ li {
 	list-style-type: none;
 }
 
-#curateZone ul, #publishingZone ul, #curateZone li, #publishingZone li {
+#curateZone ul, #publishingZone ul, #curateZone li, #publishingZone li, #actionZone li, #queueZone {
 	margin: 0;
 	padding: 0;
 }
 
-#curateZone {
+#curateZone, #actionZone {
 	margin-right: 50px;
 }
 
-#curateZone, #publishingZone {
+#curateZone, #publishingZone, #actionZone, #queueZone {
 	display: table-cell;
 	width: 375px;
 	border: solid black 1px;
@@ -391,6 +391,6 @@ div.displayTable {
 	display: table;
 }
 
-.recommendedTweet {
+.recommendedTweet, .tweetEngagement {
 	border-bottom: solid black 1px;
 }

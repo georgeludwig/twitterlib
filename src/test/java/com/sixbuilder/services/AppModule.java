@@ -17,6 +17,7 @@ public class AppModule
     public static void bind(ServiceBinder binder)
     {
          binder.bind(TweetItemDAO.class, TweetItemDAOImpl.class);
+         binder.bind(TweetDAO.class, TweetDAOImpl.class);
     }
 
     public static void contributeFactoryDefaults(

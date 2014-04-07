@@ -1,0 +1,50 @@
+<div xmlns:t="http://tapestry.apache.org/schema/tapestry_5_3.xsd" xmlns:p="tapestry:parameter" 
+	class="tweetEngagement" data-tweet-id="${tweet.id}" id="${clientId}" data-mode="content">
+
+	<form autocomplete="off">
+
+		<div class="tweetEngagementcontentView">
+	
+			<div class="tweetPublishColumn">
+			</div>
+			
+			<div class="tweetcontentColumn">
+				<div class="tweetText">
+					<p>
+						${tweet.content}
+					</p>
+				</div>
+				<div class="tweetUrl">
+<!-- 					<p title="${tweet.url}"> -->
+<!-- 						${tweet.url} -->
+<!-- 					</p> -->
+				</div>
+			</div>
+	
+			<div class="tweetDetailColumn">
+				<div class="tweetText">
+					<textarea id="textarea_${tweet.id}">${tweet.content}</textarea>
+				</div>
+				<div class="tweetEditSecondRow">
+					<p class="tweetCharacterCount">${tweet.content.length()}</p>
+				</div>
+			</div>
+				
+			<div class="tweetSnapshotColumn">
+				<div class="tweetActionButtons">
+					<input class="tweetSave" type="submit" value="Save"/>
+					<input class="tweetCancel" type="submit" value="Cancel"/>
+				</div>
+			</div>
+	
+			<div class="tweetDeleteLink">
+				<a href="#" t:type="EventLink" t:event="delete" t:context="tweet.id" t:zone="^">
+					<img src="${asset:classpath:com/sixbuilder/twitterlib/components/closeButton.png}" height="25" width="25"/>
+				</a>
+			</div>
+		
+		</div>
+		
+	</form>
+
+</div>
