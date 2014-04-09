@@ -1,7 +1,6 @@
 package com.sixbuilder.twitterlib;
 
-import com.sixbuilder.twitterlib.components.RecommendedTweet;
-import com.sixbuilder.twitterlib.helpers.TweetItem;
+import com.sixbuilder.twitterlib.components.RenderTweet;
 
 /**
  * Class that holds constants related to the Tweet Engagement component.
@@ -12,9 +11,9 @@ final public class TweetEngagementConstants {
 	private TweetEngagementConstants(){}
 	
 	/**
-	 * Name of the event triggered by {@link RecommendedTweet} when the user requests a tweet
-	 * to be deleted. The event context will be the {@link TweetItem} to be removed.
+	 * Name of the event triggered by {@link RenderTweet} when the user clicks the conversation
+	 * icon. Internal use only.
 	 */
-	public static final String DELETE_TWEET_EVENT = "deleteTweet";
+	public static final String SHOW_CONVERSATION_EVENT = "showConversation";
 
 }

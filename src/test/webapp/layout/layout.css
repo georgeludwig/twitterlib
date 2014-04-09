@@ -368,16 +368,21 @@ div.footer .legal a {
     padding: 0;
 }
 
+* {
+	box-sizing: border-box; 
+}
+
 li {
 	list-style-type: none;
 }
 
-#curateZone ul, #publishingZone ul, #curateZone li, #publishingZone li, #actionZone li, #queueZone {
+#curateZone ul, #publishingZone ul, #actionZone ul, #queueZone ul,
+#curateZone li, #publishingZone li, #actionZone li, #queueZone li{
 	margin: 0;
 	padding: 0;
 }
 
-#curateZone, #actionZone {
+#curateZone, #actionsZone {
 	margin-right: 50px;
 }
 

@@ -25,6 +25,14 @@ public class TweetDAOImpl implements TweetDAO {
 			items.add(create(i));
 		}
 		
+		for (Tweet tweet : items) {
+			for (Tweet other : items) {
+				if (!tweet.equals(other)) {
+					tweet.getConversation().add(other);
+				}
+			}
+		}
+		
 	}
 
 	public List<Tweet> getAll() {
@@ -36,7 +44,7 @@ public class TweetDAOImpl implements TweetDAO {
 		tweet.setClearEnabled(i % 2 == 0);
 		tweet.setPosted(new Date(2987349278342L + i * 4500));
 		tweet.setTwitterClientId("UknownTwitterClient");
-		tweet.setTwitterUsernameId("GeorgeLudwigTwitter");
+		tweet.setTwitterUsername("GeorgeLudwigTwitter");
 		tweet.setUsername("GeorgeLudwing6BU");
 		for (Action action : Action.values()) {
 			ActionState state;
@@ -52,7 +60,7 @@ public class TweetDAOImpl implements TweetDAO {
 		tweet.setRetweet(i % 2 == 0);
 		if (tweet.isRetweet()) {
 			tweet.setRetwittedDate(new Date(tweet.getPosted().getTime() - 3 * 60 * 60));
-			tweet.setRetwittedId(tweet.getId() + 1000000);
+			tweet.setRetweetedId(tweet.getId() + 1000000);
 			tweet.setRetwittedTwitterUsername("IWasRetwitted");
 		}
 		tweet.setProfilePictureUrl("http://lorempixel.com/75/75/sports/" + (i + 1));

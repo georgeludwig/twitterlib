@@ -22,7 +22,7 @@ public class Tweet {
 	/**
 	 * User profile (author) of this twit.
 	 */
-	private String twitterUsernameId;
+	private String twitterUsername;
 
 	/**
 	 * Id of the Twitter client that posted this tweet.
@@ -37,7 +37,7 @@ public class Tweet {
 	/**
 	 * Original retwitted twit id.
 	 */
-	private String retwittedId;
+	private String retweetedId;
 
 	/**
 	 * Original retwitted twit screen name.
@@ -62,7 +62,7 @@ public class Tweet {
 	/**
 	 * List of tweets connected to this one, forming a conversation.
 	 */
-	private List<Tweet> conversation;
+	private List<Tweet> conversation = new ArrayList<Tweet>();
 
 	/**
 	 * Lists to which this tweet author username may be added.
@@ -141,22 +141,22 @@ public class Tweet {
 	}
 
 	/**
-	 * Returns the value of the twitterUsernameId field.
+	 * Returns the value of the twitterUsername field.
 	 * 
 	 * @return a {@link String}.
 	 */
-	public String getTwitterUsernameId() {
-		return twitterUsernameId;
+	public String getTwitterUsername() {
+		return twitterUsername;
 	}
 
 	/**
-	 * Sets the value of the twitterUsernameId field.
+	 * Sets the value of the twitterUsername field.
 	 * 
-	 * @param twitterUsernameId
+	 * @param twitterUsername
 	 *            a {@link String}.
 	 */
-	public void setTwitterUsernameId(String twitterUsernameId) {
-		this.twitterUsernameId = twitterUsernameId;
+	public void setTwitterUsername(String twitterUsernameId) {
+		this.twitterUsername = twitterUsernameId;
 	}
 
 	/**
@@ -198,22 +198,22 @@ public class Tweet {
 	}
 
 	/**
-	 * Returns the value of the retwittedId field.
+	 * Returns the value of the retweetedId field.
 	 * 
 	 * @return a {@link String}.
 	 */
-	public String getRetwittedId() {
-		return retwittedId;
+	public String getRetweetedId() {
+		return retweetedId;
 	}
 
 	/**
-	 * Sets the value of the retwittedId field.
+	 * Sets the value of the retweetedId field.
 	 * 
-	 * @param retwittedId
+	 * @param retweetedId
 	 *            a {@link String}.
 	 */
-	public void setRetwittedId(String retwittedId) {
-		this.retwittedId = retwittedId;
+	public void setRetweetedId(String retwittedId) {
+		this.retweetedId = retwittedId;
 	}
 
 	/**
@@ -221,7 +221,7 @@ public class Tweet {
 	 * 
 	 * @return a {@link String}.
 	 */
-	public String getRetwittedTwitterUsername() {
+	public String getRetweetedTwitterUsername() {
 		return retwittedTwitterUsername;
 	}
 
@@ -823,6 +823,36 @@ public class Tweet {
 	 */
 	public void setUsername(String username) {
 		this.username = username;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (!(obj instanceof Tweet)) {
+			return false;
+		}
+		Tweet other = (Tweet) obj;
+		if (id == null) {
+			if (other.id != null) {
+				return false;
+			}
+		} else if (!id.equals(other.id)) {
+			return false;
+		}
+		return true;
 	}
 
 }

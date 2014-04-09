@@ -1,0 +1,43 @@
+<div xmlns:t="http://tapestry.apache.org/schema/tapestry_5_3.xsd" xmlns:p="tapestry:parameter" 
+	class="renderTweet" data-tweet-id="${tweet.id}" id="${clientId}" data-mode="summary">
+
+	<div class="table tweetEngagementSummaryView">
+
+		<div class="table-row tweetEngagementRetweet">
+			<div class="table-cell tweetEngagementRetweetIcon">
+				<p t:type="If" t:test="tweet.retweet">
+					<t:twitterLib.FontAwesomeIcon name="fa-retweet"/>
+				</p>
+			</div>
+			<div class="table-cell tweetEngagementRetweetInfo">
+				<p t:type="If" t:test="tweet.retweet">
+					Retweeted by @${tweet.retweetedTwitterUsername} - FIXME: date
+				</p>
+			</div>
+		</div>
+
+		<div class="table-row">
+			<div class="table-cell tweetEngagementProfilePicture">
+				<img src="${tweet.profilePictureUrl}" alt="${tweet.twitterUsername}"/>
+			</div>
+			<div class="table-cell tweetEngagementContent">
+				<p>Author, profile name, time posted</p>
+				<p class="tweetEngagementContent">
+					${tweet.content}
+				</p>
+			</div>
+		</div>
+		
+		<div class="table-row">
+			<div class="table-cell"/>
+			<div class="table-cell tweetEngagementActions">
+				<p>Twitter client</p>
+				<div class="tweetEngagementActions">
+					<p>actions</p>
+				</div>
+			</div>
+		</div>
+	
+	</div>
+	
+</div>

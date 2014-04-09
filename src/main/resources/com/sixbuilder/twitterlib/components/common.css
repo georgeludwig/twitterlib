@@ -1,0 +1,29 @@
+p, ol, ul {
+    line-height: inherit;
+    clear: none;
+}
+
+div.recommendedTweet, div.tweetEngagement {
+	width: 375px;
+	margin: 0;
+	clear: both;
+	top: 0px;
+	left: 0px;
+	position: relative;
+}
+
+div.recommendedTweetSummaryView, div.tweetEngagementSummaryView {
+	display: table;
+}
+
+.table > .table-row {
+	display: table-row;
+	margin: 0;
+	padding: 0;
+}
+
+.table > .table-row > .table-cell {
+	display: table-cell;
+	margin: 0;
+	padding: 0;
+}

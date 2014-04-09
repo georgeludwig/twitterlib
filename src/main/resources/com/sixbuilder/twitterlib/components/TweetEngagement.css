@@ -1,161 +1,43 @@
-div.recommendedTweet {
-	width: 375px;
-	margin: 0;
-	clear: both;
-	top: 0px;
-	left: 0px;
-	position: relative;
-}
-
-div.recommendedTweetSummaryView {
-	display: table;
-}
-
-div.recommendedTweetSummaryView div.tweetPublishColumn,
-div.recommendedTweetSummaryView div.tweetSummaryColumn,
-div.recommendedTweetSummaryView div.tweetSnapshotColumn {
-	display: table-cell;
-	margin-left: 0;
-	margin-right: 0;
-}  
-
-div.recommendedTweetSummaryView div.tweetPublishColumn {
-	width: 25px;
-	text-align: center;
-	vertical-align: bottom;
-	/*background-color: yellow;*/
-}
-
-div.recommendedTweetSummaryView div.tweetPublishColumn input {
-	margin-bottom: 10px;
-}
-
-div.recommendedTweetSummaryView div.tweetSummaryColumn,
-div.recommendedTweetSummaryView div.tweetDetailColumn {
-	width: 275px;
-	padding: 0px;
-	margin-top: 0px;
-	/*background-color: blue;*/
-	vertical-align: top;
-}
-
-div.recommendedTweetSummaryView div.tweetSummaryColumn p {
-	padding: 5px;
-	margin: 0px;
-	line-height: auto;
-	font-size: 10px;
-}
-
-div.recommendedTweetSummaryView div.tweetSnapshotColumn {
-	width: 75px;
-	margin-left: 10px;
-	display: block;
-	line-height: auto;
-	/*background-color: green;*/
-}
-
-div.recommendedTweet:hover div.tweetDeleteLink {
-	display: block;
-}
-
-div.recommendedTweet div.tweetDeleteLink {
-	display: none;
-	position: absolute;
-	right: 0px;
-	top: 0px;
-	margin: 0px;
-	margin: 0px;
-	width: 25px;
-	height: 25px;
-}
-
-div.recommendedTweet div.tweetUrl p {
-	width: 250px;
-	text-overflow: ellipsis;
-	white-space: nowrap;
-	overflow: hidden;
-}
-
-div.recommendedTweet[data-mode=detail] div.tweetDetailColumn,
-div.recommendedTweet[data-mode=summary] div.tweetSummaryColumn {
-	display: table-cell;
-}
-
-div.recommendedTweet[data-mode=detail] div.tweetActionButtons {
-	display: block;
-}
-
-div.recommendedTweet[data-mode=summary] div.tweetDetailColumn,
-div.recommendedTweet[data-mode=summary] div.tweetActionButtons, 
-div.recommendedTweet[data-mode=detail] div.tweetSummaryColumn {
-	display: none;
-}
-
-div.recommendedTweet div.tweetDetailColumn div.tweetText textarea {
-	height: 6em;
-	min-height: 80px;
-	width: 100%;
-}
-
-div.recommendedTweet div.tweetEditSecondRow, div.recommendedTweet div.tweetUrlRow {
-	float: left;
-	width: 250px;
-	padding: 1px !important;
-}
-
-div.recommendedTweet div.tweetEditSecondRow {
-	line-height: 1em !important;
-}
-
-div.recommendedTweet div.tweetEditSecondRow ul li {
-	display: inline;
-	float: left;
-	list-style-type: none;
-	margin-right: 0.75em !important;
-	line-height: 1em !important;
-}
-
-div.recommendedTweet div.tweetUrlRow {
-	font-size: 10px;
-}
-
-div.recommendedTweet div.tweetUrlRow input.tweetUrl {
-	width: 180px;
-	text-overflow: ellipsis;
-	white-space: nowrap;
-	overflow: hidden;
-}
-
-div.recommendedTweet input.tweetShorten,
-div.recommendedTweet input.tweetSave,
-div.recommendedTweet input.tweetCancel {
-	width: auto;
-}
-
-div.recommendedTweet div.tweetActionButtons {
-	position: absolute:
-}
-
-div.recommendedTweet input.tweetSave,
-div.recommendedTweet input.tweetCancel {
-	margin-left: 0.5em;
+div.tweetEngagementSummaryView {
 	font-size: 12px;
 }
 
-div.recommendedTweet p.tweetCharacterCount {
-	display: inline;
-	float: left;
-	color: green;
+div.tweetEngagementSummaryView p {
+	line-height: 1.1em;
+	margin: 0px;
 }
 
-div.recommendedTweet p.tweetCharacterCountWarning {
-	color: yellow;
+div.tweetEngagementProfilePicture,
+div.tweetEngagementRetweetIcon {
+	width: 80px;
+	padding-left: 5px;
+	text-align: right;
 }
 
-div.recommendedTweet p.tweetCharacterCountError {
-	color: red;
+div.renderTweet div.tweetEngagementSummaryView div.tweetEngagementRetweetInfo,
+div.renderTweet div.tweetEngagementSummaryView div.tweetEngagementContent {
+	padding-left: 10px;
 }
 
-/* Icon from http://icondock.com/free/mini-pixel-icons */
-div.recommendedTweet .tweetAttachSnapshot {
+div.tweetEngagementRetweetInfo {
+	text-align: left;
+	font-size: 0.9em;
 }
+
+/*
+div.tweetEngagementContent {
+	background-color: yellow;
+}
+
+div.tweetEngagementRetweetInfo {
+	background-color: pink;
+}
+
+div.tweetEngagementRetweetInfo {
+	background-color: grey;
+}
+
+div.tweetEngagementRetweetIcon {
+	background-color: green;
+}
+*/
