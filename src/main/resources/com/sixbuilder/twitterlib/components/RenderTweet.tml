@@ -29,12 +29,18 @@
 		</div>
 		
 		<div class="table-row">
-			<div class="table-cell"/>
-			<div class="table-cell tweetEngagementActions">
-				<p>Twitter client</p>
-				<div class="tweetEngagementActions">
-					<p>actions</p>
-				</div>
+			<div class="table-cell tweetEngagementBelowProfilePicture">&#160;</div>
+			<div class="table-cell tweetEngagementActionsCell">
+				<p class="tweetEngagementTwitterClient">
+					from: ${tweet.twitterClientId}
+				</p>
+				<ol class="tweetEngagementActions">
+					<li t:type="Loop" t:source="actions" t:value="action">
+						<a href="#" title="${action.name}" data-action="${action.name()}">
+							<i t:type="twitterlib/FontAwesomeIcon" t:name="prop:action.fontAwesomeIconName"/>
+						</a>
+					</li>
+				</ol>
 			</div>
 		</div>
 	

@@ -377,7 +377,7 @@ li {
 }
 
 #curateZone ul, #publishingZone ul, #actionZone ul, #queueZone ul,
-#curateZone li, #publishingZone li, #actionZone li, #queueZone li{
+#curateZone ul > li, #publishingZone ul > li, #actionZone ul > li, #queueZone ul > li{
 	margin: 0;
 	padding: 0;
 }

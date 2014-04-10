@@ -43,7 +43,7 @@ public class TweetDAOImpl implements TweetDAO {
 		Tweet tweet = new Tweet();
 		tweet.setClearEnabled(i % 2 == 0);
 		tweet.setPosted(new Date(2987349278342L + i * 4500));
-		tweet.setTwitterClientId("UknownTwitterClient");
+		tweet.setTwitterClientId("Unknown Twitter Client");
 		tweet.setTwitterUsername("GeorgeLudwigTwitter");
 		tweet.setUsername("GeorgeLudwing6BU");
 		for (Action action : Action.values()) {

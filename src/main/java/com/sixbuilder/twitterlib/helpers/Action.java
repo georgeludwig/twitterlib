@@ -8,25 +8,33 @@ package com.sixbuilder.twitterlib.helpers;
  */
 public enum Action {
 	
-	DELETE("Delete"),
-	FOLLOW("Follow"),
-	REPLY("Reply"),
-	REPLY_ALL("Reply All", "ReplyAll"),
-	RETWEET("Retweet"),
-	LIST("List");
+	FOLLOW("Follow", "fa-arrow-circle-o-right"), // FIXME: temporary
+	REPLY("Reply", "fa-reply"),
+	REPLY_ALL("Reply All", "ReplyAll", "fa-reply-all"),
+	RETWEET("Retweet", "fa-retweet"),
+	LIST("List", "fa-list"),
+	DELETE("Delete", "fa-trash-o");
 	
-	private Action(String name, String cssClass) {
-		this.name = "tweetAction" + name;
+	private Action(String name, String cssClass, String fontAwesomeIconName) {
+		this.name = name;
 		this.cssClass = cssClass;
+		if (fontAwesomeIconName != null) {
+			this.fontAwesomeIconName = fontAwesomeIconName;
+		}
+		else {
+			this.fontAwesomeIconName = "fa-question-circle";
+		}
 	}
 	
-	private Action(String name) {
-		this(name, name);
+	private Action(String name, String fontAwesomeIconName) {
+		this(name, "tweetAction" + name, fontAwesomeIconName);
 	}
 	
 	final private String name;
 	
 	final private String cssClass;
+	
+	final private String fontAwesomeIconName;
 
 	public boolean isEnabled(Tweet tweet) {
 		switch (this) {
@@ -123,6 +131,14 @@ public enum Action {
 	
 	public String getCssClass(Tweet tweet) {
 		return cssClass;
+	}
+
+	/**
+	 * Returns the value of the fontAwesomeIconName field.
+	 * @return a {@link String}.
+	 */
+	public String getFontAwesomeIconName() {
+		return fontAwesomeIconName;
 	}
 	
 }

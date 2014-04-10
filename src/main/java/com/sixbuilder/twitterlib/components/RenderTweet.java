@@ -11,6 +11,7 @@ import org.apache.tapestry5.json.JSONObject;
 import org.apache.tapestry5.services.javascript.JavaScriptSupport;
 
 import com.sixbuilder.twitterlib.RecommendedTweetConstants;
+import com.sixbuilder.twitterlib.helpers.Action;
 import com.sixbuilder.twitterlib.helpers.HolderComponentEventCallback;
 import com.sixbuilder.twitterlib.helpers.Tweet;
 import com.sixbuilder.twitterlib.helpers.TweetItem;
@@ -37,6 +38,9 @@ public class RenderTweet implements ClientElement {
 	
 	@Property
 	private Tweet conversationTweet;
+	
+	@Property
+	private Action action;
 	
 	private String clientId;
 	
@@ -98,6 +102,10 @@ public class RenderTweet implements ClientElement {
 
 	public String getClientId() {
 		return clientId;
+	}
+	
+	public Action[] getActions() {
+		return Action.values();
 	}
 
 }

@@ -16,7 +16,7 @@ div.recommendedTweetSummaryView, div.tweetEngagementSummaryView {
 	display: table;
 }
 
-.table > .table-row {
+/*.table > .table-row {
 	display: table-row;
 	margin: 0;
 	padding: 0;
@@ -26,4 +26,4 @@ div.recommendedTweetSummaryView, div.tweetEngagementSummaryView {
 	display: table-cell;
 	margin: 0;
 	padding: 0;
-}
+}*/

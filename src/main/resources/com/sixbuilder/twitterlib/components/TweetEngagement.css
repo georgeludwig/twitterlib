@@ -1,5 +1,16 @@
+.table > .table-row {
+	clear: both;
+	margin: 0px;
+}
+
+.table > .table-row > .table-cell {
+	clear: none;
+	float: left;
+	margin: 0;
+}
+
 div.tweetEngagementSummaryView {
-	font-size: 12px;
+	font-size: 15px;
 }
 
 div.tweetEngagementSummaryView p {
@@ -7,21 +18,53 @@ div.tweetEngagementSummaryView p {
 	margin: 0px;
 }
 
+div.tweetEngagementProfilePicture {
+	float: left;
+	text-align: right;
+}
+
 div.tweetEngagementProfilePicture,
-div.tweetEngagementRetweetIcon {
+div.tweetEngagementRetweetIcon,
+div.tweetEngagementBelowProfilePicture {
 	width: 80px;
 	padding-left: 5px;
 	text-align: right;
 }
 
+div.tweetEngagementContent,
+div.tweetEngagementRetweetInfo,
+div.tweetEngagementRetweetActionsCell {
+	width: 280px;
+}
+
+div.tweetEngagementContent {
+	padding: 0px;
+	margin: 0px;
+}
+
+div.tweetEngagementContent div {
+	clear: none;
+}
+
 div.renderTweet div.tweetEngagementSummaryView div.tweetEngagementRetweetInfo,
-div.renderTweet div.tweetEngagementSummaryView div.tweetEngagementContent {
+div.renderTweet div.tweetEngagementSummaryView div.tweetEngagementContent,
+div.renderTweet div.tweetEngagementSummaryView div.tweetEngagementActionsCell {
 	padding-left: 10px;
 }
 
-div.tweetEngagementRetweetInfo {
-	text-align: left;
-	font-size: 0.9em;
+div.tweetEngagementRetweet {
+	font-size: 0.75em;
+	height: 1em;
+}
+
+ol.tweetEngagementActions {
+	padding-left: 0px;
+	display: inline;
+}
+
+ol.tweetEngagementActions li {
+	display: inline;
+	margin-right: 0.25em;
 }
 
 /*
@@ -40,4 +83,7 @@ div.tweetEngagementRetweetInfo {
 div.tweetEngagementRetweetIcon {
 	background-color: green;
 }
-*/
+
+div.tweetEngagementProfilePicture {
+	background-color: lightblue;
+}*/
