@@ -1,15 +1,64 @@
 <div class="tweetEngagement" xmlns:t="http://tapestry.apache.org/schema/tapestry_5_3.xsd" xmlns:p="tapestry:parameter"
 	id="${clientId}">
-	<div t:type="Zone" t:id="zone" id="${zoneId}">
+	<div t:type="Zone" t:id="zone" id="zoneId">
 		<t:delegate to="prop:block"/>
 	</div>
 	<t:block id="singleTweet">
-		<div t:type="twitterLib/RenderTweet" t:tweet="tweet"/>
+		<div xmlns:t="http://tapestry.apache.org/schema/tapestry_5_3.xsd" xmlns:p="tapestry:parameter" 
+			class="renderTweet" data-tweet-id="${tweet.id}" id="${clientId}" data-mode="summary"
+			data-event-url="${eventLink}">
+		
+			<div class="table tweetEngagementSummaryView">
+		
+				<div class="table-row tweetEngagementRetweet">
+					<div class="table-cell tweetEngagementRetweetIcon">
+						<p t:type="If" t:test="tweet.retweet">
+							<t:twitterLib.FontAwesomeIcon name="fa-retweet"/>
+						</p>
+					</div>
+					<div class="table-cell tweetEngagementRetweetInfo">
+						<p t:type="If" t:test="tweet.retweet">
+							Retweeted by @${tweet.retweetedTwitterUsername} - FIXME: date
+						</p>
+					</div>
+				</div>
+		
+				<div class="table-row">
+					<div class="table-cell tweetEngagementProfilePicture">
+						<img src="${tweet.profilePictureUrl}" alt="${tweet.twitterUsername}"/>
+					</div>
+					<div class="table-cell tweetEngagementContent">
+						<p>Author, profile name, time posted</p>
+						<p class="tweetEngagementContent">
+							${tweet.content}
+						</p>
+					</div>
+				</div>
+				
+				<div class="table-row">
+					<div class="table-cell tweetEngagementBelowProfilePicture">&#160;</div>
+					<div class="table-cell tweetEngagementActionsCell">
+						<p class="tweetEngagementTwitterClient">
+							from: ${tweet.twitterClientId}
+						</p>
+						<ol class="tweetEngagementActions" t:type="Zone" t:id="actionsZone" id="actionZoneId">
+							<li t:type="Loop" t:source="actions" t:value="action">
+								<a href="#" title="${action.name}" class="${actionCssClass}" data-action="${action.name()}">
+									<i t:type="twitterlib/FontAwesomeIcon" t:name="prop:action.fontAwesomeIconName"/>
+								</a>
+							</li>
+						</ol>
+					</div>
+				</div>
+			
+			</div>
+			
+		</div>
 	</t:block>
 	<t:block id="conversation">
 		<ol class="tweetEngagementConversation" t:type="If" t:test="!tweet.conversation.empty">
-			<li t:type="Loop" t:source="conversationTweets" t:value="conversationTweet" class="${cssClass}">
-				<div t:type="twitterLib/RenderTweet" t:tweet="conversationTweet"/>
+			<li t:type="Loop" t:source="conversationTweets" t:value="tweet" class="${cssClass}">
+				<t:delegate to="prop:block"/>
 			</li>	
 		</ol>
 	</t:block>

@@ -9,7 +9,7 @@ public enum ActionState {
 	QUEUED("Queued", "orange"),
 	COMPLETED("Green", "green"),
 	ENABLED("Enabled", "black"),
-	DISABLED("Disabled", "grey");
+	DISABLED("Disabled", "gray");
 	
 	private ActionState(String name, String color) {
 		this.name = name;

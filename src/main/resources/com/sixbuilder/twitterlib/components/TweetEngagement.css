@@ -67,6 +67,22 @@ ol.tweetEngagementActions li {
 	margin-right: 0.25em;
 }
 
+a.black {
+	color: black;
+}
+
+a.green {
+	color: green;
+}
+
+a.gray {
+	color: gray;
+}
+
+a.orange {
+	color: orange;
+}
+
 /*
 div.tweetEngagementContent {
 	background-color: yellow;
