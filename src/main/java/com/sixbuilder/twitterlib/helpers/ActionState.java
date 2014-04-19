@@ -7,7 +7,7 @@ package com.sixbuilder.twitterlib.helpers;
 public enum ActionState {
 	
 	QUEUED("Queued", "orange"),
-	COMPLETED("Green", "green"),
+	COMPLETED("Completed", "green"),
 	ENABLED("Enabled", "black"),
 	DISABLED("Disabled", "gray");
 	

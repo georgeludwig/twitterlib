@@ -41,13 +41,13 @@
 						<p class="tweetEngagementTwitterClient">
 							from: ${tweet.twitterClientId}
 						</p>
-						<ol class="tweetEngagementActions" t:type="Zone" t:id="actionsZone" id="actionZoneId">
+						<ul class="tweetEngagementActions" t:type="Zone" t:id="actionsZone" id="${actionsZoneId}">
 							<li t:type="Loop" t:source="actions" t:value="action">
-								<a href="#" title="${action.name}" class="${actionCssClass}" data-action="${action.name()}">
+								<a href="#" title="${action.name} (${action.getState(tweet).getName().toLowerCase()})" class="${actionCssClass}" data-action="${action.name()}" id="${clientId}-${action.name()}-link">
 									<i t:type="twitterlib/FontAwesomeIcon" t:name="prop:action.fontAwesomeIconName"/>
 								</a>
 							</li>
-						</ol>
+						</ul>
 					</div>
 				</div>
 			

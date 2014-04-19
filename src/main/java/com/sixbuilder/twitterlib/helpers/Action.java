@@ -50,7 +50,7 @@ public enum Action {
 			case REPLY: return tweet.isReplyEnabled();
 			case REPLY_ALL: return tweet.isReplyAllEnabled();
 			case FAVORITE: return tweet.isFavoriteEnabled();
-			case RETWEET: return tweet.isRetwitEnabled();
+			case RETWEET: return tweet.isRetweetEnabled();
 			case LIST: return tweet.isListEnabled();
 			default: throw new RuntimeException("Should never happen");
 		}
@@ -63,7 +63,7 @@ public enum Action {
 			case REPLY: tweet.setReplyEnabled(value); break;
 			case REPLY_ALL: tweet.setReplyAllEnabled(value); break;
 			case FAVORITE: tweet.setFavoriteEnabled(value); break;
-			case RETWEET: tweet.setRetwitEnabled(value); break;
+			case RETWEET: tweet.setRetweetEnabled(value); break;
 			case LIST: tweet.setListEnabled(value); break;
 			default: throw new RuntimeException("Should never happen: " + this);
 		}
@@ -76,7 +76,7 @@ public enum Action {
 			case REPLY: return tweet.isReplyQueued();
 			case REPLY_ALL: return tweet.isReplyAllQueued();
 			case FAVORITE: return tweet.isFavoriteQueued();
-			case RETWEET: return tweet.isRetwitQueued();
+			case RETWEET: return tweet.isRetweetQueued();
 			case LIST: return tweet.isListQueued();
 			default: throw new RuntimeException("Should never happen");
 		}
@@ -89,7 +89,7 @@ public enum Action {
 			case REPLY: tweet.setReplyQueued(value); break;
 			case REPLY_ALL: tweet.setReplyAllQueued(value); break;
 			case FAVORITE: tweet.setFavoriteQueued(value); break;
-			case RETWEET: tweet.setRetwitQueued(value); break;
+			case RETWEET: tweet.setRetweetQueued(value); break;
 			case LIST: tweet.setListQueued(value); break;
 			default: throw new RuntimeException("Should never happen: " + this);
 		}
@@ -102,7 +102,7 @@ public enum Action {
 			case REPLY: return tweet.isReplyCompleted();
 			case REPLY_ALL: return tweet.isReplyAllCompleted();
 			case FAVORITE: return tweet.isFavoriteCompleted();
-			case RETWEET: return tweet.isRetwitCompleted();
+			case RETWEET: return tweet.isRetweetCompleted();
 			case LIST: return tweet.isListCompleted();
 			default: throw new RuntimeException("Should never happen");
 		}
@@ -114,8 +114,8 @@ public enum Action {
 			case FOLLOW: tweet.setFollowCompleted(value); break;
 			case REPLY: tweet.setReplyCompleted(value); break;
 			case REPLY_ALL: tweet.setReplyAllCompleted(value); break;
-			case FAVORITE: tweet.setRetwitCompleted(value); break;
-			case RETWEET: tweet.setRetwitCompleted(value); break;
+			case FAVORITE: tweet.setFavoriteCompleted(value); break;
+			case RETWEET: tweet.setRetweetCompleted(value); break;
 			case LIST: tweet.setListCompleted(value); break;
 			default: throw new RuntimeException("Should never happen");
 		}

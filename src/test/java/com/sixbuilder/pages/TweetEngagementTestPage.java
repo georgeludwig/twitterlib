@@ -13,12 +13,12 @@ import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.ajax.AjaxResponseRenderer;
 
 import com.sixbuilder.services.TweetDAO;
-import com.sixbuilder.twitterlib.RecommendedTweetConstants;
-import com.sixbuilder.twitterlib.components.RecommendedTweet;
+import com.sixbuilder.twitterlib.TweetEngagementConstants;
+import com.sixbuilder.twitterlib.components.TweetEngagement;
 import com.sixbuilder.twitterlib.helpers.Tweet;
 
 /**
- * A page just for testing the {@link RecommendedTweet} component.
+ * A page just for testing the {@link TweetEngagement} component.
  */
 public class TweetEngagementTestPage {
 	
@@ -59,22 +59,34 @@ public class TweetEngagementTestPage {
 		return dao.getAll();
 	}
 	
-	@OnEvent(RecommendedTweetConstants.DELETE_TWEET_EVENT)
+	@OnEvent(TweetEngagementConstants.DELETE_TWEET_EVENT)
 	public void delete(Tweet tweet) {
+		tweet.setDeleteQueued(true);
 		actions.remove(tweet);
 		queue.remove(tweet);
 		dao.delete(tweet);
 		alertManager.success(String.format("Message with id %s was successfully deleted", tweet.getId()));
-		ajaxResponseRenderer.addRender(actionZone);
-		ajaxResponseRenderer.addRender(queueZone);
 	}
 
-	@OnEvent(RecommendedTweetConstants.SAVE_TWEET_EVENT)
-	public void save(Tweet tweet) {
+	@OnEvent(TweetEngagementConstants.FOLLOW_TWEET_EVENT)
+	public void follow(Tweet tweet) {
+		tweet.setFollowQueued(true);
 		dao.update(tweet);
 	}
 	
-	@OnEvent(RecommendedTweetConstants.LOAD_TWEET_EVENT)
+	@OnEvent(TweetEngagementConstants.FAVORITE_TWEET_EVENT)
+	public void favorite(Tweet tweet) {
+		tweet.setFavoriteQueued(true);
+		dao.update(tweet);
+	}
+
+	@OnEvent(TweetEngagementConstants.RETWEET_TWEET_EVENT)
+	public void retweet(Tweet tweet) {
+		tweet.setRetweetQueued(true);
+		dao.update(tweet);
+	}
+
+	@OnEvent(TweetEngagementConstants.LOAD_TWEET_EVENT)
 	public Tweet load(String id) {
 		return dao.findById(id);
 	}

@@ -38,7 +38,7 @@ public class TweetEngagement implements ClientElement {
 	 * Name of the event triggered by {@link TweetEngagement} when the user clicks
 	 * the conversation icon. 
 	 */
-	private static final String SHOW_CONVERSATION_EVENT = "showConversation";
+//	private static final String SHOW_CONVERSATION_EVENT = "showConversation";
 
 	/**
 	 * Name of the event triggered by {@link TweetEngagement} when the user clicks
@@ -88,7 +88,8 @@ public class TweetEngagement implements ClientElement {
 		tweet = tweetParameter;
 		clientId = javaScriptSupport.allocateClientId(resources);
 		JSONObject options = new JSONObject();
-		options.put("eventUrl", getEventLink().toAbsoluteURI());
+		options.put("id", clientId);
+		options.put("actionUrl", getEventLink().toAbsoluteURI());
 		javaScriptSupport.addScript(String.format("initializeTweetEngagement(%s);", options)); 
 	}
 	
@@ -98,17 +99,20 @@ public class TweetEngagement implements ClientElement {
 	
 	@OnEvent(ACTION_EVENT)
 	public Object handleActionLinks(
-			@RequestParameter("action") String actionName, 
 			@RequestParameter("id") String tweetId,
-			@RequestParameter("content") String content) {
+			@RequestParameter("action") String actionName, 
+			@RequestParameter(value = "content", allowBlank = true) String content) {
 		
 		final Action action = Action.valueOf(actionName);
-		return triggerEvent(action.getEventName(), tweetId, content);
+		tweet = findById(tweetId);
+		tweetParameter = tweet;
+		triggerEvent(action.getEventName(), tweet, content);
+		return actionsZone.getBody();
 	}
 	
-	private Object triggerEvent(final String event, final String id, final String content) {
-		return triggerEvent(event, findById(id), content);
-	}
+//	private Object triggerEvent(final String event, final String id, final String content) {
+//		return triggerEvent(event, findById(id), content);
+//	}
 
 	private Object triggerEvent(final String event, final Tweet item, String content) {
 		final HolderComponentEventCallback<Object> callback = new HolderComponentEventCallback<Object>();
@@ -135,7 +139,7 @@ public class TweetEngagement implements ClientElement {
 	}
 
 	public String getClientId() {
-		return "tweet-" + tweet.getId();
+		return clientId;
 	}
 	
 	/**

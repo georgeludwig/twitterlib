@@ -99,9 +99,9 @@ public class Tweet {
 	private boolean replyAllQueued;
 	private boolean replyAllCompleted;
 
-	private boolean retwitEnabled;
-	private boolean retwitQueued;
-	private boolean retwitCompleted;
+	private boolean retweetEnabled;
+	private boolean retweetQueued;
+	private boolean retweetCompleted;
 
 	private boolean favoriteEnabled;
 	private boolean favoriteQueued;
@@ -626,60 +626,60 @@ public class Tweet {
 	}
 
 	/**
-	 * Returns the value of the retwitEnabled field.
+	 * Returns the value of the retweetEnabled field.
 	 * 
 	 * @return a {@link boolean}.
 	 */
-	public boolean isRetwitEnabled() {
-		return retwitEnabled;
+	public boolean isRetweetEnabled() {
+		return retweetEnabled;
 	}
 
 	/**
-	 * Sets the value of the retwitEnabled field.
+	 * Sets the value of the retweetEnabled field.
 	 * 
-	 * @param retwitEnabled
+	 * @param retweetEnabled
 	 *            a {@link boolean}.
 	 */
-	public void setRetwitEnabled(boolean retwitEnabled) {
-		this.retwitEnabled = retwitEnabled;
+	public void setRetweetEnabled(boolean retwitEnabled) {
+		this.retweetEnabled = retwitEnabled;
 	}
 
 	/**
-	 * Returns the value of the retwitQueued field.
+	 * Returns the value of the retweetQueued field.
 	 * 
 	 * @return a {@link boolean}.
 	 */
-	public boolean isRetwitQueued() {
-		return retwitQueued;
+	public boolean isRetweetQueued() {
+		return retweetQueued;
 	}
 
 	/**
-	 * Sets the value of the retwitQueued field.
+	 * Sets the value of the retweetQueued field.
 	 * 
-	 * @param retwitQueued
+	 * @param retweetQueued
 	 *            a {@link boolean}.
 	 */
-	public void setRetwitQueued(boolean retwitQueued) {
-		this.retwitQueued = retwitQueued;
+	public void setRetweetQueued(boolean retwitQueued) {
+		this.retweetQueued = retwitQueued;
 	}
 
 	/**
-	 * Returns the value of the retwitCompleted field.
+	 * Returns the value of the retweetCompleted field.
 	 * 
 	 * @return a {@link boolean}.
 	 */
-	public boolean isRetwitCompleted() {
-		return retwitCompleted;
+	public boolean isRetweetCompleted() {
+		return retweetCompleted;
 	}
 
 	/**
-	 * Sets the value of the retwitCompleted field.
+	 * Sets the value of the retweetCompleted field.
 	 * 
-	 * @param retwitCompleted
+	 * @param retweetCompleted
 	 *            a {@link boolean}.
 	 */
-	public void setRetwitCompleted(boolean retwitCompleted) {
-		this.retwitCompleted = retwitCompleted;
+	public void setRetweetCompleted(boolean retwitCompleted) {
+		this.retweetCompleted = retwitCompleted;
 	}
 
 	/**

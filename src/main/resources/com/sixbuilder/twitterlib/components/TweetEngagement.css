@@ -57,12 +57,12 @@ div.tweetEngagementRetweet {
 	height: 1em;
 }
 
-ol.tweetEngagementActions {
+ul.tweetEngagementActions {
 	padding-left: 0px;
 	display: inline;
 }
 
-ol.tweetEngagementActions li {
+ul.tweetEngagementActions li {
 	display: inline;
 	margin-right: 0.25em;
 }

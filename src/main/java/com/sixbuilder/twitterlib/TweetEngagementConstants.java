@@ -29,7 +29,7 @@ final public class TweetEngagementConstants {
 	 * Name of the event triggered by {@link TweetEngagement} when the user requests a tweet
 	 * to be retwitted. The event context will be the {@link Tweet}.
 	 */
-	public static final String RETWEET_TWEET_EVENT = "retwitTweet";
+	public static final String RETWEET_TWEET_EVENT = "retweetTweet";
 
 	/**
 	 * Name of the event triggered by {@link TweetEngagement} when the user requests a tweet
@@ -47,7 +47,7 @@ final public class TweetEngagementConstants {
 	 * Name of the event triggered by {@link TweetEngagement} when the user requests a tweet
 	 * author to be followed. The event context will be the {@link Tweet}.
 	 */
-	public static final String FOLLOW_TWEET_EVENT = "deleteTweet";
+	public static final String FOLLOW_TWEET_EVENT = "followTweet";
 
 	/**
 	 * Name of the event triggered by {@link TweetEngagement} when the user requests a tweet
