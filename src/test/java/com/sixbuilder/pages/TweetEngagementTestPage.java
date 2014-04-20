@@ -55,18 +55,28 @@ public class TweetEngagementTestPage {
 		}
 	}
 
-	public List<Tweet> gettweets() {
+	public List<Tweet> getTweets() {
 		return dao.getAll();
 	}
 	
 	@OnEvent(TweetEngagementConstants.DELETE_TWEET_EVENT)
 	public void delete(Tweet tweet) {
 		tweet.setDeleteQueued(true);
+		dao.update(tweet);
 //		actions.remove(tweet);
 //		queue.remove(tweet);
 //		dao.delete(tweet);
 //		ajaxResponseRenderer.addRender(actionZone);
 //		alertManager.success(String.format("Message with id %s was successfully deleted", tweet.getId()));
+	}
+
+	@OnEvent(TweetEngagementConstants.CLEAR_TWEET_EVENT)
+	public void clear(Tweet tweet) {
+		actions.remove(tweet);
+//		queue.remove(tweet);
+//		dao.delete(tweet);
+		ajaxResponseRenderer.addRender(actionZone);
+		alertManager.success(String.format("Message with id %s was successfully cleared", tweet.getId()));
 	}
 
 	@OnEvent(TweetEngagementConstants.FOLLOW_TWEET_EVENT)

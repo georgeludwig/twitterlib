@@ -53,6 +53,12 @@
 			
 			</div>
 			
+			<div class="tweetClearLink">
+				<a href="#" t:type="EventLink" t:event="clear" t:context="tweet.id" t:zone="^">
+					<i t:type="twitterlib/FontAwesomeIcon" t:name="fa-times-circle"/>
+				</a>
+			</div>
+			
 		</div>
 	</t:block>
 	<t:block id="conversation">

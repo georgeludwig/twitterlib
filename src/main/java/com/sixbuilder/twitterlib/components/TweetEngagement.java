@@ -17,6 +17,7 @@ import org.apache.tapestry5.annotations.RequestParameter;
 import org.apache.tapestry5.corelib.components.Zone;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.json.JSONObject;
+import org.apache.tapestry5.services.Environment;
 import org.apache.tapestry5.services.Request;
 import org.apache.tapestry5.services.ajax.AjaxResponseRenderer;
 import org.apache.tapestry5.services.ajax.JavaScriptCallback;
@@ -81,6 +82,9 @@ public class TweetEngagement implements ClientElement {
 	
 	@Inject
 	private Request request;
+	
+	@Inject
+	private Environment environment;
 
 	private boolean showConversation;
 	
@@ -91,7 +95,7 @@ public class TweetEngagement implements ClientElement {
 	
 	void setupRender() {
 		tweet = tweetParameter;
-		if (request.isXHR()) {
+		if (environment.peek(JavaScriptSupport.class) == null) {
 			JavaScriptCallback callback = new JavaScriptCallback() {
 				public void run(JavaScriptSupport javascriptSupport) {
 					setupJavaScript(javascriptSupport);
@@ -115,6 +119,10 @@ public class TweetEngagement implements ClientElement {
 	
 	public Link getEventLink() {
 		return resources.createEventLink(ACTION_EVENT);
+	}
+	
+	public Object onClear(String id) {
+		return triggerEvent(TweetEngagementConstants.CLEAR_TWEET_EVENT, findById(id), null);
 	}
 	
 	@OnEvent(ACTION_EVENT)

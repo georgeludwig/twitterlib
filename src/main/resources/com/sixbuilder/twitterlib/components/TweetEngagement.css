@@ -63,43 +63,46 @@ ul.tweetEngagementActions {
 }
 
 ul.tweetEngagementActions li {
-	display: inline;
-	margin-right: 0.25em;
+	display: block;
+	float: left;
+	width: 1.5em;
 }
 
-a.black {
+a.black, a.green, a.orange, a.gray {
+	color: lightgray;
+}
+
+div.tweetEngagement:hover a.black {
 	color: black;
 }
 
-a.green {
+div.tweetEngagement:hover a.green {
 	color: green;
 }
 
-a.gray {
+div.tweetEngagement:hover a.gray {
 	color: gray;
 }
 
-a.orange {
+div.tweetEngagement:hover a.orange {
 	color: orange;
 }
 
-/*
-div.tweetEngagementContent {
-	background-color: yellow;
+div.tweetEngagement:hover div.tweetClearLink {
+	display: block;
 }
 
-div.tweetEngagementRetweetInfo {
-	background-color: pink;
+div.tweetEngagement div.tweetClearLink {
+	display: none;
+	position: absolute;
+	right: 0px;
+	top: -2px;
+	margin: 0px;
+	margin: 0px;
 }
 
-div.tweetEngagementRetweetInfo {
-	background-color: grey;
+div.tweetEngagement div.tweetClearLink a {
+	font-size: 25px;
+	line-height: 25px;
+	color: black;
 }
-
-div.tweetEngagementRetweetIcon {
-	background-color: green;
-}
-
-div.tweetEngagementProfilePicture {
-	background-color: lightblue;
-}*/

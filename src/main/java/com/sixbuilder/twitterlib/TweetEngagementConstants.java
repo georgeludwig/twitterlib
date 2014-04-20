@@ -18,6 +18,13 @@ final public class TweetEngagementConstants {
 	 * to be favorited. The event context will be the {@link Tweet} and the event handler
 	 * return value will be ignored.
 	 */
+	public static final String CLEAR_TWEET_EVENT = "clearTweet";
+	
+	/**
+	 * Name of the event triggered by {@link TweetEngagement} when the user requests a tweet
+	 * to be favorited. The event context will be the {@link Tweet} and the event handler
+	 * return value will be ignored.
+	 */
 	public static final String FAVORITE_TWEET_EVENT = "favoriteTweet";
 
 	/**
