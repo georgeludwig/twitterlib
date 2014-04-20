@@ -17,7 +17,9 @@ import org.apache.tapestry5.annotations.RequestParameter;
 import org.apache.tapestry5.corelib.components.Zone;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.json.JSONObject;
+import org.apache.tapestry5.services.Request;
 import org.apache.tapestry5.services.ajax.AjaxResponseRenderer;
+import org.apache.tapestry5.services.ajax.JavaScriptCallback;
 import org.apache.tapestry5.services.javascript.JavaScriptSupport;
 
 import com.sixbuilder.twitterlib.TweetEngagementConstants;
@@ -76,6 +78,9 @@ public class TweetEngagement implements ClientElement {
 
 	@Inject
 	private AjaxResponseRenderer ajaxResponseRenderer;
+	
+	@Inject
+	private Request request;
 
 	private boolean showConversation;
 	
@@ -86,11 +91,26 @@ public class TweetEngagement implements ClientElement {
 	
 	void setupRender() {
 		tweet = tweetParameter;
-		clientId = javaScriptSupport.allocateClientId(resources);
-		JSONObject options = new JSONObject();
+		if (request.isXHR()) {
+			JavaScriptCallback callback = new JavaScriptCallback() {
+				public void run(JavaScriptSupport javascriptSupport) {
+					setupJavaScript(javascriptSupport);
+				}
+			};
+			ajaxResponseRenderer.addCallback(callback);
+		}
+		else {
+			clientId = javaScriptSupport.allocateClientId(resources);
+			setupJavaScript(javaScriptSupport);
+		}
+	}
+
+	private JSONObject setupJavaScript(JavaScriptSupport javaScriptSupport) {
+		final JSONObject options = new JSONObject();
 		options.put("id", clientId);
 		options.put("actionUrl", getEventLink().toAbsoluteURI());
-		javaScriptSupport.addScript(String.format("initializeTweetEngagement(%s);", options)); 
+		javaScriptSupport.addScript(String.format("initializeTweetEngagement(%s);", options));
+		return options;
 	}
 	
 	public Link getEventLink() {
@@ -100,14 +120,28 @@ public class TweetEngagement implements ClientElement {
 	@OnEvent(ACTION_EVENT)
 	public Object handleActionLinks(
 			@RequestParameter("id") String tweetId,
-			@RequestParameter("action") String actionName, 
+			@RequestParameter("action") String actionName,
+			@RequestParameter("clientId") String clientId,
 			@RequestParameter(value = "content", allowBlank = true) String content) {
-		
+
+		final Object returnValue;
 		final Action action = Action.valueOf(actionName);
 		tweet = findById(tweetId);
+		this.clientId = clientId;
 		tweetParameter = tweet;
 		triggerEvent(action.getEventName(), tweet, content);
-		return actionsZone.getBody();
+		switch (action) {
+			case FOLLOW:
+			case RETWEET:
+			case FAVORITE:
+			case DELETE:
+				returnValue = actionsZone.getBody();
+				setupRender();
+				break;
+			default:
+				returnValue = null;
+		}
+		return returnValue;
 	}
 	
 //	private Object triggerEvent(final String event, final String id, final String content) {

@@ -62,10 +62,11 @@ public class TweetEngagementTestPage {
 	@OnEvent(TweetEngagementConstants.DELETE_TWEET_EVENT)
 	public void delete(Tweet tweet) {
 		tweet.setDeleteQueued(true);
-		actions.remove(tweet);
-		queue.remove(tweet);
-		dao.delete(tweet);
-		alertManager.success(String.format("Message with id %s was successfully deleted", tweet.getId()));
+//		actions.remove(tweet);
+//		queue.remove(tweet);
+//		dao.delete(tweet);
+//		ajaxResponseRenderer.addRender(actionZone);
+//		alertManager.success(String.format("Message with id %s was successfully deleted", tweet.getId()));
 	}
 
 	@OnEvent(TweetEngagementConstants.FOLLOW_TWEET_EVENT)

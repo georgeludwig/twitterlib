@@ -17,7 +17,7 @@ function initializeTweetEngagement(options) {
 	actionLinks.each(function() {
 		var action = $(this).attr('data-action');
 		if (action == 'FOLLOW' || action == 'RETWEET' || action == 'FAVORITE' || action == 'DELETE') {
-			var url = options.actionUrl + "?id=" + tweetId + "&action=" + action;
+			var url = options.actionUrl + "?id=" + tweetId + "&action=" + action + "&clientId=" + options.id;
 			T5.initializers.updateZoneOnEvent('click', $(this).attr('id'), '^', url)
 		}
 		// FIXME: implement list, reply and reply_all
