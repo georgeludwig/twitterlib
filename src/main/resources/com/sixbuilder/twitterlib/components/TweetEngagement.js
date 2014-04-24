@@ -7,7 +7,7 @@ function initializeTweetEngagement(options) {
 	var TWEET_COUNT_WARNING = 'tweetCharacterCountWarning';
 	var TWEET_COUNT_ERROR = 'tweetCharacterCountError'; 
 	
-	var outerDiv = $('#' + options.id).find('div.renderTweet');
+	var outerDiv = $('#' + options.id);
 	var actionsZone = outerDiv.find('ul.tweetEngagementActions');
 	var actionLinks = actionsZone.find('a');
 	var tweetId = outerDiv.attr('data-tweet-id');

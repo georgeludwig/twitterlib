@@ -31,6 +31,15 @@ div.tweetEngagementBelowProfilePicture {
 	text-align: right;
 }
 
+div.tweetEngagementBelowProfilePicture {
+	text-align: center;
+}
+
+div.tweetEngagementBelowProfilePicture a {
+	color: black;
+}
+
+
 div.tweetEngagementContent,
 div.tweetEngagementRetweetInfo,
 div.tweetEngagementRetweetActionsCell {

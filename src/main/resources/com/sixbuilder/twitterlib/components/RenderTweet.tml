@@ -1,0 +1,66 @@
+<div xmlns:t="http://tapestry.apache.org/schema/tapestry_5_3.xsd" xmlns:p="tapestry:parameter"
+	class="renderTweet" data-tweet-id="${tweet.id}" id="${clientId}" data-mode="summary"
+	data-event-url="${eventLink}">
+
+	<div class="table tweetEngagementSummaryView">
+
+		<div class="table-row tweetEngagementRetweet">
+			<div class="table-cell tweetEngagementRetweetIcon">
+				<p t:type="If" t:test="tweet.retweet">
+					<t:twitterLib.FontAwesomeIcon name="fa-retweet" />
+				</p>
+			</div>
+			<div class="table-cell tweetEngagementRetweetInfo">
+				<p t:type="If" t:test="tweet.retweet">
+					Retweeted by @${tweet.retweetedTwitterUsername} - FIXME: date
+				</p>
+			</div>
+		</div>
+
+		<div class="table-row">
+			<div class="table-cell tweetEngagementProfilePicture">
+				<img src="${tweet.profilePictureUrl}" alt="${tweet.twitterUsername}" />
+			</div>
+			<div class="table-cell tweetEngagementContent">
+				<p>Author, profile name, time posted</p>
+				<p class="tweetEngagementContent">
+					${tweet.content}
+				</p>
+			</div>
+		</div>
+
+		<div class="table-row">
+			<div class="table-cell tweetEngagementBelowProfilePicture">
+				<p t:type="If" t:test="!tweet.conversation.empty">
+					<a t:type="EventLink" t:event="conversation" t:context="[tweet.id,!showConversation]"
+						t:zone="prop:zoneId">
+						<i t:type="twitterlib/FontAwesomeIcon" t:name="fa-comment" />
+					</a>
+				</p>
+				<p t:type="If" t:test="tweet.conversation.empty">
+					&#160; </p>
+			</div>
+			<div class="table-cell tweetEngagementActionsCell">
+				<p class="tweetEngagementTwitterClient">
+					from: ${tweet.twitterClientId}
+				</p>
+				<ul class="tweetEngagementActions" t:type="Zone" t:id="actionsZone" id="${actionsZoneId}">
+					<li t:type="Loop" t:source="actions" t:value="action">
+						<a href="#" title="${action.name} (${action.getState(tweet).getName().toLowerCase()})"
+							class="${actionCssClass}" data-action="${action.name()}" id="${clientId}-${action.name()}-link">
+							<i t:type="twitterlib/FontAwesomeIcon" t:name="prop:action.fontAwesomeIconName" />
+						</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+
+	</div>
+
+	<div class="tweetClearLink">
+		<a href="#" t:type="EventLink" t:event="clear" t:context="tweet.id" t:zone="^">
+			<i t:type="twitterlib/FontAwesomeIcon" t:name="fa-times-circle" />
+		</a>
+	</div>
+
+</div>

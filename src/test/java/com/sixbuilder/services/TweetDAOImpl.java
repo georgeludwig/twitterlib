@@ -25,10 +25,14 @@ public class TweetDAOImpl implements TweetDAO {
 			items.add(create(i));
 		}
 		
+		int count = 0;
+		
 		for (Tweet tweet : items) {
-			for (Tweet other : items) {
-				if (!tweet.equals(other)) {
-					tweet.getConversation().add(other);
+			if (count++ % 2 == 0) {
+				for (Tweet other : items) {
+					if (!tweet.equals(other)) {
+						tweet.getConversation().add(other);
+					}
 				}
 			}
 		}
