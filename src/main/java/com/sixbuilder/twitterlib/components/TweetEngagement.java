@@ -24,7 +24,7 @@ import com.sixbuilder.twitterlib.helpers.Tweet;
  * 
  * @author Thiago H. de Paula Figueiredo (http://machina.com.br/thiago)
  */
-@Import(stylesheet={"common.css", "TweetEngagement.css"})
+@Import(stylesheet={"common.css", "TweetEngagement.css"}, library={"TweetEngagement.js", "twitter-text-1.8.0.min.js"})
 @Events({TweetEngagementConstants.CLEAR_TWEET_EVENT,
 		TweetEngagementConstants.DELETE_TWEET_EVENT,
 		TweetEngagementConstants.FAVORITE_TWEET_EVENT,
@@ -37,10 +37,15 @@ import com.sixbuilder.twitterlib.helpers.Tweet;
 public class TweetEngagement implements ClientElement {
 	
 	/**
-	 * Name of the event triggered by {@link TweetEngagement} when the user clicks
+	 * Name of the event triggered by {@link RenderTweet} when the user clicks
 	 * one of the conversation icons. Internal use only.
 	 */
 	public static final String SHOW_CONVERSATION = "showConversation";
+
+	/**
+	 * Name of the event triggered by {@link RenderTweet} when the user replys or replys-all
+	 */
+	public static final String REPLY = "reply";
 
 	@Parameter(required = true, allowNull = false)
 	@Property
@@ -71,6 +76,13 @@ public class TweetEngagement implements ClientElement {
 	
 	public void setupRender() {
 		clientId = javaScriptSupport.allocateClientId(resources);
+	}
+	
+	public Object onReply(Tweet tweet, String event, String replyContent) {
+		this.tweet = tweet;
+		final HolderComponentEventCallback<Object> callback = new HolderComponentEventCallback<Object>();
+		resources.triggerEvent(event, new Object[]{tweet, replyContent}, callback);
+		return zone.getBody();		
 	}
 	
 	public Object onShowConversation(String id, boolean showConversation) {
@@ -114,6 +126,14 @@ public class TweetEngagement implements ClientElement {
 		final HolderComponentEventCallback<Object> callback = new HolderComponentEventCallback<Object>();
 		resources.triggerEvent(TweetEngagementConstants.LOAD_TWEET_EVENT, new Object[]{id}, callback);
 		return (Tweet) callback.getResult();
+	}
+
+	/**
+	 * Returns the value of the zone field.
+	 * @return a {@link Zone}.
+	 */
+	public Zone getZone() {
+		return zone;
 	}
 	
 }

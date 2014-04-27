@@ -4,12 +4,12 @@
 		<t:delegate to="prop:block"/>
 	</div>
 	<t:block id="singleTweet">
-		<div t:type="twitterlib/RenderTweet" t:tweet="tweet"/>
+		<div t:type="twitterlib/RenderTweet" t:tweet="tweet" t:zoneId="zoneId"/>
 	</t:block>
 	<t:block id="conversation">
 		<ol class="tweetEngagementConversation" t:type="If" t:test="!conversationTweets.empty">
 			<li t:type="Loop" t:source="conversationTweets" t:value="conversationTweet" class="${cssClass}">
-				<div t:type="twitterlib/RenderTweet" t:tweet="conversationTweet" t:zoneId="zoneId"/>
+				<div t:type="twitterlib/RenderTweet" t:tweet="conversationTweet" t:zoneId="zoneId" t:insideConversation="true"/>
 			</li>	
 		</ol>
 	</t:block>

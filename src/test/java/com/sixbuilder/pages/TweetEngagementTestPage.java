@@ -63,18 +63,12 @@ public class TweetEngagementTestPage {
 	public void delete(Tweet tweet) {
 		tweet.setDeleteQueued(true);
 		dao.update(tweet);
-//		actions.remove(tweet);
-//		queue.remove(tweet);
-//		dao.delete(tweet);
-//		ajaxResponseRenderer.addRender(actionZone);
-//		alertManager.success(String.format("Message with id %s was successfully deleted", tweet.getId()));
+		alertManager.success(String.format("Message with id %s was successfully deleted", tweet.getId()));
 	}
 
 	@OnEvent(TweetEngagementConstants.CLEAR_TWEET_EVENT)
 	public void clear(Tweet tweet) {
 		actions.remove(tweet);
-//		queue.remove(tweet);
-//		dao.delete(tweet);
 		ajaxResponseRenderer.addRender(actionZone);
 		alertManager.success(String.format("Message with id %s was successfully cleared", tweet.getId()));
 	}
@@ -83,18 +77,35 @@ public class TweetEngagementTestPage {
 	public void follow(Tweet tweet) {
 		tweet.setFollowQueued(true);
 		dao.update(tweet);
+		alertManager.success(String.format("Message with id %s was successfully followed", tweet.getId()));
 	}
 	
 	@OnEvent(TweetEngagementConstants.FAVORITE_TWEET_EVENT)
 	public void favorite(Tweet tweet) {
 		tweet.setFavoriteQueued(true);
 		dao.update(tweet);
+		alertManager.success(String.format("Message with id %s was successfully favorited", tweet.getId()));
 	}
 
 	@OnEvent(TweetEngagementConstants.RETWEET_TWEET_EVENT)
 	public void retweet(Tweet tweet) {
 		tweet.setRetweetQueued(true);
 		dao.update(tweet);
+		alertManager.success(String.format("Message with id %s was successfully retweeted", tweet.getId()));
+	}
+	
+	@OnEvent(TweetEngagementConstants.REPLY_TWEET_EVENT)
+	public void reply(Tweet tweet, String content) {
+		tweet.setReplyQueued(true);
+		dao.update(tweet);
+		alertManager.success(String.format("Message with id %s was successfully replied: %s", tweet.getId(), content));
+	}
+
+	@OnEvent(TweetEngagementConstants.REPLY_ALL_TWEET_EVENT)
+	public void replyAll(Tweet tweet, String content) {
+		tweet.setReplyAllQueued(true);
+		dao.update(tweet);
+		alertManager.success(String.format("Message with id %s was successfully replied all: %s", tweet.getId(), content));
 	}
 
 	@OnEvent(TweetEngagementConstants.LOAD_TWEET_EVENT)

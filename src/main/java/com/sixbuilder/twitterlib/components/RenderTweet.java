@@ -4,10 +4,12 @@ import java.util.List;
 
 import org.apache.tapestry5.ClientElement;
 import org.apache.tapestry5.ComponentResources;
+import org.apache.tapestry5.EventConstants;
 import org.apache.tapestry5.Link;
 import org.apache.tapestry5.annotations.Events;
 import org.apache.tapestry5.annotations.Import;
 import org.apache.tapestry5.annotations.InjectComponent;
+import org.apache.tapestry5.annotations.InjectContainer;
 import org.apache.tapestry5.annotations.OnEvent;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
@@ -47,15 +49,26 @@ public class RenderTweet implements ClientElement {
 	 * Name of the event triggered by {@link RenderTweet} when the user clicks
 	 * one of the conversation icons. Internal use only.
 	 */
-	private static final String ACTION_EVENT = "action";
+	private static final String ACTION_EVENT = "tweetAction";
 
+	/**
+	 * {@link Tweet} to be rendered.
+	 */
 	@Parameter(required = true, allowNull = false)
 	@Property
 	private Tweet tweet;
 	
+	/**
+	 * Id of the zone to be updated when the conversation link is clicked.
+	 */
 	@Parameter(required = true, allowNull = false)
-	@Property
 	private String zoneId;
+	
+	/**
+	 * Tells whether this rendering is inside a conversation or not.
+	 */
+	@Parameter
+	private boolean insideConversation;
 	
 	@Inject
 	private ComponentResources resources;
@@ -84,6 +97,9 @@ public class RenderTweet implements ClientElement {
 	@Property
 	private List<Tweet> conversationTweets;
 	
+	@Property
+	private String replyContent;
+
 	private String clientId;
 	
 	void setupRender() {
@@ -117,6 +133,22 @@ public class RenderTweet implements ClientElement {
 		return triggerEvent(TweetEngagementConstants.CLEAR_TWEET_EVENT, findById(id), null);
 	}
 	
+	@OnEvent(value = EventConstants.SUCCESS, component = "reply")
+	public Object handleReply(String id, @RequestParameter("replyType") String replyType) {
+		tweet = findById(id);
+		final String event;
+		if (replyType.equalsIgnoreCase("reply")) {
+			event = TweetEngagementConstants.REPLY_TWEET_EVENT;
+		}
+		else {
+			event = TweetEngagementConstants.REPLY_ALL_TWEET_EVENT;
+		}
+		
+		final HolderComponentEventCallback<Object> callback = new HolderComponentEventCallback<Object>();
+		resources.triggerEvent(TweetEngagement.REPLY, new Object[]{tweet, event, replyContent}, callback);
+		return callback.getResult();
+	}
+	
 	@OnEvent(ACTION_EVENT)
 	public Object handleActionLinks(
 			@RequestParameter("id") String tweetId,
@@ -143,9 +175,9 @@ public class RenderTweet implements ClientElement {
 		return returnValue;
 	}
 	
-	private Object triggerEvent(final String event, final Tweet item, String content) {
+	private Object triggerEvent(final String event, final Tweet tweet, String content) {
 		final HolderComponentEventCallback<Object> callback = new HolderComponentEventCallback<Object>();
-		resources.triggerEvent(event, new Object[]{item, content}, callback);
+		resources.triggerEvent(event, new Object[]{tweet, content}, callback);
 		return callback.getResult();
 	}
 	
@@ -155,18 +187,18 @@ public class RenderTweet implements ClientElement {
 		return (Tweet) callback.getResult();
 	}
 	
-//	public Object onConversation(String id, boolean show) {
-//		final HolderComponentEventCallback<Object> callback = new HolderComponentEventCallback<Object>();
-//		resources.triggerEvent(TweetEngagement.SHOW_CONVERSATION, new Object[]{id, show}, callback);
-//		return callback.getResult();
-//	}
+	public Object onConversation(String id, boolean show) {
+		final HolderComponentEventCallback<Object> callback = new HolderComponentEventCallback<Object>();
+		resources.triggerEvent(TweetEngagement.SHOW_CONVERSATION, new Object[]{id, show}, callback);
+		return callback.getResult();
+	}
 
 	public Action[] getActions() {
 		return Action.values();
 	}
 
 	public String getZoneId() {
-		return getClientId() + "-conversation-zone";
+		return zoneId;
 	}
 
 	public String getActionsZoneId() {
@@ -179,6 +211,10 @@ public class RenderTweet implements ClientElement {
 	
 	public String getActionCssClass() {
 		return action.getCssClass(tweet) + " " + action.getState(tweet).getColor();
+	}
+	
+	public boolean isRenderConversation() {
+		return !insideConversation && !tweet.getConversation().isEmpty(); 
 	}
 
 }

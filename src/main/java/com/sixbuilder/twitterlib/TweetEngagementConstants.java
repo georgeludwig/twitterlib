@@ -36,15 +36,15 @@ final public class TweetEngagementConstants {
 
 	/**
 	 * Name of the event triggered by {@link TweetEngagement} when the user requests a tweet
-	 * to be retwitted. The event context will be the {@link Tweet} and the event handler
-	 * return value will be ignored.
+	 * to be retwitted. The event context will be the {@link Tweet} and the reply content. 
+	 * The event handler return value will be ignored.
 	 */
 	public static final String RETWEET_TWEET_EVENT = "retweetTweet";
 
 	/**
 	 * Name of the event triggered by {@link TweetEngagement} when the user requests a tweet
-	 * to be replied all. The event context will be the {@link Tweet} and the event handler
-	 * return value will be ignored.
+	 * to be replied all. The event context will be the {@link Tweet} and the reply content. 
+	 * The event handler return value will be ignored.
 	 */
 	public static final String REPLY_ALL_TWEET_EVENT = "replyAllTweet";
 

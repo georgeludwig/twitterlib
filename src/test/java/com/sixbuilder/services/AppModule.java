@@ -30,6 +30,7 @@ public class AppModule
         // (a random hexadecimal number), but may be further overriden by DevelopmentModule or
         // QaModule.
         configuration.override(SymbolConstants.APPLICATION_VERSION, "1.0-SNAPSHOT");
+        configuration.override(SymbolConstants.HMAC_PASSPHRASE, "sadjlhsadsdilçahsdfajklçjfh");
     }
 
     public static void contributeApplicationDefaults(

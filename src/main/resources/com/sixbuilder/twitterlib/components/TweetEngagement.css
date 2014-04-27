@@ -9,6 +9,10 @@
 	margin: 0;
 }
 
+div.renderTweet {
+	position: relative;
+}
+
 div.tweetEngagementSummaryView {
 	font-size: 15px;
 }
@@ -97,11 +101,11 @@ div.tweetEngagement:hover a.orange {
 	color: orange;
 }
 
-div.tweetEngagement:hover div.tweetClearLink {
+div.renderTweet:hover > div.tweetClearLink {
 	display: block;
 }
 
-div.tweetEngagement div.tweetClearLink {
+div.renderTweet > div.tweetClearLink {
 	display: none;
 	position: absolute;
 	right: 0px;
@@ -110,8 +114,38 @@ div.tweetEngagement div.tweetClearLink {
 	margin: 0px;
 }
 
-div.tweetEngagement div.tweetClearLink a {
+div.renderTweet > div.tweetClearLink a {
 	font-size: 25px;
 	line-height: 25px;
 	color: black;
+}
+
+div.tweetEngagement ol.tweetEngagementConversation {
+	margin: 0px;
+	padding: 0px;
+}
+
+div.tweetEngagement ol.tweetEngagementConversation li.main {
+	background-color: #eeeeee;
+}
+
+div.tweetEngagementReply {
+	display: none;
+}
+
+div.tweetEngagementReply, div.tweetEngagementReply p {
+	clear: both;
+}
+
+div.tweetEngagementReply p {
+	text-align: right;
+	width: 100%;
+}
+
+div.tweetEngagementReply a {
+	text-decoration: none;
+}
+
+div.tweetEngagementReply textarea {
+	width: 100%;
 }

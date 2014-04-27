@@ -1,6 +1,6 @@
 <div xmlns:t="http://tapestry.apache.org/schema/tapestry_5_3.xsd" xmlns:p="tapestry:parameter"
 	class="renderTweet" data-tweet-id="${tweet.id}" id="${clientId}" data-mode="summary"
-	data-event-url="${eventLink}">
+	data-event-url="${eventLink}" data-tweet-author="${tweet.twitterUsername}">
 
 	<div class="table tweetEngagementSummaryView">
 
@@ -31,14 +31,13 @@
 
 		<div class="table-row">
 			<div class="table-cell tweetEngagementBelowProfilePicture">
-				<p t:type="If" t:test="!tweet.conversation.empty">
+				<p t:type="If" t:test="renderConversation">
 					<a t:type="EventLink" t:event="conversation" t:context="[tweet.id,!showConversation]"
 						t:zone="prop:zoneId">
 						<i t:type="twitterlib/FontAwesomeIcon" t:name="fa-comment" />
 					</a>
 				</p>
-				<p t:type="If" t:test="tweet.conversation.empty">
-					&#160; </p>
+				<p t:type="If" t:test="!renderConversation">&#160;</p>
 			</div>
 			<div class="table-cell tweetEngagementActionsCell">
 				<p class="tweetEngagementTwitterClient">
@@ -52,12 +51,25 @@
 						</a>
 					</li>
 				</ul>
+				<div class="tweetEngagementReply">
+					<form t:type="Form" t:id="reply" t:context="tweet.id" t:zone="prop:zoneId">
+						<input type="text" name="replyType" style="display: none;"/>
+						<textarea t:type="TextArea" t:id="replyContent" t:value="replyContent"/>
+						<p>
+							<span class="tweetCharacterCount">0</span>
+							&#160;
+							<a href="#" t:type="LinkSubmit">
+								<i t:type="twitterlib/FontAwesomeIcon" t:name="fa-pencil-square-o "></i>&#160;Done
+							</a>
+						</p>
+					</form>
+				</div>
 			</div>
 		</div>
 
 	</div>
 
-	<div class="tweetClearLink">
+	<div class="tweetClearLink" id="${clientId}-clear">
 		<a href="#" t:type="EventLink" t:event="clear" t:context="tweet.id" t:zone="^">
 			<i t:type="twitterlib/FontAwesomeIcon" t:name="fa-times-circle" />
 		</a>

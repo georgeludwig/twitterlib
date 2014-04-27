@@ -1,18 +1,16 @@
 function initializeTweetEngagement(options) {
 
-	var SUMMARY_MODE = 'summary';
-	var DETAIL_MODE = 'detail';
-	var MODE_ATTRIBUTE = 'data-mode';
-	var DIRTY_ATTRIBUTE = 'data-dirty';
 	var TWEET_COUNT_WARNING = 'tweetCharacterCountWarning';
 	var TWEET_COUNT_ERROR = 'tweetCharacterCountError'; 
 	
 	var outerDiv = $('#' + options.id);
 	var actionsZone = outerDiv.find('ul.tweetEngagementActions');
 	var actionLinks = actionsZone.find('a');
+	var replyDiv = outerDiv.find('div.tweetEngagementReply');
+	var replyDivHidden = outerDiv.find('div.tweetEngagementReply input[name=replyType]');
 	var tweetId = outerDiv.attr('data-tweet-id');
-	
-	// updateCharacterCount();
+	var textArea = replyDiv.find('textarea');
+	var characterCount = replyDiv.find('span.tweetCharacterCount');
 	
 	actionLinks.each(function() {
 		var action = $(this).attr('data-action');
@@ -20,31 +18,44 @@ function initializeTweetEngagement(options) {
 			var url = options.actionUrl + "?id=" + tweetId + "&action=" + action + "&clientId=" + options.id;
 			T5.initializers.updateZoneOnEvent('click', $(this).attr('id'), '^', url)
 		}
-		// FIXME: implement list, reply and reply_all
+		else if (action == 'REPLY') {
+			$(this).click(function(event) {
+				handleReply(event, 'REPLY', '@' + outerDiv.attr('data-tweet-author') + ' ');
+			});
+		}
+		else if (action == 'REPLY_ALL') {
+			$(this).click(function(event) {
+				handleReply(event, 'REPLY_ALL', '');			
+			});
+		}
+		// FIXME: implement list
 	});
 	
 	// character count
-	// textarea.keyup(handleSummaryChange);
+	textArea.keyup(updateCharacterCount);
 	
-	/*
-	function save() {
-		handleSummaryChange();
-		var data = { summary : textarea.val(), attachSnapshot : attachSnapshotsCheckbox[0].checked };
-		$.ajax(options.saveUrl, { data : data }).done(function(result) {
-			// FIXME: what to do now? nothing? show some confirmation?
-			modeSummary();
-			enablePublishCheckbox();
-		});
-	}
-	
-	function handleSummaryChange() {
-		publishCheckbox[0].disabled = true;
-		summaryText.text(textarea.val());
+	function handleReply(event, hiddenValue, initialContent) {
+		replyDivHidden.val(hiddenValue);
+		textArea.val(initialContent);
 		updateCharacterCount();
+		replyDiv.show();
+		textArea.focus();
+		event.preventDefault();
+		var area = textArea[0];
+        if (area.setSelectionRange) {
+            area.focus();
+            area.setSelectionRange(initialContent.length, initialContent.length);
+        } else if (area.createTextRange) {
+            var range = area.createTextRange();
+            range.collapse(true);
+            range.moveEnd('character', initialContent.length);
+            range.moveStart('character', initialContent.length);
+            range.select();
+        }
 	}
 	
 	function updateCharacterCount() {
-		var count = twttr.txt.getTweetLength(textarea.val());
+		var count = twttr.txt.getTweetLength(textArea.val());
 		characterCount.text(count);
 		if (count < 137) {
 			characterCount.removeClass(TWEET_COUNT_WARNING);
@@ -59,14 +70,5 @@ function initializeTweetEngagement(options) {
 			characterCount.removeClass(TWEET_COUNT_WARNING);
 		}
 	}
-	
-	function modeSummary() {
-		outerDiv.attr(MODE_ATTRIBUTE, SUMMARY_MODE);
-	}
-	
-	function modeDetail() {
-		outerDiv.attr(MODE_ATTRIBUTE, DETAIL_MODE);
-	}
-	*/
 	
 }

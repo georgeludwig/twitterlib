@@ -16,6 +16,23 @@ div.recommendedTweetSummaryView, div.tweetEngagementSummaryView {
 	display: table;
 }
 
+p.tweetCharacterCount {
+	display: inline;
+	float: left;
+}
+
+.tweetCharacterCount {
+	color: green;
+}
+
+.tweetCharacterCountWarning {
+	color: yellow;
+}
+
+.tweetCharacterCountError {
+	color: red;
+}
+
 /*.table > .table-row {
 	display: table-row;
 	margin: 0;
