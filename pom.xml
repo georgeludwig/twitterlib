@@ -116,6 +116,7 @@ of testing facilities designed for use with TestNG (http://testng.org/), so it's
 					</webAppSourceDirectory>
 					<webXml>${basedir}/src/test/webapp/WEB-INF/web.xml</webXml>
 					<useTestClasspath>true</useTestClasspath>
+					<useTestScope>true</useTestScope>
 					<!-- Log to the console. -->
 					<requestLog implementation="org.mortbay.jetty.NCSARequestLog">
 						<!-- This doesn't do anything for Jetty, but is a workaround for a 
