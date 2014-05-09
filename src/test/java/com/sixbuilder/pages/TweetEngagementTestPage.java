@@ -4,11 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.tapestry5.alerts.AlertManager;
-import org.apache.tapestry5.annotations.InjectComponent;
 import org.apache.tapestry5.annotations.OnEvent;
 import org.apache.tapestry5.annotations.Persist;
 import org.apache.tapestry5.annotations.Property;
-import org.apache.tapestry5.corelib.components.Zone;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.ajax.AjaxResponseRenderer;
 
@@ -18,18 +16,12 @@ import com.sixbuilder.twitterlib.components.TweetEngagement;
 import com.sixbuilder.twitterlib.helpers.Tweet;
 
 /**
- * A page just for testing the {@link TweetEngagement} component.
+ * A page just for testing and demonstrating the {@link TweetEngagement} component.
  */
 public class TweetEngagementTestPage {
 	
 	@Inject
 	private TweetDAO dao;
-	
-	@InjectComponent
-	private Zone actionZone;
-	
-	@InjectComponent
-	private Zone queueZone;
 	
 	@Persist
 	@Property
@@ -55,10 +47,16 @@ public class TweetEngagementTestPage {
 		}
 	}
 
-	public List<Tweet> getTweets() {
-		return dao.getAll();
+	@OnEvent(TweetEngagementConstants.ACTION_TWEETS_EVENT)
+	public List<Tweet> getActionTweets() {
+		return actions;
 	}
-	
+
+	@OnEvent(TweetEngagementConstants.QUEUED_TWEETS_EVENT)
+	public List<Tweet> getQueuedTweets() {
+		return queue;
+	}
+
 	@OnEvent(TweetEngagementConstants.DELETE_TWEET_EVENT)
 	public void delete(Tweet tweet) {
 		tweet.setDeleteQueued(true);
@@ -69,7 +67,6 @@ public class TweetEngagementTestPage {
 	@OnEvent(TweetEngagementConstants.CLEAR_TWEET_EVENT)
 	public void clear(Tweet tweet) {
 		actions.remove(tweet);
-		ajaxResponseRenderer.addRender(actionZone);
 		alertManager.success(String.format("Message with id %s was successfully cleared", tweet.getId()));
 	}
 

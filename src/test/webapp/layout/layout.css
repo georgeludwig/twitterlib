@@ -371,31 +371,3 @@ div.footer .legal a {
 * {
 	box-sizing: border-box; 
 }
-
-li {
-	list-style-type: none;
-}
-
-#curateZone ul, #publishingZone ul, #actionZone ul, #queueZone ul,
-#curateZone ul > li, #publishingZone ul > li, #actionZone ul > li, #queueZone ul > li{
-	margin: 0;
-	padding: 0;
-}
-
-#curateZone, #actionsZone {
-	margin-right: 50px;
-}
-
-#curateZone, #publishingZone, #actionZone, #queueZone {
-	display: table-cell;
-	width: 375px;
-	border: solid black 1px;
-}
-
-div.displayTable {
-	display: table;
-}
-
-.recommendedTweet, .tweetEngagement {
-	border-bottom: solid black 1px;
-}

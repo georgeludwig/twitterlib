@@ -75,4 +75,16 @@ final public class TweetEngagementConstants {
 	 */
 	public static final String LOAD_TWEET_EVENT = "loadTweet";
 
+	/**
+	 * Name of the event triggered by {@link TweetEngagementDisplay} so components and pages
+	 * using it will return the list of tweets to be shown in the "Action" column.
+	 */
+	public static final String ACTION_TWEETS_EVENT = "actionTweets";
+
+	/**
+	 * Name of the event triggered by {@link TweetEngagementDisplay} so components and pages
+	 * using it will return the list of tweets to be shown in the "Queued" column.
+	 */
+	public static final String QUEUED_TWEETS_EVENT = "queuedTweets";
+
 }
