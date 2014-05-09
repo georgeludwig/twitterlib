@@ -69,7 +69,7 @@
 
 	</div>
 
-	<div class="tweetClearLink" id="${clientId}-clear">
+	<div class="tweetClearLink" id="${clientId}-clear" t:type="If" t:test="tweet.clearEnabled">
 		<a href="#" t:type="EventLink" t:event="clear" t:context="tweet.id" t:zone="^">
 			<i t:type="twitterlib/FontAwesomeIcon" t:name="fa-times-circle" />
 		</a>
