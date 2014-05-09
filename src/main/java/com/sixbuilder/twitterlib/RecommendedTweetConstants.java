@@ -43,5 +43,23 @@ final public class RecommendedTweetConstants {
 	 * return a {@link TweetItem} instance. 
 	 */
 	public static final String LOAD_TWEET_EVENT = "loadTweet";
+	
+	/**
+	 * Name of the event triggered by {@link RecommendedTweetDisplay} when it needs 
+	 * the list of tweet items being curated. 
+	 */
+	public static final String CURATING_TWEETS_EVENT = "curatingTweets";
+
+	/**
+	 * Name of the event triggered by {@link RecommendedTweetDisplay} when it needs 
+	 * the list of tweet items being published. 
+	 */
+	public static final String PUBLISHING_TWEETS_EVENT = "publishingTweets";
+
+	/**
+	 * Name of the event triggered by {@link RecommendedTweetDisplay} when it needs 
+	 * the list of tweet items already published. 
+	 */
+	public static final String PUBLISHED_TWEETS_EVENT = "publishedTweets";
 
 }

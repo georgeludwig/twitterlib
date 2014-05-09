@@ -7,7 +7,6 @@ import org.apache.tapestry5.ComponentResources;
 import org.apache.tapestry5.alerts.AlertManager;
 import org.apache.tapestry5.annotations.Cached;
 import org.apache.tapestry5.annotations.Events;
-import org.apache.tapestry5.annotations.Import;
 import org.apache.tapestry5.annotations.InjectComponent;
 import org.apache.tapestry5.annotations.Persist;
 import org.apache.tapestry5.annotations.Property;
@@ -22,7 +21,6 @@ import com.sixbuilder.twitterlib.helpers.Tweet;
 /**
  * Component that shows the tweet actions and queue. 
  */
-@Import(stylesheet = {"TweetEngagementDisplay.css"})
 @Events({
 	TweetEngagementConstants.ACTION_TWEETS_EVENT,
 	TweetEngagementConstants.QUEUED_TWEETS_EVENT,
@@ -37,7 +35,7 @@ import com.sixbuilder.twitterlib.helpers.Tweet;
 	TweetEngagementConstants.RETWEET_TWEET_EVENT})
 public class TweetEngagementDisplay {
 	
-	private static final Object[] EMPTY_OBJECT_ARRAY = new Object[]{};
+	private static final Object[] EMPTY_OBJECT_ARRAY = new Object[0];
 
 	@InjectComponent
 	private Zone actionZone;

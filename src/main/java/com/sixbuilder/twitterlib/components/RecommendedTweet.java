@@ -25,8 +25,11 @@ import com.sixbuilder.twitterlib.helpers.TweetItem;
  * @author Thiago H. de Paula Figueiredo (http://machina.com.br/thiago)
  */
 @Import(stylesheet={"common.css", "RecommendedTweet.css"}, library={"RecommendedTweet.js", "twitter-text-1.8.0.min.js"})
-@Events({RecommendedTweetConstants.PUBLISH_TWEET_EVENT, RecommendedTweetConstants.DELETE_TWEET_EVENT,
-	RecommendedTweetConstants.SHORTEN_URL_EVENT, RecommendedTweetConstants.SAVE_TWEET_EVENT,
+@Events({
+	RecommendedTweetConstants.PUBLISH_TWEET_EVENT, 
+	RecommendedTweetConstants.DELETE_TWEET_EVENT,
+	RecommendedTweetConstants.SHORTEN_URL_EVENT, 
+	RecommendedTweetConstants.SAVE_TWEET_EVENT,
 	RecommendedTweetConstants.LOAD_TWEET_EVENT})
 public class RecommendedTweet implements ClientElement {
 

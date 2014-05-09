@@ -4,11 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.tapestry5.alerts.AlertManager;
-import org.apache.tapestry5.annotations.InjectComponent;
 import org.apache.tapestry5.annotations.OnEvent;
 import org.apache.tapestry5.annotations.Persist;
 import org.apache.tapestry5.annotations.Property;
-import org.apache.tapestry5.corelib.components.Zone;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.ajax.AjaxResponseRenderer;
 
@@ -25,25 +23,13 @@ public class RecommendedTweetTestPage {
 	@Inject
 	private TweetItemDAO tweetItemDAO;
 	
-	@InjectComponent
-	private Zone curateZone;
-	
-	@InjectComponent
-	private Zone publishingZone;
-	
-	@InjectComponent
-	private Zone publishedZone;
-
 	@Persist
-	@Property
 	private List<TweetItem> curating;
 
 	@Persist
-	@Property
 	private List<TweetItem> publishing;
 
 	@Persist
-	@Property
 	private List<TweetItem> published;
 	
 	@Property
@@ -62,6 +48,21 @@ public class RecommendedTweetTestPage {
 			published = new ArrayList<TweetItem>();
 		}
 	}
+	
+	@OnEvent(RecommendedTweetConstants.CURATING_TWEETS_EVENT)
+	public List<TweetItem> getCurating() {
+		return curating;
+	}
+
+	@OnEvent(RecommendedTweetConstants.PUBLISHING_TWEETS_EVENT)
+	public List<TweetItem> getPublishing() {
+		return publishing;
+	}
+
+	@OnEvent(RecommendedTweetConstants.PUBLISHED_TWEETS_EVENT)
+	public List<TweetItem> getPublished() {
+		return published;
+	}
 
 	public List<TweetItem> getTweetItems() {
 		return tweetItemDAO.getAll();
@@ -73,8 +74,6 @@ public class RecommendedTweetTestPage {
 		publishing.remove(tweetItem);
 		tweetItemDAO.delete(tweetItem);
 		alertManager.success(String.format("Message with id %s was successfully deleted", tweetItem.getTweetId()));
-		ajaxResponseRenderer.addRender(curateZone);
-		ajaxResponseRenderer.addRender(publishingZone);
 	}
 
 	@OnEvent(RecommendedTweetConstants.PUBLISH_TWEET_EVENT)
@@ -89,8 +88,6 @@ public class RecommendedTweetTestPage {
 		}
 		tweetItemDAO.update(tweetItem);
 		alertManager.success(String.format("Message with id %s was successfully selected to be published", tweetItem.getTweetId()));
-		ajaxResponseRenderer.addRender(curateZone);
-		ajaxResponseRenderer.addRender(publishingZone);
 	}
 	
 	@OnEvent(RecommendedTweetConstants.SHORTEN_URL_EVENT)
