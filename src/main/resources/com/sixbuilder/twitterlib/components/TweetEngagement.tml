@@ -9,7 +9,9 @@
 	<t:block id="conversation">
 		<ol class="tweetEngagementConversation" t:type="If" t:test="!conversationTweets.empty">
 			<li t:type="Loop" t:source="conversationTweets" t:value="conversationTweet" class="${cssClass}">
-				<div t:type="twitterlib/RenderTweet" t:tweet="conversationTweet" t:zoneId="zoneId" t:insideConversation="true"/>
+				<div t:type="twitterlib/RenderTweet" t:tweet="conversationTweet" 
+					t:parentConversationTweet="tweet" t:zoneId="zoneId" 
+					t:insideConversation="insideConversation" t:showConversation="showConversation"/>
 			</li>	
 		</ol>
 	</t:block>

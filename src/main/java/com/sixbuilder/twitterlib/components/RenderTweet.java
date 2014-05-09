@@ -9,7 +9,6 @@ import org.apache.tapestry5.Link;
 import org.apache.tapestry5.annotations.Events;
 import org.apache.tapestry5.annotations.Import;
 import org.apache.tapestry5.annotations.InjectComponent;
-import org.apache.tapestry5.annotations.InjectContainer;
 import org.apache.tapestry5.annotations.OnEvent;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
@@ -70,6 +69,13 @@ public class RenderTweet implements ClientElement {
 	@Parameter
 	private boolean insideConversation;
 	
+	/**
+	 * This parameter receives the tweet whose conversation
+	 * is being shown. It should be null when this component is not being rendered inside a conversation.
+	 */
+	@Parameter
+	private Tweet parentConversationTweet;
+	
 	@Inject
 	private ComponentResources resources;
 	
@@ -88,6 +94,7 @@ public class RenderTweet implements ClientElement {
 	@Inject
 	private Environment environment;
 
+	@Parameter
 	@Property
 	private boolean showConversation;
 	
@@ -187,9 +194,9 @@ public class RenderTweet implements ClientElement {
 		return (Tweet) callback.getResult();
 	}
 	
-	public Object onConversation(String id, boolean show) {
+	public Object onConversation(String id, boolean show, String zoneId) {
 		final HolderComponentEventCallback<Object> callback = new HolderComponentEventCallback<Object>();
-		resources.triggerEvent(TweetEngagement.SHOW_CONVERSATION, new Object[]{id, show}, callback);
+		resources.triggerEvent(TweetEngagement.SHOW_CONVERSATION, new Object[]{id, show, zoneId}, callback);
 		return callback.getResult();
 	}
 
@@ -214,7 +221,15 @@ public class RenderTweet implements ClientElement {
 	}
 	
 	public boolean isRenderConversation() {
-		return !insideConversation && !tweet.getConversation().isEmpty(); 
+		return !tweet.getConversation().isEmpty();
+	}
+	
+	public String getConversationLinkTitle() {
+		return showConversation ? "Hide conversation" : "Show conversation";
+	}
+	
+	public String getParentConversationTweetId() {
+		return parentConversationTweet != null ? parentConversationTweet.getId() : tweet.getId();
 	}
 
 }

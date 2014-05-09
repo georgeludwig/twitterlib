@@ -68,6 +68,8 @@ public class TweetEngagement implements ClientElement {
 	
 	@InjectComponent
 	private Zone zone;
+	
+	private String zoneId;
 
 	@Property
 	private boolean showConversation;
@@ -76,6 +78,8 @@ public class TweetEngagement implements ClientElement {
 	
 	public void setupRender() {
 		clientId = javaScriptSupport.allocateClientId(resources);
+		zoneId = null;
+		getZoneId();
 	}
 	
 	public Object onReply(Tweet tweet, String event, String replyContent) {
@@ -85,9 +89,10 @@ public class TweetEngagement implements ClientElement {
 		return zone.getBody();		
 	}
 	
-	public Object onShowConversation(String id, boolean showConversation) {
+	public Object onShowConversation(String id, boolean showConversation, String zoneId) {
 		tweet = findById(id);
 		this.showConversation = showConversation;
+		this.zoneId = zoneId;
 		return zone.getBody();
 	}
 	
@@ -96,7 +101,10 @@ public class TweetEngagement implements ClientElement {
 	}
 
 	public String getZoneId() {
-		return getClientId() + "-conversation-zone";
+		if (zoneId == null) {
+			zoneId = getClientId() + "-conversation-zone";
+		}
+		return zoneId;
 	}
 
 	public Block getBlock() {
@@ -134,6 +142,10 @@ public class TweetEngagement implements ClientElement {
 	 */
 	public Zone getZone() {
 		return zone;
+	}
+	
+	public boolean isInsideConversation() {
+		return showConversation && tweet != conversationTweet;
 	}
 	
 }

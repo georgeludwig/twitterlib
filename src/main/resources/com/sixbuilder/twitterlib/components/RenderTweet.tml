@@ -32,8 +32,8 @@
 		<div class="table-row">
 			<div class="table-cell tweetEngagementBelowProfilePicture">
 				<p t:type="If" t:test="renderConversation">
-					<a t:type="EventLink" t:event="conversation" t:context="[tweet.id,!showConversation]"
-						t:zone="prop:zoneId">
+					<a t:type="EventLink" t:event="conversation" t:context="[parentConversationTweetId, !showConversation, zoneId]"
+						t:zone="prop:zoneId" title="${conversationLinkTitle}">
 						<i t:type="twitterlib/FontAwesomeIcon" t:name="fa-comment" />
 					</a>
 				</p>
