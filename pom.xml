@@ -4,7 +4,7 @@
     <groupId>com.sixbuilder</groupId>
     <artifactId>twitterlib</artifactId>
     <version>1.0-SNAPSHOT</version>
-    <packaging>war</packaging>
+    <packaging>jar</packaging>
     <name>twitterlib Tapestry 5 Application</name>
         <dependencies>
         <dependency>
@@ -131,6 +131,17 @@ of testing facilities designed for use with TestNG (http://testng.org/), so it's
 					</systemProperties>
 				</configuration>
 			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<configuration>
+					<archive>
+						<manifestEntries>
+							<Tapestry-Module-Classes>com.sixbuilder.twitterlib.services.TwitterLibModule</Tapestry-Module-Classes>
+						</manifestEntries>
+					</archive>
+				</configuration>
+			</plugin>			
         </plugins>
     </build>
 
