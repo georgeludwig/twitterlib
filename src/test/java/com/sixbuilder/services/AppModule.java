@@ -4,6 +4,7 @@ import org.apache.tapestry5.SymbolConstants;
 import org.apache.tapestry5.ioc.MappedConfiguration;
 import org.apache.tapestry5.ioc.ServiceBinder;
 import org.apache.tapestry5.ioc.annotations.SubModule;
+import org.got5.tapestry5.jquery.JQuerySymbolConstants;
 
 import com.sixbuilder.twitterlib.services.TwitterLibModule;
 
@@ -41,6 +42,8 @@ public class AppModule
         // locales to just "en" (English). As you add localised message catalogs and other assets,
         // you can extend this list of locales (it's a comma separated series of locale names;
         // the first locale name is the default when there's no reasonable match).
+    	configuration.add(JQuerySymbolConstants.SUPPRESS_PROTOTYPE, "false");
+    	configuration.add(JQuerySymbolConstants.JQUERY_ALIAS, "$j");
         configuration.add(SymbolConstants.SUPPORTED_LOCALES, "en");
     }
     

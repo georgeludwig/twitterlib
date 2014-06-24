@@ -7,7 +7,7 @@ function initializeRecommendedTweet(options) {
 	var TWEET_COUNT_WARNING = 'tweetCharacterCountWarning';
 	var TWEET_COUNT_ERROR = 'tweetCharacterCountError'; 
 	
-	var outerDiv = $('#' + options.id);
+	var outerDiv = $j('#' + options.id);
 	var publishCheckbox = outerDiv.find('input.publishTweet');
 	var shortenUrlButton = outerDiv.find('input.tweetShortenUrl');
 	var textarea = outerDiv.find('div.tweetText textarea');
@@ -29,7 +29,7 @@ function initializeRecommendedTweet(options) {
 	});
 	
 	outerDiv.find('input.tweetShortenUrl').click(function(event) {
-		$.ajax(options.shortenUrlUrl).done(function(result) {
+		$j.ajax(options.shortenUrlUrl).done(function(result) {
 			var shortenedUrl = result.url;
 			var newSummary = textarea.val().replace(outerDiv.attr('data-original-url'), shortenedUrl);
 			if (newSummary.indexOf(shortenedUrl) < 0) {
@@ -61,7 +61,7 @@ function initializeRecommendedTweet(options) {
 	textarea.keyup(handleSummaryChange);
 	
 	hashtags.click(function(event) {
-		var hashtag = $(this).text();
+		var hashtag = $j(this).text();
 		var summary = textarea.val().trim();
 		if (summary.indexOf(hashtag) < 0) {
 			summary = summary + ' ' + hashtag;
@@ -74,7 +74,7 @@ function initializeRecommendedTweet(options) {
 	function save() {
 		handleSummaryChange();
 		var data = { summary : textarea.val(), attachSnapshot : attachSnapshotsCheckbox[0].checked };
-		$.ajax(options.saveUrl, { data : data }).done(function(result) {
+		$j.ajax(options.saveUrl, { data : data }).done(function(result) {
 			// FIXME: what to do now? nothing? show some confirmation?
 			modeSummary();
 			enablePublishCheckbox();

@@ -141,7 +141,11 @@ public class RenderTweet implements ClientElement {
 	}
 	
 	@OnEvent(value = EventConstants.SUCCESS, component = "reply")
-	public Object handleReply(String id, @RequestParameter("replyType") String replyType) {
+	public Object handleReply(
+			String id, 
+			@RequestParameter("replyType") String replyType,
+			@RequestParameter("clientId") String clientId) {
+		
 		tweet = findById(id);
 		final String event;
 		if (replyType.equalsIgnoreCase("reply")) {
@@ -152,7 +156,7 @@ public class RenderTweet implements ClientElement {
 		}
 		
 		final HolderComponentEventCallback<Object> callback = new HolderComponentEventCallback<Object>();
-		resources.triggerEvent(TweetEngagement.REPLY, new Object[]{tweet, event, replyContent}, callback);
+		resources.triggerEvent(TweetEngagement.REPLY, new Object[]{tweet, event, replyContent, clientId}, callback);
 		return callback.getResult();
 	}
 	

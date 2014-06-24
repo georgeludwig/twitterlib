@@ -82,7 +82,8 @@ public class TweetEngagement implements ClientElement {
 		getZoneId();
 	}
 	
-	public Object onReply(Tweet tweet, String event, String replyContent) {
+	public Object onReply(Tweet tweet, String event, String replyContent, String clientId) {
+		this.clientId = clientId;
 		this.tweet = tweet;
 		final HolderComponentEventCallback<Object> callback = new HolderComponentEventCallback<Object>();
 		resources.triggerEvent(event, new Object[]{tweet, replyContent}, callback);

@@ -54,6 +54,7 @@
 				<div class="tweetEngagementReply">
 					<form t:type="Form" t:id="reply" t:context="tweet.id" t:zone="prop:zoneId">
 						<input type="text" name="replyType" style="display: none;"/>
+						<input type="text" name="clientId" value="${clientId}" style="display: none;"/>
 						<textarea t:type="TextArea" t:id="replyContent" t:value="replyContent"/>
 						<p>
 							<span class="tweetCharacterCount">0</span>
