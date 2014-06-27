@@ -1,11 +1,43 @@
 <html t:type="Layout" title="twitterlib Index"
-      t:sidebarTitle="Framework Version"
-      xmlns:t="http://tapestry.apache.org/schema/tapestry_5_3.xsd"
-      xmlns:p="tapestry:parameter">
-        <!-- Most of the page content, including <head>, <body>, etc. tags, comes from Layout.tml -->
+	t:sidebarTitle="Framework Version"
+	xmlns:t="http://tapestry.apache.org/schema/tapestry_5_3.xsd"
+	xmlns:p="tapestry:parameter">
+<!-- Most of the page content, including <head>, <body>, etc. tags, comes from Layout.tml -->
 
-    <h1>Twitter Library Component Demo</h1>
+<head>
+    <link rel="stylesheet" type="text/css" href="${context:context:/layout/RecommendedTweetTestPage.css}"/>
+</head>
 
-	<div t:type="twitterlib/RecommendedTweetDisplay"/>
+<h1>Twitter Library Component Demo</h1>
+
+<p class="messages">Tweets to curate: ${curating.size()}</p>
+
+<div class="message">
+	<div t:type="Alerts" />
+</div>
+
+<fieldset class="sixb">
+	<legend class="sixb">Content</legend>
+	<div t:type="twitterlib/RecommendedTweetDisplay" />
+</fieldset>
+
+<br />
+<br />
+<br />
+<br />
+
+<hr />
+
+<h2>Published:</h2>
+
+<div class="publishTweets" t:type="Zone" t:id="publishedZone">
+	<ul>
+		<li t:type="Loop" t:source="published" t:value="tweet">
+			<p>
+				<span class="tweetId">${tweet.tweetid}</span>: <span class="text">${tweet.summary}</span>
+			</p>
+		</li>
+	</ul>
+</div>
 
 </html>

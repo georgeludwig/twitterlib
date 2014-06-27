@@ -39,8 +39,8 @@ public class RecommendedTweetDisplay {
 	@InjectComponent
 	private Zone publishingZone;
 	
-	@InjectComponent
-	private Zone publishedZone;
+//	@InjectComponent
+//	private Zone publishedZone;
 
 	@Property
 	private TweetItem tweet;

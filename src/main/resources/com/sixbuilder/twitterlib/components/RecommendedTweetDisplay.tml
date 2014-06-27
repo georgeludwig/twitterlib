@@ -2,44 +2,42 @@
       xmlns:t="http://tapestry.apache.org/schema/tapestry_5_3.xsd"
       xmlns:p="tapestry:parameter">
 
-	<div class="message">
-		<div t:type="Alerts"/>
-	</div>
-
 	<div class="displayTable">
+		<table id="contentTable">
 
-		<div class="curateTweets" t:type="Zone" t:id="curateZone" id="curateZone">
-			<p>Tweets to curate: ${curating.size()}</p>
-			<ul>
-				<li t:type="Loop" t:source="curating" t:value="tweet">
-					<div t:type="twitterlib/RecommendedTweet" tweet="tweet"/>
-				</li>
-			</ul>
-		</div>  
+			<tr>
+			
+				<td class="messages">
+					<div id="contentMessages">
+					<br />	
+						<div class="label label-important"><span class="mycenter">Action</span></div>				
+						<div class="curateTweets" t:type="Zone" t:id="curateZone" id="curateZone">
+							<ul>
+								<li t:type="Loop" t:source="curating" t:value="tweet">
+									<div t:type="twitterlib/RecommendedTweet" tweet="tweet"/>
+								</li>
+							</ul>
+						</div>  
+					</div>
+				</td>
+				
+				<td class="messages">
+					<div id="queueMessages">
+					<br />	
+						<div class="label label-info message"><span class="mycenter">Queue</span></div>
+						<div class="publishTweets" t:type="Zone" t:id="publishingZone" id="publishingZone">
+							<ul>
+								<li t:type="Loop" t:source="publishing" t:value="tweet">
+									<div t:type="twitterlib/RecommendedTweet" tweet="tweet"/>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</td>
+				
+			</tr>
 	
-		<div class="publishTweets" t:type="Zone" t:id="publishingZone" id="publishingZone">
-			<p>Tweets to publish: ${publishing.size()}</p>
-			<ul>
-				<li t:type="Loop" t:source="publishing" t:value="tweet">
-					<div t:type="twitterlib/RecommendedTweet" tweet="tweet"/>
-				</li>
-			</ul>
-		</div>
-	
-	</div>  
-	
-	<hr/>
-	<h2>Published:</h2>
-
-	<div class="publishTweets" t:type="Zone" t:id="publishedZone">
-		<ul>
-			<li t:type="Loop" t:source="published" t:value="tweet">
-				<p>
-					<span class="tweetId">${tweet.tweetid}</span>: 
-					<span class="text">${tweet.summary}</span>
-				</p>
-			</li>
-		</ul>
+		</table>
 	</div>  
 	
 </div>
