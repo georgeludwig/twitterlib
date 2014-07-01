@@ -7,6 +7,7 @@
 		<div class="recommendedTweetSummaryView">
 	
 			<div class="tweetPublishColumn">
+				<img id="tweet" src="${asset:classpath:/com/sixbuilder/twitterlib/components/twitterbird.svg}"/>
 				<t:if test="tweet.publish">
 					<input type="checkbox" class="publishTweet" id="publishTweet_${tweet.tweetId}" checked="checked"/>
 				</t:if>

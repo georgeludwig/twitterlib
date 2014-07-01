@@ -9,21 +9,17 @@ div.recommendedTweet {
 
 div.recommendedTweetSummaryView {
 	display: table;
+	vertical-align: bottom;
 }
-
-div.recommendedTweetSummaryView div.tweetPublishColumn,
-div.recommendedTweetSummaryView div.tweetSummaryColumn,
-div.recommendedTweetSummaryView div.tweetSnapshotColumn {
-	display: table-cell;
-	margin-left: 0;
-	margin-right: 0;
-}  
 
 div.recommendedTweetSummaryView div.tweetPublishColumn {
 	width: 25px;
 	text-align: center;
-	vertical-align: bottom;
 	/*background-color: yellow;*/
+}
+
+div.tweetPublishColumn {
+	vertical-align: top;
 }
 
 div.recommendedTweetSummaryView div.tweetPublishColumn input {
@@ -48,10 +44,17 @@ div.recommendedTweetSummaryView div.tweetSummaryColumn p {
 
 div.recommendedTweetSummaryView div.tweetSnapshotColumn {
 	width: 75px;
-	margin-left: 10px;
 	display: block;
 	line-height: auto;
 	/*background-color: green;*/
+}
+
+div.recommendedTweetSummaryView div.tweetPublishColumn,
+div.recommendedTweetSummaryView div.tweetSummaryColumn,
+div.recommendedTweetSummaryView div.tweetSnapshotColumn {
+	display: table-cell;
+	margin-left: 0;
+	margin-right: 0;
 }
 
 div.recommendedTweet:hover div.tweetDeleteLink {
@@ -144,4 +147,11 @@ div.recommendedTweet input.tweetCancel {
 
 /* Icon from http://icondock.com/free/mini-pixel-icons */
 div.recommendedTweet .tweetAttachSnapshot {
+}
+
+/* twitter bird icon for "tweet" button */
+#tweet {
+	width: 16px;
+	height: 13px;
+	padding: 10px 0px 0px 0px;
 }

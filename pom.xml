@@ -18,6 +18,19 @@
             <artifactId>tapestry-yuicompressor</artifactId>
             <version>${tapestry-release-version}</version>
         </dependency>
+        
+        <dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.0</version>
+			<scope>test</scope>
+		</dependency>
+		
+		<dependency>
+			<groupId>com.georgeludwigtech</groupId>
+			<artifactId>common</artifactId>
+			<version>1.0.47</version>
+		</dependency>
 
         <!-- Uncomment this to add support for file uploads:
 

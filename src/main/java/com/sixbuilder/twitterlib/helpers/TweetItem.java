@@ -10,7 +10,14 @@ public class TweetItem implements Comparable<TweetItem> {
 	public static final String RECORD_HEADER="ID"+FIELDDELIM+"PUB"+FIELDDELIM+"SRCH_NAME"+FIELDDELIM+"SCORE"+FIELDDELIM+
 		"URL"+FIELDDELIM+"SHORT_URL"+FIELDDELIM+"DATE_TWEETED"+FIELDDELIM+"SUMMARY";
 	
+	public static final String UNINIT_TWEET_ID="tweetId";
+	public static final String UNINIT_SEARCH_NAME="searchName";
+	public static final double UNINIT_SCORE=0.0;
+	public static final String UNINIT_URL="url";
 	public static final String UNINIT_SHORTENED_URL="shortenedUrl";
+	public static final String UNINIT_SNAPSHOT_URL="snapshotUrl";
+	public static final String UNINIT_RECOMMENDED_HASHTAGS="hashtags";
+	public static final String UNINIT_SUMMARY="summary";
 	
 	public TweetItem() {}
 	
@@ -39,7 +46,7 @@ public class TweetItem implements Comparable<TweetItem> {
 		setSummary(fields[10].trim());
 	}
 	
-	private String tweetId;
+	private String tweetId=UNINIT_TWEET_ID;
 	
 	public String getTweetId() {
 		return tweetId;
@@ -59,7 +66,7 @@ public class TweetItem implements Comparable<TweetItem> {
 		this.publish = publish;
 	}
 
-	private String searchName="searchName";
+	private String searchName=UNINIT_SEARCH_NAME;
 	
 	/**
 	 * returns the name of the search that generated this TweetItem
@@ -73,7 +80,7 @@ public class TweetItem implements Comparable<TweetItem> {
 		this.searchName = searchName;
 	}
 
-	private double score;
+	private double score=UNINIT_SCORE;
 	
 	public double getScore() {
 		return score;
@@ -83,7 +90,7 @@ public class TweetItem implements Comparable<TweetItem> {
 		this.score = score;
 	}
 
-	private String url="url";
+	private String url=UNINIT_URL;
 	
 	public String getUrl() {
 		if(url==null)
@@ -107,7 +114,7 @@ public class TweetItem implements Comparable<TweetItem> {
 		this.shortenedUrl = shortenedUrl;
 	}
 	
-	private String snapshotUrl;
+	private String snapshotUrl=UNINIT_SNAPSHOT_URL;
 
 	public String getSnapshotUrl() {
 		return snapshotUrl;
@@ -127,7 +134,7 @@ public class TweetItem implements Comparable<TweetItem> {
 		this.attachSnapshot = attachSnapshot;
 	}
 
-	private String recommendedHashtags;
+	private String recommendedHashtags=UNINIT_RECOMMENDED_HASHTAGS;
 	
 	public String getRecommendedHashtags() {
 		return recommendedHashtags;
@@ -147,7 +154,7 @@ public class TweetItem implements Comparable<TweetItem> {
 		this.dateTweeted = dateTweeted;
 	}
 
-	private String summary="summary";
+	private String summary=UNINIT_SUMMARY;
 	
 	public String getSummary() {
 		return summary;
@@ -183,10 +190,10 @@ public class TweetItem implements Comparable<TweetItem> {
 			getSummary();
 	}
 		
-	public static List<String>getHashtags(String tweet) {
+	public List<String>getHashtags() {
 		List<String>hashTags=new ArrayList<String>();
 		// split summary on whitespace
-		String[]words=tweet.split("\\s");
+		String[]words=getSummary().split("\\s");
 		for(int i=0;i<words.length;i++) {
 			String word=words[i];
 			if(word.startsWith("#")) {
