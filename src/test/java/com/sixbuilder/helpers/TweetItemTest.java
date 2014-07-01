@@ -40,21 +40,7 @@ public class TweetItemTest {
 				false+DELIM+
 				TweetItem.UNINIT_RECOMMENDED_HASHTAGS+DELIM+
 				SerializableRecordHelper.getDateTimeString(0)+DELIM+
-				TweetItem.UNINIT_SUMMARY;
-		
-		
-//		setTweetId(fields[0]);
-//		setPublish(Boolean.parseBoolean(fields[1].trim()));
-//		setSearchName(fields[2].trim());
-//		setScore(Double.parseDouble(fields[3].trim()));
-//		setUrl(fields[4].trim());
-//		setShortenedUrl(fields[5].trim());
-//		setSnapshotUrl(fields[6].trim());
-//		setAttachSnapshot(Boolean.parseBoolean(fields[7].trim()));
-//		setRecommendedHashtags(fields[8].trim());
-//		setDateTweeted(SerializableRecordHelper.getDateTimeLong(fields[9].trim()));
-//		setSummary(f
-		
+				TweetItem.UNINIT_SUMMARY;	
 		
 		assertTrue(actualItemString.equals(theoreticalItemString));
 		// text string constructor consistency
