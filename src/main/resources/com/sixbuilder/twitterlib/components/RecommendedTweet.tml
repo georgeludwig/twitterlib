@@ -6,17 +6,18 @@
 
 		<div class="recommendedTweetSummaryView">
 	
-			<div class="tweetPublishColumn">
-				<img id="tweet" src="${asset:classpath:/com/sixbuilder/twitterlib/components/twitterbird.svg}"/>
-				<t:if test="tweet.publish">
-					<input type="checkbox" class="publishTweet" id="publishTweet_${tweet.tweetId}" checked="checked"/>
-				</t:if>
-				<t:if test="!tweet.publish">
-					<input type="checkbox" class="publishTweet" id="publishTweet_${tweet.tweetId}"/>
-				</t:if>
-			</div>
+			
 			
 			<div class="tweetSummaryColumn">
+				<div class="tweetPublishColumn">
+					<img id="tweet" src="${asset:classpath:/com/sixbuilder/twitterlib/components/twitterbird.svg}"/>
+					<t:if test="tweet.publish">
+						<input type="checkbox" class="publishTweet" id="publishTweet_${tweet.tweetId}" checked="checked"/>
+					</t:if>
+					<t:if test="!tweet.publish">
+						<input type="checkbox" class="publishTweet" id="publishTweet_${tweet.tweetId}"/>
+					</t:if>
+				</div>
 				<div class="tweetText">
 					<p class="displayTweet">
 						${tweet.summary}
@@ -35,17 +36,15 @@
 				</div>
 				<div class="tweetEditSecondRow">
 					<div class="tweetSuggestedHashtags">
-						
-							<span t:type="Loop" t:source="recommendedHashtags" t:value="var:hashtag" data-hashtag="${var:hashtag}">
-								<a href="#">${var:hashtag}</a>&nbsp;
-							</span>
-						
+						<span t:type="Loop" t:source="recommendedHashtags" t:value="var:hashtag" data-hashtag="${var:hashtag}">
+							<a href="#">${var:hashtag}</a>&nbsp;
+						</span>
 					</div>
 					<span class="tweetCharacterCount">${tweet.summary.length()}</span>
 				</div>
 				<div class="tweetUrlRow">
+					<input class="tweetShortenUrl btn btn-default" type="submit" value="&#xf0c1;"/>
 					<input class="tweetUrl" type="text" value="${tweet.url}"/>
-					<input class="tweetShortenUrl" type="submit" value="Shorten"/>
 				</div>
 			</div>
 				
@@ -58,7 +57,7 @@
 					<p class="tweetAttachSnapshot">
 						<span class="tweetAttachSnapshot">
 							<t:twitterLib.FontAwesomeIcon name="fa-paperclip" />
-						</span>
+						</span>&nbsp;
 						<t:if test="tweet.attachSnapshot">
 							<input type="checkbox" class="tweetAttachSnapshotCheckbox" checked="checked"/>
 						</t:if>
@@ -66,8 +65,8 @@
 							<input type="checkbox" class="tweetAttachSnapshotCheckbox"/>
 						</t:if>
 					</p>
-					<input class="tweetSave" type="submit" value="Save"/>
-					<input class="tweetCancel" type="submit" value="Cancel"/>
+					<input class="tweetSave btn btn-primary" type="submit" value="Save"/>
+					<input class="tweetCancel btn btn-default" type="submit" value="Cancel"/>
 				</div>
 			</div>
 	
