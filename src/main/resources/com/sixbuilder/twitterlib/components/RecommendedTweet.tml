@@ -18,7 +18,7 @@
 			
 			<div class="tweetSummaryColumn">
 				<div class="tweetText">
-					<p>
+					<p class="displayTweet">
 						${tweet.summary}
 					</p>
 				</div>
@@ -31,7 +31,7 @@
 	
 			<div class="tweetDetailColumn">
 				<div class="tweetText">
-					<textarea id="textarea_${tweet.tweetId}">${tweet.summary}</textarea>
+					<textarea class="editableTweet" id="textarea_${tweet.tweetId}">${tweet.summary}</textarea>
 				</div>
 				<div class="tweetEditSecondRow">
 					<p class="tweetCharacterCount">${tweet.summary.length()}</p>
@@ -60,7 +60,7 @@
 				
 			<div class="tweetSnapshotColumn">
 				<a href="${tweet.url}" target="_blank">
-					<img src="${tweet.snapshotUrl}"/>
+					<img class="urlSnapshot" src="${tweet.snapshotUrl}"/>
 				</a>
 				<div class="tweetActionButtons">
 					<input class="tweetSave" type="submit" value="Save"/>

@@ -5,7 +5,7 @@
 <!-- Most of the page content, including <head>, <body>, etc. tags, comes from Layout.tml -->
 
 <head>
-    <link rel="stylesheet" type="text/css" href="${context:context:/layout/RecommendedTweetTestPage.css}"/>
+    <link rel="stylesheet" type="text/css" href="${context:/layout/RecommendedTweetTestPage.css}"/>
 </head>
 
 <h1>Twitter Library Component Demo</h1>

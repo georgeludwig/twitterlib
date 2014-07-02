@@ -1,66 +1,3 @@
-/* START OF COMMON.CSS */
-
-#curateZone ul, #publishingZone ul, #actionZone ul, #queueZone ul,
-#curateZone ul > li, #publishingZone ul > li, #actionZone ul > li, #queueZone ul > li{
-	margin: 0;
-	padding: 0;
-	list-style-type: none;
-}
-
-#curateZone, #actionsZone {
-	/* margin-right: 50px; */
-}
-
-#curateZone, #publishingZone, #actionZone, #queueZone {
-	/*display: table-cell; */
-	/* border: solid black 1px; */
-}
-
-div.displayTable {
-	display: table;
-}
-
-.tweetEngagement {
-	border-bottom: solid black 1px;
-}
-
-p, ol, ul {
-    line-height: inherit;
-    clear: none;
-}
-
-div.tweetEngagement {
-/*	width: 375px; */
-	margin: 0;
-	clear: both;
-	top: 0px;
-	left: 0px;
-	position: relative;
-}
-
-div.tweetEngagementSummaryView {
-	display: table;
-}
-
-p.tweetCharacterCount {
-	display: inline;
-	float: left;
-}
-
-.tweetCharacterCount {
-	color: green;
-}
-
-.tweetCharacterCountWarning {
-	color: yellow;
-}
-
-.tweetCharacterCountError {
-	color: red;
-}
-
-/* END OF COMMON.CSS */
-
 /* START SIXBUILDER GENERAL */
 
 html {
@@ -443,6 +380,8 @@ input.error {
 
 /* END SIXBUILDER GENERAL */
 
+/* START OF COMMON.CSS */
+
 #curateZone ul, #publishingZone ul, #actionZone ul, #queueZone ul,
 #curateZone ul > li, #publishingZone ul > li, #actionZone ul > li, #queueZone ul > li{
 	margin: 0;
@@ -456,25 +395,60 @@ input.error {
 
 #curateZone, #publishingZone, #actionZone, #queueZone {
 	display: table-cell;
-/*	width: 375px; */
+	width: 375px;
+	border: solid black 1px;
 }
 
 div.displayTable {
 	display: table;
 }
 
-div.label {
-    font-size: 30px !important;
-    height: 30px;
-    padding-bottom: 5px;
-    text-align: center;
-    width: inherit;
+.tweetEngagement {
+	border-bottom: solid black 1px;
 }
+
+p, ol, ul {
+    line-height: inherit;
+    clear: none;
+}
+
+div.tweetEngagement {
+	width: 375px;
+	margin: 0;
+	clear: both;
+	top: 0px;
+	left: 0px;
+	position: relative;
+}
+
+div.tweetEngagementSummaryView {
+	display: table;
+}
+
+p.tweetCharacterCount {
+	display: inline;
+	float: left;
+}
+
+.tweetCharacterCount {
+	color: green;
+}
+
+.tweetCharacterCountWarning {
+	color: yellow;
+}
+
+.tweetCharacterCountError {
+	color: red;
+}
+
+/* END OF COMMON.CSS */
+
 
 /* START OF RECOMMENDEDTWEET.CSS */
 
 div.recommendedTweet {
-/*	width: 375px; */
+	width: 375px;
 	margin: 0;
 	clear: both;
 	top: 0px;
@@ -503,6 +477,7 @@ div.recommendedTweetSummaryView div.tweetPublishColumn input {
 
 div.recommendedTweetSummaryView div.tweetSummaryColumn,
 div.recommendedTweetSummaryView div.tweetDetailColumn {
+	width: 95%;
 	padding: 0px;
 	margin-top: 0px;
 	/*background-color: blue;*/
@@ -547,6 +522,7 @@ div.recommendedTweet div.tweetDeleteLink {
 }
 
 div.recommendedTweet div.tweetUrl p {
+	width: 250px;
 	text-overflow: ellipsis;
 	white-space: nowrap;
 	overflow: hidden;
@@ -570,6 +546,7 @@ div.recommendedTweet[data-mode=detail] div.tweetSummaryColumn {
 div.recommendedTweet div.tweetDetailColumn div.tweetText textarea {
 	height: 6em;
 	min-height: 80px;
+	width: 95%;
 }
 
 div.recommendedTweet div.tweetEditSecondRow, div.recommendedTweet div.tweetUrlRow {
@@ -633,6 +610,14 @@ div.recommendedTweet .tweetAttachSnapshot {
 
 
 
+div.label {
+    font-size: 30px !important;
+    height: 30px;
+    padding-bottom: 5px;
+    text-align: center;
+    width: inherit;
+}
+
 /* from home.css */
 .mycenter {
 	display: inline-block;
@@ -641,64 +626,21 @@ div.recommendedTweet .tweetAttachSnapshot {
 }
 
 
-
-
 /* my hand stuff */
 
 .messages {
 	position: relative; 
 	vertical-align:top;
-	width: 385px;
 }
 
 #queue { /* holds entire queue column */
 	position: relative;
 }
 
-#contentTable {
-	width: 780px;
-}
-
-#contentMessages {
-	padding-right: 2px;
-}
-
 #queueMessages {
-	padding-left: 2px;
+	
 }
-
-
-/*td {
- border: 1px solid black;
-} */
 
 .tweetText {
-	/* border: 1px solid; */
-	width: 281px;
-	/* border-radius: 5px; */
-}
-
-.displayTweet {
-	overflow: hidden;
-	white-space: nowrap;
-	text-overflow: ellipsis;
-	width:290px;
-}
-
-.recommendedTweetSummaryView {
-	border: 1px solid;
-	border-radius: 10px;
-}
-
-.urlSnapshot {
-	width: 75px;
-	height: 60px;
-}
-
-.editableTweet {
-	width: 294px;
-	position: relative;
-	left: -23px;
-	top: 2px;
-	resize: vertical;
+	width: 95%;
 }

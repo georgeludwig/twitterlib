@@ -2,42 +2,40 @@
       xmlns:t="http://tapestry.apache.org/schema/tapestry_5_3.xsd"
       xmlns:p="tapestry:parameter">
 
-	<div class="displayTable">
-		<table id="contentTable">
+	<table id="contentTable">
 
-			<tr>
+		<tr>
+		
+			<td class="messages">
+				<div id="contentMessages">
+				<br />	
+					<div class="label label-important"><span class="mycenter">Action</span></div>				
+					<div class="curateTweets" t:type="Zone" t:id="curateZone" id="curateZone">
+						<ul>
+							<li t:type="Loop" t:source="curating" t:value="tweet">
+								<div t:type="twitterlib/RecommendedTweet" tweet="tweet"/>
+							</li>
+						</ul>
+					</div>  
+				</div>
+			</td>
 			
-				<td class="messages">
-					<div id="contentMessages">
-					<br />	
-						<div class="label label-important"><span class="mycenter">Action</span></div>				
-						<div class="curateTweets" t:type="Zone" t:id="curateZone" id="curateZone">
-							<ul>
-								<li t:type="Loop" t:source="curating" t:value="tweet">
-									<div t:type="twitterlib/RecommendedTweet" tweet="tweet"/>
-								</li>
-							</ul>
-						</div>  
+			<td class="messages">
+				<div id="queueMessages">
+				<br />	
+					<div class="label label-info message"><span class="mycenter">Queue</span></div>
+					<div class="publishTweets" t:type="Zone" t:id="publishingZone" id="publishingZone">
+						<ul>
+							<li t:type="Loop" t:source="publishing" t:value="tweet">
+								<div t:type="twitterlib/RecommendedTweet" tweet="tweet"/>
+							</li>
+						</ul>
 					</div>
-				</td>
-				
-				<td class="messages">
-					<div id="queueMessages">
-					<br />	
-						<div class="label label-info message"><span class="mycenter">Queue</span></div>
-						<div class="publishTweets" t:type="Zone" t:id="publishingZone" id="publishingZone">
-							<ul>
-								<li t:type="Loop" t:source="publishing" t:value="tweet">
-									<div t:type="twitterlib/RecommendedTweet" tweet="tweet"/>
-								</li>
-							</ul>
-						</div>
-					</div>
-				</td>
-				
-			</tr>
-	
-		</table>
-	</div>  
-	
+				</div>
+			</td>
+			
+		</tr>
+
+	</table>
+
 </div>

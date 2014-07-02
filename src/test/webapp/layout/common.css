@@ -19,7 +19,7 @@ div.displayTable {
 	display: table;
 }
 
-.recommendedTweet, .tweetEngagement {
+.tweetEngagement {
 	border-bottom: solid black 1px;
 }
 
@@ -28,7 +28,7 @@ p, ol, ul {
     clear: none;
 }
 
-div.recommendedTweet, div.tweetEngagement {
+div.tweetEngagement {
 	width: 375px;
 	margin: 0;
 	clear: both;
@@ -37,7 +37,7 @@ div.recommendedTweet, div.tweetEngagement {
 	position: relative;
 }
 
-div.recommendedTweetSummaryView, div.tweetEngagementSummaryView {
+div.tweetEngagementSummaryView {
 	display: table;
 }
 
