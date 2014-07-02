@@ -34,23 +34,14 @@
 					<textarea class="editableTweet" id="textarea_${tweet.tweetId}">${tweet.summary}</textarea>
 				</div>
 				<div class="tweetEditSecondRow">
-					<p class="tweetCharacterCount">${tweet.summary.length()}</p>
-					<ul class="tweetSuggestedHashtags">
-						<li t:type="Loop" t:source="recommendedHashtags" t:value="var:hashtag" data-hashtag="${var:hashtag}">
-							<a href="#">${var:hashtag}</a>
-						</li>
-					</ul>
-					<p class="tweetAttachSnapshot">
-						<span class="tweetAttachSnapshot">
-							<img src="${asset:classpath:/com/sixbuilder/twitterlib/components/upload-page-red.gif}"/>
-						</span>
-						<t:if test="tweet.attachSnapshot">
-							<input type="checkbox" class="tweetAttachSnapshotCheckbox" checked="checked"/>
-						</t:if>
-						<t:if test="!tweet.attachSnapshot">
-							<input type="checkbox" class="tweetAttachSnapshotCheckbox"/>
-						</t:if>
-					</p>
+					<div class="tweetSuggestedHashtags">
+						
+							<span t:type="Loop" t:source="recommendedHashtags" t:value="var:hashtag" data-hashtag="${var:hashtag}">
+								<a href="#">${var:hashtag}</a>&nbsp;
+							</span>
+						
+					</div>
+					<span class="tweetCharacterCount">${tweet.summary.length()}</span>
 				</div>
 				<div class="tweetUrlRow">
 					<input class="tweetUrl" type="text" value="${tweet.url}"/>
@@ -62,7 +53,19 @@
 				<a href="${tweet.url}" target="_blank">
 					<img class="urlSnapshot" src="${tweet.snapshotUrl}"/>
 				</a>
+				
 				<div class="tweetActionButtons">
+					<p class="tweetAttachSnapshot">
+						<span class="tweetAttachSnapshot">
+							<t:twitterLib.FontAwesomeIcon name="fa-paperclip" />
+						</span>
+						<t:if test="tweet.attachSnapshot">
+							<input type="checkbox" class="tweetAttachSnapshotCheckbox" checked="checked"/>
+						</t:if>
+						<t:if test="!tweet.attachSnapshot">
+							<input type="checkbox" class="tweetAttachSnapshotCheckbox"/>
+						</t:if>
+					</p>
 					<input class="tweetSave" type="submit" value="Save"/>
 					<input class="tweetCancel" type="submit" value="Cancel"/>
 				</div>

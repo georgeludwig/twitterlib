@@ -507,6 +507,7 @@ div.recommendedTweetSummaryView div.tweetDetailColumn {
 	margin-top: 0px;
 	/*background-color: blue;*/
 	vertical-align: top;
+	width: 283px;
 }
 
 div.recommendedTweetSummaryView div.tweetSummaryColumn p {
@@ -569,7 +570,7 @@ div.recommendedTweet[data-mode=detail] div.tweetSummaryColumn {
 
 div.recommendedTweet div.tweetDetailColumn div.tweetText textarea {
 	height: 6em;
-	min-height: 80px;
+	/* min-height: 40px; */
 }
 
 div.recommendedTweet div.tweetEditSecondRow, div.recommendedTweet div.tweetUrlRow {
@@ -682,7 +683,7 @@ div.recommendedTweet .tweetAttachSnapshot {
 	overflow: hidden;
 	white-space: nowrap;
 	text-overflow: ellipsis;
-	width:290px;
+	width:281px;
 }
 
 .recommendedTweetSummaryView {
@@ -700,5 +701,25 @@ div.recommendedTweet .tweetAttachSnapshot {
 	position: relative;
 	left: -23px;
 	top: 2px;
-	resize: vertical;
+	resize: none;
+	height: 49px !important;
+}
+
+.tweetAttachSnapshot {
+	text-align: center;
+}
+
+.tweetSuggestedHashtags {
+	width: 275px;
+	position: relative;
+	left: -20px;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+}
+
+.tweetCharacterCount {
+	position: relative;
+	top: -13px;
+	left: 259px;
 }
