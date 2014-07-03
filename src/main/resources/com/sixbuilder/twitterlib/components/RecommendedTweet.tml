@@ -9,6 +9,7 @@
 			
 			
 			<div class="tweetSummaryColumn">
+			<!-- 
 				<div class="tweetPublishColumn">
 					<img id="tweet" src="${asset:classpath:/com/sixbuilder/twitterlib/components/twitterbird.svg}"/>
 					<t:if test="tweet.publish">
@@ -18,6 +19,7 @@
 						<input type="checkbox" class="publishTweet" id="publishTweet_${tweet.tweetId}"/>
 					</t:if>
 				</div>
+				 -->
 				<div class="tweetText">
 					<p class="displayTweet">
 						${tweet.summary}
@@ -49,9 +51,16 @@
 			</div>
 				
 			<div class="tweetSnapshotColumn">
+			
 				<a href="${tweet.url}" target="_blank">
 					<img class="urlSnapshot" src="${tweet.snapshotUrl}"/>
 				</a>
+				
+				<span class="tweetDeleteLink">
+					<a href="#" t:type="EventLink" t:event="delete" t:context="tweet.tweetId" t:zone="^">
+						<img src="${asset:classpath:com/sixbuilder/twitterlib/components/closeButton.png}" height="25" width="25"/>
+					</a>
+				</span>
 				
 				<div class="tweetActionButtons">
 					<p class="tweetAttachSnapshot">
@@ -65,15 +74,10 @@
 							<input type="checkbox" class="tweetAttachSnapshotCheckbox"/>
 						</t:if>
 					</p>
-					<input class="tweetSave btn btn-primary" type="submit" value="Save"/>
-					<input class="tweetCancel btn btn-default" type="submit" value="Cancel"/>
+					<input class="tweetSave btn btn-primary" type="submit" value="Queue"/>
+					<input class="tweetCancel btn btn-warning" type="submit" value="Meh"/>
 				</div>
-			</div>
-	
-			<div class="tweetDeleteLink">
-				<a href="#" t:type="EventLink" t:event="delete" t:context="tweet.tweetId" t:zone="^">
-					<img src="${asset:classpath:com/sixbuilder/twitterlib/components/closeButton.png}" height="25" width="25"/>
-				</a>
+				
 			</div>
 		
 		</div>

@@ -20,10 +20,6 @@ div.displayTable {
 	display: table;
 }
 
-.tweetEngagement {
-	border-bottom: solid black 1px;
-}
-
 p, ol, ul {
     line-height: inherit;
     clear: none;
@@ -521,7 +517,7 @@ div.recommendedTweetSummaryView div.tweetSummaryColumn p {
 }
 
 div.recommendedTweetSummaryView div.tweetSnapshotColumn {
-	width: 75px;
+	width: 78px !important;
 	display: block;
 	line-height: auto;
 	/*background-color: green;*/
@@ -535,15 +531,15 @@ div.recommendedTweetSummaryView div.tweetSnapshotColumn {
 	margin-right: 0;
 }
 
-div.recommendedTweet:hover div.tweetDeleteLink {
-	display: block;
+div.recommendedTweet:hover span.tweetDeleteLink {
+	display: inline;
 }
 
-div.recommendedTweet div.tweetDeleteLink {
+div.recommendedTweet span.tweetDeleteLink {
 	display: none;
 	position: absolute;
-	right: 0px;
-	top: 0px;
+	right: -0px;
+	top: -0px;
 	margin: 0px;
 	margin: 0px;
 	width: 25px;
@@ -584,6 +580,9 @@ div.recommendedTweet div.tweetEditSecondRow, div.recommendedTweet div.tweetUrlRo
 
 div.recommendedTweet div.tweetEditSecondRow {
 	line-height: 1em !important;
+	position: relative;
+	height: 15px;
+	top: 6px;
 }
 
 div.recommendedTweet div.tweetEditSecondRow ul li {
@@ -599,7 +598,7 @@ div.recommendedTweet div.tweetUrlRow {
 }
 
 div.recommendedTweet div.tweetUrlRow input.tweetUrl {
-	width: 180px;
+	width: 264px !important;
 	text-overflow: ellipsis;
 	white-space: nowrap;
 	overflow: hidden;
@@ -613,6 +612,7 @@ div.recommendedTweet input.tweetCancel {
 
 div.recommendedTweet div.tweetActionButtons {
 	position: absolute:
+	width: 70px;
 }
 
 div.recommendedTweet input.tweetSave,
@@ -689,22 +689,20 @@ div.recommendedTweet .tweetAttachSnapshot {
 	width:281px;
 }
 
-.recommendedTweetSummaryView {
-	border: 1px solid;
-	border-radius: 10px;
+/*
+.urlSnapshot:hover {
+	left: -2px;
 }
-
-.urlSnapshot {
-	width: 75px;
-	height: 60px;
-}
+*/
 
 .editableTweet {
-	width: 294px;
+	width: 297px;
 	position: relative;
 	left: 2px;
 	top: 2px;
 	resize: vertical;
+	padding: 0px;
+	border-radius: 5px;
 	/*height: 49px !important;*/
 }
 
@@ -748,23 +746,56 @@ div.recommendedTweet .tweetAttachSnapshot {
 	height:20px;
 }
 
-.tweetEditSecondRow {
-	height: 15px;
-}
-
 .tweetSave {
 	position: relative;
-	left: 15px;
-	top: -px;
+	left: 2px;
+	top: -9px;
 }
 
 .tweetCancel {
 	position: relative;
-	left: -0px;
-	top: -0px;
+	left: 10px;
+	top: -5px;
 }
 
 div.tweetUrlRow {
-	border: 1px solid;
 	width:300px !important;
+	top: 9px;
+}
+
+.recommendedTweet[data-mode=detail] {
+	border: 1px solid #f68b28;
+}
+
+.recommendedTweet[data-mode=summary] {
+	border: 1px solid;
+	border-radius:8px;
+	margin-top: 2px;
+}
+
+.recommendedTweet[data-mode=detail] {
+	/*left: 2px;*/
+	position: relative;
+	border: 1px solid #f68b28;
+	border-radius:8px;
+	margin-top: 25px;
+	margin-bottom: 25px;
+}
+
+.urlSnapshot {
+	width: 75px;
+	height: 60px;
+	padding: 0px;
+	border: 1px solid #2787c2;
+	border-radius: 5px;
+	margin: 2px;
+}
+
+.recommendedTweet[data-mode=summary] img.urlSnapshot {
+	left: 3px;
+	position: relative;
+}
+
+.tweetSuggestedHashtags li {
+	display: inline;
 }
