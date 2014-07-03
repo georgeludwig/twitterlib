@@ -83,6 +83,13 @@ public class RecommendedTweetDisplay {
 		ajaxResponseRenderer.addRender(publishingZone);
 	}
 	
+	@OnEvent(RecommendedTweetConstants.SAVE_TWEET_EVENT)
+	public void save(TweetItem tweetItem) {
+		triggerEvent(RecommendedTweetConstants.SAVE_TWEET_EVENT, resources.getContainerResources());
+		ajaxResponseRenderer.addRender(curateZone);
+		ajaxResponseRenderer.addRender(publishingZone);
+	}
+	
 	@SuppressWarnings("unchecked")
 	public List<TweetItem> triggerEvent(String event) {
 		final HolderComponentEventCallback<Object> callback = new HolderComponentEventCallback<Object>();

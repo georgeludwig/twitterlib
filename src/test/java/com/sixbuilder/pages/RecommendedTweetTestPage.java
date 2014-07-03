@@ -105,7 +105,8 @@ public class RecommendedTweetTestPage {
 	
 	@OnEvent(RecommendedTweetConstants.SAVE_TWEET_EVENT)
 	public void save(TweetItem tweetItem) {
-		tweetItemDAO.update(tweetItem);
+		//tweetItemDAO.update(tweetItem);
+		publish(tweetItem);
 	}
 	
 	@OnEvent(RecommendedTweetConstants.LOAD_TWEET_EVENT)

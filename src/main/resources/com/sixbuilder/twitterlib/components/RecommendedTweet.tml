@@ -80,7 +80,7 @@
 						</t:if>
 					</p>
 					<input class="tweetSave btn btn-primary" type="submit" value="Queue"/>
-					<input class="tweetCancel btn btn-warning" type="submit" value="Later"/>
+					<input class="tweetCancel btn btn-warning" type="submit" value="Meh"/>
 				</div>
 				
 			</div>

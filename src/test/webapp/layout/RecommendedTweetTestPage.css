@@ -752,6 +752,7 @@ div.recommendedTweet .tweetAttachSnapshot {
 	position: relative;
 	top: 1px;
 	height: 22px !important;
+	padding-top: 2px;
 }
 
 .tweetUrl {
@@ -775,14 +776,15 @@ div.tweetUrlRow .tweetUrl {
 
 .tweetSave {
 	position: relative;
-	left: 2px;
+	left: 6px;
 	top: -9px;
 }
 
 .tweetCancel {
 	position: relative;
-	left: 10px;
+	left: 6px;
 	top: -5px;
+	width: 59px !important;
 }
 
 div.tweetUrlRow {
