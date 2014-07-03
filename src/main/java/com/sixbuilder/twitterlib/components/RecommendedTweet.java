@@ -100,7 +100,9 @@ public class RecommendedTweet implements ClientElement {
 		final TweetItem item = findById(id);
 		item.setSummary(summary);
 		item.setAttachSnapshot(attachSnapshot);
-		return triggerEvent(RecommendedTweetConstants.SAVE_TWEET_EVENT, item);
+		//return triggerEvent(RecommendedTweetConstants.SAVE_TWEET_EVENT, item);
+		//item.setPublish(true);
+		return onPublish(id);
 	}
 
 	/**
@@ -108,7 +110,7 @@ public class RecommendedTweet implements ClientElement {
 	 */
 	public Object onPublish(String id) {
 		final TweetItem item = findById(id);
-		item.setPublish(!item.isPublish());
+		item.setPublish(true);
 		return triggerEvent(RecommendedTweetConstants.PUBLISH_TWEET_EVENT, item);
 	}
 	

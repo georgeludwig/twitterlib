@@ -25,8 +25,13 @@
 						${tweet.summary}
 					</p>
 				</div>
+				<div class="summaryHashtags">
+					<span t:type="Loop" t:source="recommendedHashtags" t:value="var:hashtag" data-hashtag="${var:hashtag}">
+						${var:hashtag}&nbsp;
+					</span>
+				</div>
 				<div class="tweetUrl">
-					<p title="${tweet.url}">
+					<p class="displayUrl" title="${tweet.url}">
 						${tweet.url}
 					</p>
 				</div>
@@ -75,7 +80,7 @@
 						</t:if>
 					</p>
 					<input class="tweetSave btn btn-primary" type="submit" value="Queue"/>
-					<input class="tweetCancel btn btn-warning" type="submit" value="Meh"/>
+					<input class="tweetCancel btn btn-warning" type="submit" value="Later"/>
 				</div>
 				
 			</div>

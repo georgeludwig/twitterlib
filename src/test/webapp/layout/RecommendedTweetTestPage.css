@@ -510,10 +510,9 @@ div.recommendedTweetSummaryView div.tweetDetailColumn {
 }
 
 div.recommendedTweetSummaryView div.tweetSummaryColumn p {
-	padding: 5px;
 	margin: 0px;
 	line-height: auto;
-	font-size: 10px;
+	color: #3a87ad;
 }
 
 div.recommendedTweetSummaryView div.tweetSnapshotColumn {
@@ -531,7 +530,8 @@ div.recommendedTweetSummaryView div.tweetSnapshotColumn {
 	margin-right: 0;
 }
 
-div.recommendedTweet:hover span.tweetDeleteLink {
+
+div.recommendedTweet[data-mode=summary]:hover span.tweetDeleteLink {
 	display: inline;
 }
 
@@ -598,7 +598,7 @@ div.recommendedTweet div.tweetUrlRow {
 }
 
 div.recommendedTweet div.tweetUrlRow input.tweetUrl {
-	width: 264px !important;
+	width: 263px !important;
 	text-overflow: ellipsis;
 	white-space: nowrap;
 	overflow: hidden;
@@ -678,7 +678,7 @@ div.recommendedTweet .tweetAttachSnapshot {
 
 .tweetText {
 	/* border: 1px solid; */
-	width: 281px;
+	/* width: 281px; */
 	/* border-radius: 5px; */
 }
 
@@ -686,7 +686,9 @@ div.recommendedTweet .tweetAttachSnapshot {
 	overflow: hidden;
 	white-space: nowrap;
 	text-overflow: ellipsis;
-	width:281px;
+	width:296px;
+	padding-left: 3px;
+	padding-top: 5px;
 }
 
 /*
@@ -720,6 +722,19 @@ div.recommendedTweet .tweetAttachSnapshot {
 	text-overflow: ellipsis;
 }
 
+.summaryHashtags {
+	height: 18px;
+	position: relative;
+	left: 0px;
+	top: 0px;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	width:296px;
+	padding-left: 3px;
+	color: #3a87ad;
+}
+
 .tweetCharacterCount {
 	position: relative;
 	top: -15px;
@@ -741,9 +756,21 @@ div.recommendedTweet .tweetAttachSnapshot {
 
 .tweetUrl {
 	position: relative;
-	top: 6px;
+	top: 0px;
 	padding: 0px;
 	height:20px;
+	font-size: 13px;
+}
+
+div.tweetUrlRow .tweetUrl {
+	top: 6px;
+	left: 1px;
+}
+
+.displayUrl {
+	width: 296px;
+	font-size: 10px;
+	padding-left: 3px;
 }
 
 .tweetSave {
@@ -768,7 +795,7 @@ div.tweetUrlRow {
 }
 
 .recommendedTweet[data-mode=summary] {
-	border: 1px solid;
+	border: 1px solid #2787c2;
 	border-radius:8px;
 	margin-top: 2px;
 }
@@ -792,10 +819,6 @@ div.tweetUrlRow {
 }
 
 .recommendedTweet[data-mode=summary] img.urlSnapshot {
-	left: 3px;
+	left: 1px;
 	position: relative;
-}
-
-.tweetSuggestedHashtags li {
-	display: inline;
 }
