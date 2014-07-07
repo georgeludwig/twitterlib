@@ -108,7 +108,14 @@ public class RecommendedTweetTestPage {
 		//tweetItemDAO.update(tweetItem);
 		publish(tweetItem);
 	}
-	
+
+	@OnEvent(RecommendedTweetConstants.MEH_TWEET_EVENT)
+	public void meh(TweetItem tweetItem) {
+		tweetItemDAO.update(tweetItem);
+		publishing.remove(tweetItem);
+		curating.add(tweetItem);
+	}
+
 	@OnEvent(RecommendedTweetConstants.LOAD_TWEET_EVENT)
 	public TweetItem load(String id) {
 		return tweetItemDAO.findById(id);

@@ -13,7 +13,7 @@
 					<div class="curateTweets" t:type="Zone" t:id="curateZone" id="curateZone">
 						<ul>
 							<li t:type="Loop" t:source="curating" t:value="tweet">
-								<div t:type="twitterlib/RecommendedTweet" tweet="tweet"/>
+								<div t:type="twitterlib/RecommendedTweet" tweet="tweet" inQueue="false"/>
 							</li>
 						</ul>
 					</div>  
@@ -27,7 +27,7 @@
 					<div class="publishTweets" t:type="Zone" t:id="publishingZone" id="publishingZone">
 						<ul>
 							<li t:type="Loop" t:source="publishing" t:value="tweet">
-								<div t:type="twitterlib/RecommendedTweet" tweet="tweet"/>
+								<div t:type="twitterlib/RecommendedTweet" tweet="tweet" inQueue="true"/>
 							</li>
 						</ul>
 					</div>

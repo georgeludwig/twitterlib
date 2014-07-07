@@ -2,24 +2,11 @@
 	class="recommendedTweet" data-tweet-id="${tweet.tweetId}" id="${clientId}" data-mode="summary"
 	data-original-url="${tweet.url}" data-dirty="false" data-publish="${tweet.publish}">
 
-	<form autocomplete="off">
+	<form autocomplete="off" t:type="Form" t:id="form" t:context="tweet.tweetId" t:zone="^">
 
 		<div class="recommendedTweetSummaryView">
-	
-			
 			
 			<div class="tweetSummaryColumn">
-			<!-- 
-				<div class="tweetPublishColumn">
-					<img id="tweet" src="${asset:classpath:/com/sixbuilder/twitterlib/components/twitterbird.svg}"/>
-					<t:if test="tweet.publish">
-						<input type="checkbox" class="publishTweet" id="publishTweet_${tweet.tweetId}" checked="checked"/>
-					</t:if>
-					<t:if test="!tweet.publish">
-						<input type="checkbox" class="publishTweet" id="publishTweet_${tweet.tweetId}"/>
-					</t:if>
-				</div>
-				 -->
 				<div class="tweetText">
 					<p class="displayTweet">
 						${tweet.summary}
@@ -39,7 +26,7 @@
 	
 			<div class="tweetDetailColumn">
 				<div class="tweetText">
-					<textarea class="editableTweet" id="textarea_${tweet.tweetId}">${tweet.summary}</textarea>
+					<textarea class="editableTweet" id="textarea_${tweet.tweetId}" t:type="TextArea" t:id="summary">${tweet.summary}</textarea>
 				</div>
 				<div class="tweetEditSecondRow">
 					<div class="tweetSuggestedHashtags">
@@ -72,15 +59,10 @@
 						<span class="tweetAttachSnapshot">
 							<t:twitterLib.FontAwesomeIcon name="fa-paperclip" />
 						</span>&nbsp;
-						<t:if test="tweet.attachSnapshot">
-							<input type="checkbox" class="tweetAttachSnapshotCheckbox" checked="checked"/>
-						</t:if>
-						<t:if test="!tweet.attachSnapshot">
-							<input type="checkbox" class="tweetAttachSnapshotCheckbox"/>
-						</t:if>
+						<input type="checkbox" t:type="Checkbox" t:id="attachSnapshot" class="tweetAttachSnapshotCheckbox"/>
 					</p>
 					<input class="tweetSave btn btn-primary" type="submit" value="Queue"/>
-					<input class="tweetCancel btn btn-warning" type="submit" value="Meh"/>
+					<input class="tweetCancel btn btn-warning" type="submit" value="Meh" t:type="Submit" t:id="meh"/>
 				</div>
 				
 			</div>

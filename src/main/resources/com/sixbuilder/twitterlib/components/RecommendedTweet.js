@@ -22,12 +22,6 @@ function initializeRecommendedTweet(options) {
 	// publish checkbox
 	//T5.initializers.updateZoneOnEvent('click', publishCheckbox.attr('id'), '^', options.publishUrl);
 	
-	outerDiv.find('input.tweetCancel').click(function(event) {
-		modeSummary();
-	//	enablePublishCheckbox();
-		event.preventDefault();
-	});
-	
 	outerDiv.find('input.tweetShortenUrl').click(function(event) {
 		$j.ajax(options.shortenUrlUrl).done(function(result) {
 			var shortenedUrl = result.url;
@@ -43,8 +37,14 @@ function initializeRecommendedTweet(options) {
 	});
 	
 	outerDiv.find('input.tweetSave').click(function(event) {
-		save();
-		event.preventDefault();
+		modeSummary();
+	});
+
+	outerDiv.find('input.tweetCancel').click(function(event) {
+		modeSummary();
+		if (options.inQueue == false) {
+			event.preventDefault();
+		}
 	});
 	
 	// switch to detail view
@@ -71,6 +71,7 @@ function initializeRecommendedTweet(options) {
 		event.preventDefault();
 	});
 	
+	/*
 	function save() {
 		handleSummaryChange();
 		var data = { summary : textarea.val(), attachSnapshot : attachSnapshotsCheckbox[0].checked };
@@ -80,6 +81,7 @@ function initializeRecommendedTweet(options) {
 	//		enablePublishCheckbox();
 		});
 	}
+	*/
 	
 	function handleSummaryChange() {
 	//	publishCheckbox[0].disabled = true;

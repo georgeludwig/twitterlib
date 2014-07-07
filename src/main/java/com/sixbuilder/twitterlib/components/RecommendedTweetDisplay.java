@@ -28,11 +28,14 @@ import com.sixbuilder.twitterlib.helpers.TweetItem;
 	RecommendedTweetConstants.DELETE_TWEET_EVENT,
 	RecommendedTweetConstants.SHORTEN_URL_EVENT, 
 	RecommendedTweetConstants.SAVE_TWEET_EVENT,
-	RecommendedTweetConstants.LOAD_TWEET_EVENT})
+	RecommendedTweetConstants.LOAD_TWEET_EVENT,
+	RecommendedTweetConstants.MEH_TWEET_EVENT})
 public class RecommendedTweetDisplay {
 	
+	public static final String UPDATE_ALL_LISTS = "updateAllLists";
+	
 	private static final Object[] EMPTY_OBJECT_ARRAY = new Object[0];
-
+	
 	@InjectComponent
 	private Zone curateZone;
 	
@@ -89,7 +92,14 @@ public class RecommendedTweetDisplay {
 		ajaxResponseRenderer.addRender(curateZone);
 		ajaxResponseRenderer.addRender(publishingZone);
 	}
-	
+
+	@OnEvent(RecommendedTweetConstants.MEH_TWEET_EVENT)
+	public void meh(TweetItem tweetItem) {
+		triggerEvent(RecommendedTweetConstants.MEH_TWEET_EVENT, resources.getContainerResources());
+		ajaxResponseRenderer.addRender(curateZone);
+		ajaxResponseRenderer.addRender(publishingZone);
+	}
+
 	@SuppressWarnings("unchecked")
 	public List<TweetItem> triggerEvent(String event) {
 		final HolderComponentEventCallback<Object> callback = new HolderComponentEventCallback<Object>();
@@ -102,6 +112,12 @@ public class RecommendedTweetDisplay {
 		final HolderComponentEventCallback<Object> callback = new HolderComponentEventCallback<Object>();
 		resources.triggerEvent(event, EMPTY_OBJECT_ARRAY, callback);
 		return (List<TweetItem>) callback.getResult();
+	}
+
+	@OnEvent(UPDATE_ALL_LISTS)
+	public void updateAllLists() {
+		ajaxResponseRenderer.addRender(curateZone);
+		ajaxResponseRenderer.addRender(publishingZone);
 	}
 	
 }
