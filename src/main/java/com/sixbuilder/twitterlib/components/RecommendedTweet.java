@@ -38,8 +38,8 @@ public class RecommendedTweet implements ClientElement {
 	@Property
 	private TweetItem tweet;
 	
-	@Parameter(required = true, allowNull = false)
-	private boolean inQueue;
+//	@Parameter(required = true, allowNull = false)
+//	private boolean inQueue;
 	
 	@Inject
 	private ComponentResources resources;
@@ -83,7 +83,6 @@ public class RecommendedTweet implements ClientElement {
 		clientId = javaScriptSupport.allocateClientId(resources);
 		JSONObject options = new JSONObject();
 		options.put("id", clientId);
-		options.put("inQueue", inQueue);
 		options.put("publishUrl", resources.createEventLink("publish", tweet.getTweetId()).toAbsoluteURI());
 		options.put("shortenUrlUrl", resources.createEventLink("shortenUrl", tweet.getTweetId()).toAbsoluteURI());
 		javaScriptSupport.addScript(String.format("initializeRecommendedTweet(%s);", options)); 
@@ -106,6 +105,10 @@ public class RecommendedTweet implements ClientElement {
 	void onSelectedFromMeh() {
 		wasMehButtonClicked = true;
 	}
+	
+	void onSelectedFromQueue() {
+		wasMehButtonClicked = false;
+	}
 
 	/**
 	 * Handles the queue and meh buttons
@@ -115,16 +118,15 @@ public class RecommendedTweet implements ClientElement {
 		item.setSummary(summary);
 		item.setAttachSnapshot(attachSnapshot);
 		String event;
-		if (inQueue && !wasMehButtonClicked) {
-			event = RecommendedTweetConstants.PUBLISH_TWEET_EVENT;
-		}
-		else if (inQueue && wasMehButtonClicked) {
+		if (wasMehButtonClicked) {
+			item.setPublish(false);
 			event = RecommendedTweetConstants.MEH_TWEET_EVENT;
+			return triggerEvent(event, item);
+		} else {
+			item.setPublish(true);
+			event = RecommendedTweetConstants.PUBLISH_TWEET_EVENT;
+			return triggerEvent(event, item);
 		}
-		else {
-			event = RecommendedTweetConstants.SAVE_TWEET_EVENT;
-		}
-		return triggerEvent(event, item);
 	}
 
 	/**

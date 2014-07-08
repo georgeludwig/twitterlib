@@ -61,7 +61,7 @@
 						</span>&nbsp;
 						<input type="checkbox" t:type="Checkbox" t:id="attachSnapshot" class="tweetAttachSnapshotCheckbox"/>
 					</p>
-					<input class="tweetSave btn btn-primary" type="submit" value="Queue"/>
+					<input class="tweetSave btn btn-primary" type="submit" value="Queue" t:type="Submit" t:id="queue"/>
 					<input class="tweetCancel btn btn-warning" type="submit" value="Meh" t:type="Submit" t:id="meh"/>
 				</div>
 				

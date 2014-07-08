@@ -42,9 +42,9 @@ function initializeRecommendedTweet(options) {
 
 	outerDiv.find('input.tweetCancel').click(function(event) {
 		modeSummary();
-		if (options.inQueue == false) {
-			event.preventDefault();
-		}
+//		if (options.inQueue == false) {
+//			event.preventDefault();
+//		}
 	});
 	
 	// switch to detail view
