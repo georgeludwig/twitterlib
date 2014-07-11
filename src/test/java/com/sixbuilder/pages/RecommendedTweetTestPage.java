@@ -1,5 +1,6 @@
 package com.sixbuilder.pages;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,6 +13,8 @@ import org.apache.tapestry5.corelib.components.Zone;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.ajax.AjaxResponseRenderer;
 
+import com.georgeludwigtech.common.util.SerializableRecordHelper;
+import com.sixbuilder.helpers.TestPage;
 import com.sixbuilder.services.TweetItemDAO;
 import com.sixbuilder.twitterlib.RecommendedTweetConstants;
 import com.sixbuilder.twitterlib.components.RecommendedTweet;
@@ -125,4 +128,23 @@ public class RecommendedTweetTestPage {
 		return "http://bitly/tweet";
 	}
 
+	@Persist
+	private File setManagerRootDir;
+	
+	public File getTempFileRootDir() throws Exception {
+		if(setManagerRootDir==null) {
+			String testRoot=TestPage.getTestRoot();
+			if(testRoot.endsWith(SerializableRecordHelper.FILE_SEPARATOR))
+				testRoot=testRoot+SerializableRecordHelper.FILE_SEPARATOR;
+			File f=new File(testRoot+"curationSetManager");
+			if(!f.exists())
+				f.mkdirs();
+			setManagerRootDir=f;
+		}
+		return setManagerRootDir;
+	}
+	
+	public void setTempFileRootDir(File f) {
+		setManagerRootDir=f;
+	}
 }

@@ -117,26 +117,32 @@ public class RecommendedTweet implements ClientElement {
 		final TweetItem item = findById(id);
 		item.setSummary(summary);
 		item.setAttachSnapshot(attachSnapshot);
-		String event;
 		if (wasMehButtonClicked) {
-			item.setPublish(false);
-			event = RecommendedTweetConstants.MEH_TWEET_EVENT;
-			return triggerEvent(event, item);
+			return meh(item);
 		} else {
-			item.setPublish(true);
-			event = RecommendedTweetConstants.PUBLISH_TWEET_EVENT;
-			return triggerEvent(event, item);
+			return queue(item);
 		}
+	}
+	
+	private Object queue(TweetItem item) {
+		item.setPublish(true);
+		// 
+		return triggerEvent(RecommendedTweetConstants.PUBLISH_TWEET_EVENT, item);
+	}
+	
+	private Object meh(TweetItem item) {	
+		item.setPublish(false);
+		return triggerEvent(RecommendedTweetConstants.MEH_TWEET_EVENT, item);
 	}
 
 	/**
 	 * Handles the publish event
 	 */
-	public Object onPublish(String id) {
-		final TweetItem item = findById(id);
-		item.setPublish(true);
-		return triggerEvent(RecommendedTweetConstants.PUBLISH_TWEET_EVENT, item);
-	}
+//	public Object onPublish(String id) {
+//		final TweetItem item = findById(id);
+//		item.setPublish(true);
+//		return triggerEvent(RecommendedTweetConstants.PUBLISH_TWEET_EVENT, item);
+//	}
 	
 	/**
 	 * Handles the shorten URL event.

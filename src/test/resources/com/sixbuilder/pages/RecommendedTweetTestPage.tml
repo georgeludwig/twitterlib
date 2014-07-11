@@ -18,7 +18,7 @@
 
 <fieldset class="sixb">
 	<legend class="sixb">Content</legend>
-	<div t:type="twitterlib/RecommendedTweetDisplay" />
+	<div t:type="twitterlib/RecommendedTweetDisplay" tempFileRootDir="prop:tempFileRootDir" />
 </fieldset>
 
 <br />

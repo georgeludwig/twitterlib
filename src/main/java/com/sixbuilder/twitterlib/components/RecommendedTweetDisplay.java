@@ -1,5 +1,6 @@
 package com.sixbuilder.twitterlib.components;
 
+import java.io.File;
 import java.util.List;
 
 import org.apache.tapestry5.ComponentResources;
@@ -8,11 +9,15 @@ import org.apache.tapestry5.annotations.Cached;
 import org.apache.tapestry5.annotations.Events;
 import org.apache.tapestry5.annotations.InjectComponent;
 import org.apache.tapestry5.annotations.OnEvent;
+import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.corelib.components.Zone;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.ajax.AjaxResponseRenderer;
 
+import com.georgeludwigtech.common.setmanager.SetManager;
+import com.georgeludwigtech.common.setmanager.FileSystemSetManagerImpl;
+import com.georgeludwigtech.common.util.SerializableRecordHelper;
 import com.sixbuilder.twitterlib.RecommendedTweetConstants;
 import com.sixbuilder.twitterlib.helpers.HolderComponentEventCallback;
 import com.sixbuilder.twitterlib.helpers.TweetItem;
@@ -32,6 +37,9 @@ import com.sixbuilder.twitterlib.helpers.TweetItem;
 	RecommendedTweetConstants.MEH_TWEET_EVENT})
 public class RecommendedTweetDisplay {
 	
+	public static final String CURATION_SET_MANAGER_NAME="curationSetMgr";
+	public static final String QUEUED_SET_MANAGER_NAME="queuedSetMgr";
+	
 	public static final String UPDATE_ALL_LISTS = "updateAllLists";
 	
 	private static final Object[] EMPTY_OBJECT_ARRAY = new Object[0];
@@ -42,11 +50,11 @@ public class RecommendedTweetDisplay {
 	@InjectComponent
 	private Zone publishingZone;
 	
-//	@InjectComponent
-//	private Zone publishedZone;
-
 	@Property
 	private TweetItem tweet;
+	
+	@Parameter(required = true, allowNull = false)
+	private File tempFileRootDir;
 
 	@Inject
 	private AjaxResponseRenderer ajaxResponseRenderer;
@@ -72,9 +80,41 @@ public class RecommendedTweetDisplay {
 		return triggerEvent(RecommendedTweetConstants.PUBLISHED_TWEETS_EVENT);
 	}
 	
+	SetManager curationSetMgr;
+	
+	public SetManager getCurationSetManager() throws Exception {
+		if(curationSetMgr==null) {
+			String s=tempFileRootDir.getAbsolutePath();
+			if(!s.endsWith(SerializableRecordHelper.FILE_SEPARATOR))
+				s=s+SerializableRecordHelper.FILE_SEPARATOR;
+			s=s+CURATION_SET_MANAGER_NAME;
+			SetManager sm=new FileSystemSetManagerImpl(new File(s));
+			curationSetMgr=sm;
+		}
+		return curationSetMgr;
+	}
+	
+	SetManager queuedSetMgr;
+	
+	public SetManager getQueuedSetManager() throws Exception {
+		if(queuedSetMgr==null) {
+			String s=tempFileRootDir.getAbsolutePath();
+			if(!s.endsWith(SerializableRecordHelper.FILE_SEPARATOR))
+				s=s+SerializableRecordHelper.FILE_SEPARATOR;
+			s=s+QUEUED_SET_MANAGER_NAME;
+			SetManager sm=new FileSystemSetManagerImpl(new File(s));
+			queuedSetMgr=sm;
+		}
+		return queuedSetMgr;
+	}
+	
 	@OnEvent(RecommendedTweetConstants.DELETE_TWEET_EVENT)
-	public void delete(TweetItem tweetItem) {
+	public void delete(TweetItem tweetItem) throws Exception {
 		triggerEvent(RecommendedTweetConstants.DELETE_TWEET_EVENT, resources.getContainerResources());
+		SetManager cSm = getCurationSetManager();
+		SetManager qSm = getQueuedSetManager();
+		cSm.removeSetItem(tweetItem.getTweetId());
+		qSm.removeSetItem(tweetItem.getTweetId());
 		ajaxResponseRenderer.addRender(curateZone);
 		ajaxResponseRenderer.addRender(publishingZone);
 	}
