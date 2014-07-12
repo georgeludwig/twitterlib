@@ -10,15 +10,14 @@ import org.apache.tapestry5.annotations.Events;
 import org.apache.tapestry5.annotations.InjectComponent;
 import org.apache.tapestry5.annotations.OnEvent;
 import org.apache.tapestry5.annotations.Parameter;
-import org.apache.tapestry5.annotations.Persist;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.corelib.components.Zone;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.ajax.AjaxResponseRenderer;
 
+import com.georgeludwigtech.common.setmanager.FileSystemSetManagerImpl;
 import com.georgeludwigtech.common.setmanager.SetItemImpl;
 import com.georgeludwigtech.common.setmanager.SetManager;
-import com.georgeludwigtech.common.setmanager.FileSystemSetManagerImpl;
 import com.georgeludwigtech.common.util.SerializableRecordHelper;
 import com.sixbuilder.twitterlib.RecommendedTweetConstants;
 import com.sixbuilder.twitterlib.helpers.HolderComponentEventCallback;
@@ -30,7 +29,6 @@ import com.sixbuilder.twitterlib.helpers.TweetItem;
 @Events({
 	RecommendedTweetConstants.CURATING_TWEETS_EVENT,
 	RecommendedTweetConstants.PUBLISHING_TWEETS_EVENT,
-	RecommendedTweetConstants.PUBLISHED_TWEETS_EVENT,
 	RecommendedTweetConstants.PUBLISH_TWEET_EVENT, 
 	RecommendedTweetConstants.DELETE_TWEET_EVENT,
 	RecommendedTweetConstants.SHORTEN_URL_EVENT, 
@@ -66,33 +64,6 @@ public class RecommendedTweetDisplay {
 	@Inject
 	private AlertManager alertManager;
 	
-	@Persist
-	private Boolean firstLoad;
-	
-	public Object setupRender() throws Exception {
-		if(firstLoad==null) {
-			synchronized(tempFileRootDir) {
-				if(firstLoad==null) {
-					firstLoad=true;
-				}
-			}
-		}
-		if(firstLoad) {
-			// clear any possible setitems
-			SetManager cSm = getCurationSetManager();
-			SetManager qSm = getQueuedSetManager();
-			cSm.clear();
-			qSm.clear();
-			List<TweetItem>curatingTweetsList=triggerEvent(RecommendedTweetConstants.CURATING_TWEETS_EVENT);
-			// add all tweets to curation setmanager
-			for(TweetItem ti:curatingTweetsList) {
-				cSm.addSetItem(new SetItemImpl(ti.getTweetId()));
-			}
-			firstLoad=false;
-		}
-		return null;
-	}
-	
 	@Cached
 	public List<TweetItem> getCurating() {
 		return triggerEvent(RecommendedTweetConstants.CURATING_TWEETS_EVENT);
@@ -103,16 +74,11 @@ public class RecommendedTweetDisplay {
 		return triggerEvent(RecommendedTweetConstants.PUBLISHING_TWEETS_EVENT);
 	}
 	
-	@Cached
-	public List<TweetItem> getPublished() {
-		return triggerEvent(RecommendedTweetConstants.PUBLISHED_TWEETS_EVENT);
-	}
-	
 	@OnEvent(RecommendedTweetConstants.DELETE_TWEET_EVENT)
 	public void delete(TweetItem tweetItem) throws Exception {
 		triggerEvent(RecommendedTweetConstants.DELETE_TWEET_EVENT, resources.getContainerResources());
-		SetManager cSm = getCurationSetManager();
-		SetManager qSm = getQueuedSetManager();
+		SetManager cSm = getCurationSetManager(tempFileRootDir,curationSetMgr);
+		SetManager qSm = getQueuedSetManager(tempFileRootDir,queuedSetMgr);
 		cSm.removeSetItem(tweetItem.getTweetId());
 		qSm.removeSetItem(tweetItem.getTweetId());
 		ajaxResponseRenderer.addRender(curateZone);
@@ -123,8 +89,8 @@ public class RecommendedTweetDisplay {
 	public void publish(TweetItem tweetItem) throws Exception {
 		triggerEvent(RecommendedTweetConstants.PUBLISH_TWEET_EVENT, resources.getContainerResources());
 		triggerEvent(RecommendedTweetConstants.MEH_TWEET_EVENT, resources.getContainerResources());
-		SetManager cSm = getCurationSetManager();
-		SetManager qSm = getQueuedSetManager();
+		SetManager cSm = getCurationSetManager(tempFileRootDir,curationSetMgr);
+		SetManager qSm = getQueuedSetManager(tempFileRootDir,queuedSetMgr);
 		cSm.removeSetItem(tweetItem.getTweetId());
 		qSm.addSetItem(new SetItemImpl(tweetItem.getTweetId()));
 		ajaxResponseRenderer.addRender(curateZone);
@@ -134,8 +100,8 @@ public class RecommendedTweetDisplay {
 	@OnEvent(RecommendedTweetConstants.MEH_TWEET_EVENT)
 	public void meh(TweetItem tweetItem) throws Exception {
 		triggerEvent(RecommendedTweetConstants.MEH_TWEET_EVENT, resources.getContainerResources());
-		SetManager cSm = getCurationSetManager();
-		SetManager qSm = getQueuedSetManager();
+		SetManager cSm = getCurationSetManager(tempFileRootDir,curationSetMgr);
+		SetManager qSm = getQueuedSetManager(tempFileRootDir,queuedSetMgr);
 		cSm.addSetItem(new SetItemImpl(tweetItem.getTweetId()));
 		qSm.removeSetItem(tweetItem.getTweetId());
 		ajaxResponseRenderer.addRender(curateZone);
@@ -144,7 +110,7 @@ public class RecommendedTweetDisplay {
 
 	SetManager curationSetMgr;
 	
-	public SetManager getCurationSetManager() throws Exception {
+	public static SetManager getCurationSetManager(File tempFileRootDir, SetManager curationSetMgr) throws Exception {
 		synchronized(tempFileRootDir+CURATION_SET_MANAGER_NAME) {
 			if(curationSetMgr==null) {
 				String s=tempFileRootDir.getAbsolutePath();
@@ -160,7 +126,7 @@ public class RecommendedTweetDisplay {
 	
 	SetManager queuedSetMgr;
 	
-	public SetManager getQueuedSetManager() throws Exception {
+	public static SetManager getQueuedSetManager(File tempFileRootDir, SetManager queuedSetMgr) throws Exception {
 		synchronized(tempFileRootDir+QUEUED_SET_MANAGER_NAME) {
 			if(queuedSetMgr==null) {
 				String s=tempFileRootDir.getAbsolutePath();

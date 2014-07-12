@@ -28,16 +28,4 @@
 
 <hr />
 
-<h2>Published:</h2>
-
-<div class="publishTweets" t:type="Zone" t:id="publishedZone">
-	<ul>
-		<li t:type="Loop" t:source="published" t:value="tweet">
-			<p>
-				<span class="tweetId">${tweet.tweetid}</span>: <span class="text">${tweet.summary}</span>
-			</p>
-		</li>
-	</ul>
-</div>
-
 </html>

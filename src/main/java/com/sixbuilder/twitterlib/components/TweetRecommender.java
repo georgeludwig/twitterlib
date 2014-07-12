@@ -34,9 +34,6 @@ public class TweetRecommender {
 	@InjectComponent
 	private Zone publishingZone;
 	
-	@InjectComponent
-	private Zone publishedZone;
-
 	@Persist
 	@Property
 	private List<TweetItem> curating;
@@ -62,7 +59,6 @@ public class TweetRecommender {
 		if (curating == null || curating.isEmpty()) {
 			curating = new ArrayList<TweetItem>(getTweetItems());
 			publishing = new ArrayList<TweetItem>();
-			published = new ArrayList<TweetItem>();
 		}
 	}
 
