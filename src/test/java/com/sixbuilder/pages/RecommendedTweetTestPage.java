@@ -130,8 +130,8 @@ public class RecommendedTweetTestPage {
 	public void meh(TweetItem tweetItem) throws Exception {
 		curationSetMgr = RecommendedTweetDisplay.getCurationSetManager(getTempFileRootDir(),curationSetMgr);
 		queuedSetMgr = RecommendedTweetDisplay.getQueuedSetManager(getTempFileRootDir(),queuedSetMgr);	
-		curationSetMgr.removeSetItem(tweetItem.getTweetId());
-		queuedSetMgr.addSetItem(new SetItemImpl(tweetItem.getTweetId()));
+		curationSetMgr.addSetItem(new SetItemImpl(tweetItem.getTweetId()));
+		queuedSetMgr.removeSetItem(tweetItem.getTweetId());
 		tweetItemDAO.update(tweetItem);
 	}
 	
