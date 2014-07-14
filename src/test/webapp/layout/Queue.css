@@ -1,0 +1,103 @@
+.queue-settings select {
+  display: inline;
+  width: 70px;
+  height: 38px;
+  margin-right: 5px;
+  font-weight: normal;
+}
+
+.queue-settings label.checkbox {
+  display:block;
+}
+
+.queue-settings label.control-label {
+  width:40px;
+}
+
+.queue-settings .controls {
+  margin-left:55px;
+}
+
+.queue-settings select.queue-timezone {
+  width: 130px;
+}
+
+@media (max-width: 768px) {
+  #settings select.queue-timezone {
+    margin-top: 10px;
+    display: block;
+  }
+}
+
+* {
+  font-family: "Latin Modern Mono";
+  font-style: italic;
+}
+
+.input-group-btn-vertical > .btn:first-child {
+  border-top-right-radius: 4px;
+}
+
+.input-group-btn-vertical > .btn:last-child {
+  border-bottom-right-radius: 4px;
+}
+
+.input-group-btn-vertical i {
+  position: absolute;
+  top: 0;
+  left: 4px;
+}
+
+.spinner {
+  margin-right: 10px;
+  float: left;
+}
+
+.queue-end-random span.text {
+  display: block;
+  float: left;
+  margin-right: 10px;
+}
+
+.queue-settings input{
+  width: 50px;
+  height: 27px;
+}
+
+.spinner .add-on {
+  padding: 0;
+  height: 35px;
+}
+
+.input-group-btn-vertical {
+  position: relative;
+  white-space: nowrap;
+  width: 1%;
+  vertical-align: middle;
+  display: table-cell;
+}
+
+.input-group-btn-vertical > .btn {
+  display: block;
+  float: none;
+  width: 100%;
+  max-width: 100%;
+  padding: 8px;
+  margin-left: -1px;
+  position: relative;
+  border-radius: 0;
+}
+
+.blink {
+  animation-duration: 1s;
+  animation-name: blink;
+  animation-iteration-count: infinite;
+  animation-timing-function: steps(2, start);
+}
+
+@keyframes blink {
+  80% {
+    visibility: hidden;
+  }
+}
+
