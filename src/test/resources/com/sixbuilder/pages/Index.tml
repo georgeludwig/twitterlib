@@ -6,8 +6,10 @@
 	<br />
     <h1>Twitter Library Component Demo</h1>
 	<br />
+	<t:pagelink page="RecommendedTweetTestPage">Tweet Recommender</t:pagelink>
+	<br /><br />
 	<t:pagelink page="TweetEngagementTestPage">Tweet Engagement</t:pagelink>
 	<br /><br />
-	<t:pagelink page="RecommendedTweetTestPage">Tweet Recommender</t:pagelink>
+	<t:pagelink page="QueueTestPage">Queue Manager</t:pagelink>
 	
 </html>

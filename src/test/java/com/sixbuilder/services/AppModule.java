@@ -5,6 +5,8 @@ import org.apache.tapestry5.ioc.MappedConfiguration;
 import org.apache.tapestry5.ioc.ServiceBinder;
 import org.apache.tapestry5.ioc.annotations.SubModule;
 import org.got5.tapestry5.jquery.JQuerySymbolConstants;
+import org.lightcouch.CouchDbClient;
+import org.lightcouch.CouchDbProperties;
 
 import com.sixbuilder.twitterlib.services.TwitterLibModule;
 
@@ -47,4 +49,15 @@ public class AppModule
         configuration.add(SymbolConstants.SUPPORTED_LOCALES, "en");
     }
     
+    public static CouchDbClient buildCouchDbClient(){
+        CouchDbProperties properties = new CouchDbProperties()
+            .setDbName("test")
+            .setHost("tawus.cloudant.com")
+            .setProtocol("https")
+            .setPort(443)
+            .setUsername("coneryouldistabitstolder")
+            .setPassword("yPuMlWaQSSGN7KeA0tpxp64j");
+
+        return new CouchDbClient(properties);
+    }
 }
