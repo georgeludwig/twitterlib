@@ -29,10 +29,11 @@
   }
 }
 
+/*
 * {
   font-family: "Latin Modern Mono";
   font-style: italic;
-}
+} */
 
 .input-group-btn-vertical > .btn:first-child {
   border-top-right-radius: 4px;
