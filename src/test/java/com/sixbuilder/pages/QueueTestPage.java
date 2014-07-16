@@ -2,12 +2,10 @@ package com.sixbuilder.pages;
 
 import javax.inject.Inject;
 
-import org.apache.tapestry5.annotations.Import;
 import org.apache.tapestry5.annotations.Property;
 import org.lightcouch.NoDocumentException;
 
 import com.sixbuilder.twitterlib.services.QueueManager;
-import com.trsvax.bootstrap.annotations.Exclude;
 
 //@Exclude(stylesheet = {"core"})  //If you do not want Tapestry CSS
 //@Import(stylesheet = {

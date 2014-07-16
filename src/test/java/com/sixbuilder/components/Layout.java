@@ -14,7 +14,8 @@ import com.trsvax.bootstrap.annotations.Exclude;
 
 
 @Import(stylesheet={
-        "classpath:/com/trsvax/bootstrap/assets/bootstrap/css/bootstrap.css"
+        "classpath:/com/trsvax/bootstrap/assets/bootstrap/css/bootstrap.css",
+        "classpath:/com/trsvax/bootstrap/assets/bootstrap/css/bootstrap-responsive.css",
         },
 library={
         "classpath:/com/trsvax/bootstrap/assets/bootstrap/js/bootstrap.js"

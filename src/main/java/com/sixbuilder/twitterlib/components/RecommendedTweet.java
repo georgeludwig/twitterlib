@@ -38,9 +38,6 @@ public class RecommendedTweet implements ClientElement {
 	@Property
 	private TweetItem tweet;
 	
-//	@Parameter(required = true, allowNull = false)
-//	private boolean inQueue;
-	
 	@Inject
 	private ComponentResources resources;
 	
@@ -134,15 +131,6 @@ public class RecommendedTweet implements ClientElement {
 		item.setPublish(false);
 		return triggerEvent(RecommendedTweetConstants.MEH_TWEET_EVENT, item);
 	}
-
-	/**
-	 * Handles the publish event
-	 */
-//	public Object onPublish(String id) {
-//		final TweetItem item = findById(id);
-//		item.setPublish(true);
-//		return triggerEvent(RecommendedTweetConstants.PUBLISH_TWEET_EVENT, item);
-//	}
 	
 	/**
 	 * Handles the shorten URL event.
