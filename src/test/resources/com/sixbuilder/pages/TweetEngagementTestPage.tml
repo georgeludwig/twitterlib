@@ -2,7 +2,10 @@
       t:sidebarTitle="Framework Version"
       xmlns:t="http://tapestry.apache.org/schema/tapestry_5_3.xsd"
       xmlns:p="tapestry:parameter">
-        <!-- Most of the page content, including <head>, <body>, etc. tags, comes from Layout.tml -->
+
+<head>
+    <link rel="stylesheet" type="text/css" href="${context:/layout/RecommendedTweetTestPage.css}"/>
+</head>
 
     <h1>Twitter Library Component Demo: TweetEngagementDisplay</h1>
 
