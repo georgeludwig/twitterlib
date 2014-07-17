@@ -1,31 +1,43 @@
 <div class="tweetEngagementDisplay"
-      xmlns:t="http://tapestry.apache.org/schema/tapestry_5_3.xsd"
-      xmlns:p="tapestry:parameter">
+	xmlns:t="http://tapestry.apache.org/schema/tapestry_5_3.xsd"
+	xmlns:p="tapestry:parameter">
 
-	<div class="message">
-		<div t:type="Alerts"/>
-	</div>
 
-	<div class="displayTable">
+	<table id="contentTable">
+		<tr>
+			<td class="messages">
+				<div id="contentMessages">
+					<br />
+					<div class="label label-important">
+						<span class="mycenter">Action</span>
+					</div>
+					<div class="actionTweets" t:type="Zone" t:id="actionZone"
+						id="actionZone">
+						<ul>
+							<li t:type="Loop" t:source="actions" t:value="tweet">
+								<div t:type="twitterlib/TweetEngagement" tweet="tweet" />
+							</li>
+						</ul>
+					</div>
+				</div>
+			</td>
+			<td class="messages">
+				<div id="queueMessages">
+					<br />
+					<div class="label label-info message">
+						<span class="mycenter">Queue</span>
+					</div>
+					<div class="queueTweets" t:type="Zone" t:id="queueZone"
+						id="queueZone">
+						<ul>
+							<li t:type="Loop" t:source="queue" t:value="tweet">
+								<div t:type="twitterlib/TweetEngagement" tweet="tweet" />
+							</li>
+						</ul>
+					</div>
+				</div>
+			</td>
+		</tr>
+	</table>
 
-		<div class="actionTweets" t:type="Zone" t:id="actionZone" id="actionZone">
-			<p>Action (${actions.size()})</p>
-			<ul>
-				<li t:type="Loop" t:source="actions" t:value="tweet">
-					<div t:type="twitterlib/TweetEngagement" tweet="tweet"/>
-				</li>
-			</ul>
-		</div>  
-	
-		<div class="queueTweets" t:type="Zone" t:id="queueZone" id="queueZone">
-			<p>Queue (${queue.size()})</p>
-			<ul>
-				<li t:type="Loop" t:source="queue" t:value="tweet">
-					<div t:type="twitterlib/TweetEngagement" tweet="tweet"/>
-				</li>
-			</ul>
-		</div>
-	
-	</div>
-	  
 </div>

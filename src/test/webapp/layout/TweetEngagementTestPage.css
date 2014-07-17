@@ -446,7 +446,7 @@ input.error {
 	list-style-type: none;
 }
 
-#curateZone, #publishingZone {
+#actionZone, #publishingZone {
 	margin-right: 50px;
 	width: 385px;
 }
@@ -620,4 +620,30 @@ div.tweetEngagementReply a {
 
 div.tweetEngagementReply textarea {
 	width: 100%;
+}
+
+/* START OF HAND STUFF */
+
+.messages {
+	position: relative; 
+	vertical-align:top;
+	width: 385px;
+}
+
+#queue { /* holds entire queue column */
+	position: relative;
+}
+
+
+div.tweetEngagement {
+/*	width: 375px; */
+	margin: 0;
+	clear: both;
+	top: 0px;
+	left: 0px;
+	position: relative;
+}
+
+#queueMessages {
+	padding-left: 2px;
 }
