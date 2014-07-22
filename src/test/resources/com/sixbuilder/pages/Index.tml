@@ -3,13 +3,16 @@
       xmlns:t="http://tapestry.apache.org/schema/tapestry_5_3.xsd"
       xmlns:p="tapestry:parameter">
         <!-- Most of the page content, including <head>, <body>, etc. tags, comes from Layout.tml -->
-	<br />
-    <h1>Twitter Library Component Demo</h1>
-	<br />
-	<t:pagelink page="RecommendedTweetTestPage">Tweet Recommender</t:pagelink>
-	<br /><br />
-	<t:pagelink page="TweetEngagementTestPage">Tweet Engagement</t:pagelink>
-	<br /><br />
-	<t:pagelink page="QueueTestPage">Queue Manager</t:pagelink>
-	
+<br />
+   <h1>Twitter Library Component Demo</h1>
+<br />
+<ul>
+	<li><t:pagelink page="RecommendedTweetTestPage">Tweet Recommender</t:pagelink></li>
+	<li><t:pagelink page="TweetEngagementTestPage">Tweet Engagement</t:pagelink></li>
+	<li><t:pagelink page="QueueTestPage">Queue Manager</t:pagelink></li>
+</ul>
+<br />
+<br />
+<hr />
+
 </html>

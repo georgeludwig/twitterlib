@@ -374,7 +374,7 @@ var QueueWidget = React.createClass({displayName: 'QueueWidget',
         className:"settings-modal modal fade"}, 
           React.DOM.div( {className:"modal-header"}, 
             React.DOM.button( {type:"button", className:"close",
-            'data-dismiss':"modal", 'aria-hidden':"true"}, "×"),
+            'data-dismiss':"modal", 'aria-hidden':"true"}, "x"),
             React.DOM.h4( {className:"modal-title"}, "Settings")
           ),
           React.DOM.div( {className:"modal-body"}, 

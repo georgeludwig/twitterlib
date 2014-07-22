@@ -7,25 +7,21 @@
 <head>
     <link rel="stylesheet" type="text/css" href="${context:/layout/RecommendedTweetTestPage.css}"/>
 </head>
-
+<br />
 <h1>Twitter Library Component Demo</h1>
-
-<p class="messages">Tweets to curate: ${curating.size()}</p>
-
-<div class="message">
-	<div t:type="Alerts" />
-</div>
-
+<br />
+<br />
 <fieldset class="sixb">
 	<legend class="sixb">Content</legend>
 	<div t:type="twitterlib/RecommendedTweetDisplay" tempFileRootDir="prop:tempFileRootDir" />
 </fieldset>
-
 <br />
 <br />
+<div class="message">
+	<div t:type="Alerts" />
+</div>
 <br />
 <br />
-
 <hr />
 
 </html>

@@ -7,16 +7,15 @@
 <link rel="stylesheet" type="text/css"
 	href="${context:/layout/TweetEngagementTestPage.css}" />
 </head>
-
+<br />
 <h1>Twitter Library Component Demo: TweetEngagement</h1>
-
+<br />
+<br />
 <fieldset class="sixb">
 	<legend class="sixb">Engagement</legend>
 	<div t:type="twitterlib/TweetEngagementDisplay" />
 </fieldset>
 
-<br />
-<br />
 <br />
 <br />
 
