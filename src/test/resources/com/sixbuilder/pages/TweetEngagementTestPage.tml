@@ -8,7 +8,7 @@
 	href="${context:/layout/TweetEngagementTestPage.css}" />
 </head>
 <br />
-<h1>Twitter Library Component Demo: TweetEngagement</h1>
+<h1>Tweet Engagement</h1>
 <br />
 <br />
 <fieldset class="sixb">
