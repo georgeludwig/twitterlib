@@ -26,16 +26,20 @@ p, ol, ul {
 }
 
 div.tweetEngagement {
-/*	width: 375px; */
-	margin: 0;
+/*	width: 375px; 
+	margin: 0; */
 	clear: both;
 	top: 0px;
 	left: 0px;
 	position: relative;
+	border: 1px solid #2787C2;
+	border-radius: 8px;
+	margin-top: 2px;
 }
 
 div.tweetEngagementSummaryView {
 	display: table;
+	margin-bottom: 0;
 }
 
 p.tweetCharacterCount {
@@ -454,6 +458,10 @@ input.error {
 /*	width: 375px; */
 }
 
+#tweetengagement-conversation-zone {
+	border-radius: 8px;	
+}
+
 div.displayTable {
 	display: table;
 }
@@ -595,8 +603,9 @@ div.tweetEngagement ol.tweetEngagementConversation {
 	padding: 0px;
 }
 
-div.tweetEngagement ol.tweetEngagementConversation li.main {
+div.tweetEngagement div.tweetEngagementConversation div.other {
 	background-color: #eeeeee;
+	border-radius: 8px;
 }
 
 div.tweetEngagementReply {
@@ -637,16 +646,6 @@ div.tweetEngagementReply textarea {
 }
 
 #queue { /* holds entire queue column */
-	position: relative;
-}
-
-
-div.tweetEngagement {
-/*	width: 375px; */
-	margin: 0;
-	clear: both;
-	top: 0px;
-	left: 0px;
 	position: relative;
 }
 
