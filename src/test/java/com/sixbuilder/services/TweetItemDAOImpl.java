@@ -1,12 +1,13 @@
 package com.sixbuilder.services;
 
+import com.sixbuilder.twitterlib.helpers.TweetItem;
+import com.sixbuilder.twitterlib.services.TweetItemDAO;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import com.sixbuilder.twitterlib.helpers.TweetItem;
-
 /**
- * {@link TweetItemDAO} implementation
+ * {@link com.sixbuilder.twitterlib.services.TweetItemDAO} implementation
  * 
  * @author Thiago H. de Paula Figueiredo (http://machina.com.br/thiago)
  */

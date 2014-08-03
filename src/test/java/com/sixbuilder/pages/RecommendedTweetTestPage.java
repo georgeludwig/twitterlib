@@ -17,7 +17,7 @@ import com.georgeludwigtech.common.setmanager.SetItemImpl;
 import com.georgeludwigtech.common.setmanager.SetManager;
 import com.georgeludwigtech.common.util.SerializableRecordHelper;
 import com.sixbuilder.helpers.TestPage;
-import com.sixbuilder.services.TweetItemDAO;
+import com.sixbuilder.twitterlib.services.TweetItemDAO;
 import com.sixbuilder.twitterlib.RecommendedTweetConstants;
 import com.sixbuilder.twitterlib.components.RecommendedTweet;
 import com.sixbuilder.twitterlib.components.RecommendedTweetDisplay;

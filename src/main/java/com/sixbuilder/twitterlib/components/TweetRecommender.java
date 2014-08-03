@@ -1,8 +1,8 @@
 package com.sixbuilder.twitterlib.components;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import com.sixbuilder.twitterlib.RecommendedTweetConstants;
+import com.sixbuilder.twitterlib.helpers.TweetItem;
+import com.sixbuilder.twitterlib.services.TweetItemDAO;
 import org.apache.tapestry5.alerts.AlertManager;
 import org.apache.tapestry5.annotations.InjectComponent;
 import org.apache.tapestry5.annotations.OnEvent;
@@ -12,9 +12,8 @@ import org.apache.tapestry5.corelib.components.Zone;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.ajax.AjaxResponseRenderer;
 
-import com.sixbuilder.services.TweetItemDAO;
-import com.sixbuilder.twitterlib.RecommendedTweetConstants;
-import com.sixbuilder.twitterlib.helpers.TweetItem;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Component that renders a tweet to be curated or published, plus triggers some events.
@@ -25,6 +24,7 @@ import com.sixbuilder.twitterlib.helpers.TweetItem;
 //@Events({RecommendedTweetConstants.PUBLISH_TWEET_EVENT, RecommendedTweetConstants.DELETE_TWEET_EVENT,
 //	RecommendedTweetConstants.SHORTEN_URL_EVENT, RecommendedTweetConstants.SAVE_TWEET_EVENT})
 public class TweetRecommender {
+
 	@Inject
 	private TweetItemDAO tweetItemDAO;
 	
