@@ -1,7 +1,7 @@
 package com.sixbuilder.twitterlib.components;
 
+import com.sixbuilder.datatypes.twitter.TweetItem;
 import com.sixbuilder.twitterlib.RecommendedTweetConstants;
-import com.sixbuilder.twitterlib.helpers.TweetItem;
 import com.sixbuilder.twitterlib.services.TweetItemDAO;
 import org.apache.tapestry5.alerts.AlertManager;
 import org.apache.tapestry5.annotations.InjectComponent;
@@ -55,19 +55,19 @@ public class TweetRecommender {
 	@Inject
 	private AlertManager alertManager;
 	
-	void setupRender() {
+	void setupRender() throws Exception {
 		if (curating == null || curating.isEmpty()) {
 			curating = new ArrayList<TweetItem>(getTweetItems());
 			publishing = new ArrayList<TweetItem>();
 		}
 	}
 
-	public List<TweetItem> getTweetItems() {
+	public List<TweetItem> getTweetItems() throws Exception {
 		return tweetItemDAO.getAll();
 	}
 	
 	@OnEvent(RecommendedTweetConstants.DELETE_TWEET_EVENT)
-	public void delete(TweetItem tweetItem) {
+	public void delete(TweetItem tweetItem) throws Exception {
 		curating.remove(tweetItem);
 		publishing.remove(tweetItem);
 		tweetItemDAO.delete(tweetItem);
@@ -77,7 +77,7 @@ public class TweetRecommender {
 	}
 
 	@OnEvent(RecommendedTweetConstants.PUBLISH_TWEET_EVENT)
-	public void publish(TweetItem tweetItem) {
+	public void publish(TweetItem tweetItem) throws Exception {
 		curating.remove(tweetItem);
 		publishing.add(tweetItem);
 		tweetItem.setPublish(true);
@@ -88,14 +88,14 @@ public class TweetRecommender {
 	}
 	
 	@OnEvent(RecommendedTweetConstants.SHORTEN_URL_EVENT)
-	public TweetItem shortenUrl(TweetItem tweetItem) {
+	public TweetItem shortenUrl(TweetItem tweetItem) throws Exception {
 		tweetItem.setShortenedUrl(shortenUrlUsingBitly(tweetItem.getUrl()));
 		tweetItemDAO.update(tweetItem);
 		return tweetItem;
 	}
 	
 	@OnEvent(RecommendedTweetConstants.SAVE_TWEET_EVENT)
-	public void save(TweetItem tweetItem) {
+	public void save(TweetItem tweetItem) throws Exception {
 		tweetItemDAO.update(tweetItem);
 	}
 	

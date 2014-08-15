@@ -1,9 +1,12 @@
 package com.sixbuilder.services;
 
-import com.sixbuilder.twitterlib.helpers.TweetItem;
+import com.sixbuilder.datatypes.persistence.PendingTweetFileUtil;
+import com.sixbuilder.helpers.TestPage;
 import com.sixbuilder.twitterlib.services.TweetItemDAO;
+import com.sixbuilder.datatypes.twitter.TweetItem;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -13,45 +16,39 @@ import java.util.List;
  */
 public class TweetItemDAOImpl implements TweetItemDAO {
 
-	private List<TweetItem> items;
+	private PendingTweetFileUtil pendingTweetFileUtil;
 	
-	public TweetItemDAOImpl() {
-		
-		items = new ArrayList<TweetItem>();
-		
-		for (int i = 0; i < 10; i++) {
-			items.add(create(i));
+	public TweetItemDAOImpl() throws Exception {
+		if(pendingTweetFileUtil==null) {
+			pendingTweetFileUtil=new PendingTweetFileUtil(TestPage.getTestRoot()+PendingTweetFileUtil.FILENAME);	
+			// now add tweet Ids && hashtags...these are missing from the test data
+			int i=0;
+			for(TweetItem item:pendingTweetFileUtil.getPendingTweetMap().values()) {
+				item.setTweetId(String.valueOf(i));
+				i++;
+				item.setRecommendedHashtags("#hashtag1 #hashtag2 #hashtag3");
+			}
+			pendingTweetFileUtil.serialize();
 		}
-		
 	}
 
-	public List<TweetItem> getAll() {
-		return items;
-	}
-	
-	private TweetItem create(int i) {
-		TweetItem item = new TweetItem();
-		item.setAttachSnapshot(i % 2 == 0);
-		item.setDateTweeted(2987349278342L + i * 4500);
-//		item.setPublish(i % 2 == 0);
-		item.setRecommendedHashtags("#hashtag" + i + " #cool" + i+ " #twitter" + i + " #another" + i+ " #something" + i);
-		item.setScore(10 - i);
-		item.setSearchName("searchName" + i);
-//		item.setShortenedUrl("http://bit.ly/tweet" + i);
-		item.setSnapshotUrl("http://lorempixel.com/75/75/sports/" + (i + 1));
-		item.setUrl("http://www.6builder.com/url/" + i + "/something/long/just/for/testing");
-		item.setSummary("Summary #" + i + ". Some cool web page somewhere in the Internet. " + item.getUrl());
-		item.setTweetId(String.valueOf(i));
-		return item;
+	public List<TweetItem>getAll() {
+		List<TweetItem>itemList=new ArrayList<TweetItem>();
+		Collection<TweetItem> c=pendingTweetFileUtil.getPendingTweetMap().values();
+		itemList.addAll(c);
+		return itemList;
+				
 	}
 
-	public void delete(TweetItem tweetItem) {
-		items.remove(tweetItem);
+	public void delete(TweetItem tweetItem) throws Exception {
+//		pendingTweetFileUtil.getPendingTweetMap().remove(tweetItem.getUrl());
+//		pendingTweetFileUtil.serialize();
+		// for now, we just remove it from both set managers...handled by ReccommendedTweetDisplay
 	}
 	
-	public TweetItem findById(String id) {
+	public TweetItem findById(String id) throws Exception {
 		TweetItem tweetItem = null;
-		for (TweetItem item : items) {
+		for (TweetItem item : pendingTweetFileUtil.getPendingTweetMap().values()) {
 			if (item.getTweetId().equals(id)) {
 				tweetItem = item;
 				break;
@@ -60,7 +57,9 @@ public class TweetItemDAOImpl implements TweetItemDAO {
 		return tweetItem;
 	}
 
-	public void update(TweetItem tweetItem) {
+	public void update(TweetItem tweetItem) throws Exception {
+		// here we don't bother with saving anything
+		pendingTweetFileUtil.serialize();
 	}
 
 }

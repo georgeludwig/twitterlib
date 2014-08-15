@@ -1,7 +1,6 @@
 package com.sixbuilder.twitterlib;
 
 import com.sixbuilder.twitterlib.components.RecommendedTweet;
-import com.sixbuilder.twitterlib.helpers.TweetItem;
 
 /**
  * Class that holds constants related to the Recommended Tweets component.

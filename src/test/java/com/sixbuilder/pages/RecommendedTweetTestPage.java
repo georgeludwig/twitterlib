@@ -1,6 +1,7 @@
 package com.sixbuilder.pages;
 
 import java.io.File;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -15,13 +16,14 @@ import org.apache.tapestry5.services.ajax.AjaxResponseRenderer;
 import com.georgeludwigtech.common.setmanager.SetItem;
 import com.georgeludwigtech.common.setmanager.SetItemImpl;
 import com.georgeludwigtech.common.setmanager.SetManager;
+import com.georgeludwigtech.common.util.FileUtil;
 import com.georgeludwigtech.common.util.SerializableRecordHelper;
+import com.sixbuilder.datatypes.twitter.TweetItem;
 import com.sixbuilder.helpers.TestPage;
-import com.sixbuilder.twitterlib.services.TweetItemDAO;
 import com.sixbuilder.twitterlib.RecommendedTweetConstants;
 import com.sixbuilder.twitterlib.components.RecommendedTweet;
 import com.sixbuilder.twitterlib.components.RecommendedTweetDisplay;
-import com.sixbuilder.twitterlib.helpers.TweetItem;
+import com.sixbuilder.twitterlib.services.TweetItemDAO;
 
 /**
  * A page just for testing the {@link RecommendedTweet} component.
@@ -31,9 +33,9 @@ public class RecommendedTweetTestPage {
 	@Inject
 	private TweetItemDAO tweetItemDAO;
 
-	@Persist
-	private List<TweetItem> tweetItemList;
-	
+//	@Persist
+//	private List<TweetItem> tweetItemList;
+//	
 	@Property
 	private TweetItem tweet;
 
@@ -47,29 +49,33 @@ public class RecommendedTweetTestPage {
 	
 	SetManager queuedSetMgr;
 	
+	void init() throws Exception {
+		// clear all contents of test dir, including SetItem dir
+		File testRootDir=new File(TestPage.getTestRoot());		
+		FileUtil.clearDirectory(testRootDir);
+		// copy pending tweet file from resources to test dir
+		ClassLoader classLoader = this.getClass().getClassLoader();
+		InputStream is = classLoader.getResourceAsStream("pendingTweets.txt");
+		File target=new File(testRootDir+SerializableRecordHelper.FILE_SEPARATOR+"pendingTweets.txt");
+		FileUtil.copy(is,target);
+		// this is where we get main list 
+//		tweetItemList = getTweetItems();
+		//queuedSetMgr = RecommendedTweetDisplay.getQueuedSetManager(getTempFileRootDir(),queuedSetMgr);
+		// add all tweets to curation setmanager...note that this would have been done by the server-side process that generated the recommended tweets
+		SetManager curationSetMgr = null;
+		curationSetMgr=RecommendedTweetDisplay.getCurationSetManager(getTempFileRootDir(),curationSetMgr);
+		for(TweetItem ti:getTweetItems()) {
+			curationSetMgr.addSetItem(new SetItemImpl(ti.getTweetId()));
+		}
+	}
+	
 	void setupRender() throws Exception {
 		if(firstLoad==null) {
 			synchronized(getTempFileRootDir()) {
 				if(firstLoad==null) {
 					firstLoad=true;
+					init();
 				}
-			}
-		}
-		synchronized(firstLoad) {
-			if(firstLoad) {
-				// clear any setItems from previous test
-				// assumption is, OOB process sets up original SetItems
-				curationSetMgr = RecommendedTweetDisplay.getCurationSetManager(getTempFileRootDir(),curationSetMgr);
-				queuedSetMgr = RecommendedTweetDisplay.getQueuedSetManager(getTempFileRootDir(),queuedSetMgr);
-				curationSetMgr.clear();
-				queuedSetMgr.clear();
-				// this is where we get main list 
-				tweetItemList = getTweetItems();
-				// add all tweets to curation setmanager
-				for(TweetItem ti:tweetItemList) {
-					curationSetMgr.addSetItem(new SetItemImpl(ti.getTweetId()));
-				}
-				firstLoad=false;
 			}
 		}
 	}
@@ -82,7 +88,7 @@ public class RecommendedTweetTestPage {
 		curationSetMgr = RecommendedTweetDisplay.getCurationSetManager(getTempFileRootDir(),curationSetMgr);
 		Set<SetItem>c=curationSetMgr.getSet();
 		List<TweetItem>ret=new ArrayList<TweetItem>();
-		for(TweetItem ti:tweetItemList) {
+		for(TweetItem ti:getTweetItems()) {
 			if(c.contains(new SetItemImpl(ti.getTweetId())))
 				ret.add(ti);
 		}
@@ -94,56 +100,60 @@ public class RecommendedTweetTestPage {
 		queuedSetMgr = RecommendedTweetDisplay.getQueuedSetManager(getTempFileRootDir(),queuedSetMgr);
 		Set<SetItem>q=queuedSetMgr.getSet();
 		List<TweetItem>ret=new ArrayList<TweetItem>();
-		for(TweetItem ti:tweetItemList) {
+		for(TweetItem ti:getTweetItems()) {
 			if(q.contains(new SetItemImpl(ti.getTweetId())))
 				ret.add(ti);
 		}
 		return ret;
 	}
 
-	public List<TweetItem> getTweetItems() {
+	public List<TweetItem> getTweetItems() throws Exception {
 		return tweetItemDAO.getAll();
 	}
 	
 	@OnEvent(RecommendedTweetConstants.DELETE_TWEET_EVENT)
 	public void delete(TweetItem tweetItem) throws Exception {
-		curationSetMgr = RecommendedTweetDisplay.getCurationSetManager(getTempFileRootDir(),curationSetMgr);
-		queuedSetMgr = RecommendedTweetDisplay.getQueuedSetManager(getTempFileRootDir(),queuedSetMgr);	
-		curationSetMgr.removeSetItem(tweetItem.getTweetId());
-		queuedSetMgr.removeSetItem(tweetItem.getTweetId());
-		tweetItemList.remove(tweetItem);
+		// the ReccommendedTweetDisplay should have handled the set manager stuff
+//		curationSetMgr = RecommendedTweetDisplay.getCurationSetManager(getTempFileRootDir(),curationSetMgr);
+//		queuedSetMgr = RecommendedTweetDisplay.getQueuedSetManager(getTempFileRootDir(),queuedSetMgr);	
+//		curationSetMgr.removeSetItem(tweetItem.getTweetId());
+//		queuedSetMgr.removeSetItem(tweetItem.getTweetId());
+//		tweetItemList.remove(tweetItem);
 		tweetItemDAO.delete(tweetItem);
 		alertManager.success(String.format("Message with id %s was successfully deleted", tweetItem.getTweetId()));
 	}
 
 	@OnEvent(RecommendedTweetConstants.PUBLISH_TWEET_EVENT)
 	public void publish(TweetItem tweetItem) throws Exception {
-		curationSetMgr = RecommendedTweetDisplay.getCurationSetManager(getTempFileRootDir(),curationSetMgr);
-		queuedSetMgr = RecommendedTweetDisplay.getQueuedSetManager(getTempFileRootDir(),queuedSetMgr);	
-		curationSetMgr.removeSetItem(tweetItem.getTweetId());
-		queuedSetMgr.addSetItem(new SetItemImpl(tweetItem.getTweetId()));
+		// the ReccommendedTweetDisplay should have handled the set manager stuff
+//		curationSetMgr = RecommendedTweetDisplay.getCurationSetManager(getTempFileRootDir(),curationSetMgr);
+//		queuedSetMgr = RecommendedTweetDisplay.getQueuedSetManager(getTempFileRootDir(),queuedSetMgr);	
+//		curationSetMgr.removeSetItem(tweetItem.getTweetId());
+//		queuedSetMgr.addSetItem(new SetItemImpl(tweetItem.getTweetId()));
 		tweetItemDAO.update(tweetItem);
 		alertManager.success(String.format("Message with id %s was successfully selected to be published", tweetItem.getTweetId()));
 	}
 
 	@OnEvent(RecommendedTweetConstants.MEH_TWEET_EVENT)
 	public void meh(TweetItem tweetItem) throws Exception {
-		curationSetMgr = RecommendedTweetDisplay.getCurationSetManager(getTempFileRootDir(),curationSetMgr);
-		queuedSetMgr = RecommendedTweetDisplay.getQueuedSetManager(getTempFileRootDir(),queuedSetMgr);	
-		curationSetMgr.addSetItem(new SetItemImpl(tweetItem.getTweetId()));
-		queuedSetMgr.removeSetItem(tweetItem.getTweetId());
+		// the ReccommendedTweetDisplay should have handled the set manager stuff
+//		curationSetMgr = RecommendedTweetDisplay.getCurationSetManager(getTempFileRootDir(),curationSetMgr);
+//		queuedSetMgr = RecommendedTweetDisplay.getQueuedSetManager(getTempFileRootDir(),queuedSetMgr);	
+//		curationSetMgr.addSetItem(new SetItemImpl(tweetItem.getTweetId()));
+//		queuedSetMgr.removeSetItem(tweetItem.getTweetId());
 		tweetItemDAO.update(tweetItem);
+		alertManager.success(String.format("Message with id %s was successfully meh'd", tweetItem.getTweetId()));
 	}
 	
 	@OnEvent(RecommendedTweetConstants.SHORTEN_URL_EVENT)
-	public TweetItem shortenUrl(TweetItem tweetItem) {
+	public TweetItem shortenUrl(TweetItem tweetItem) throws Exception {
 		tweetItem.setShortenedUrl(shortenUrlUsingBitly(tweetItem.getUrl()));
 		tweetItemDAO.update(tweetItem);
 		return tweetItem;
 	}
 
 	@OnEvent(RecommendedTweetConstants.LOAD_TWEET_EVENT)
-	public TweetItem load(String id) {
+	public TweetItem load(String id) throws Exception {
 		return tweetItemDAO.findById(id);
 	}
 	

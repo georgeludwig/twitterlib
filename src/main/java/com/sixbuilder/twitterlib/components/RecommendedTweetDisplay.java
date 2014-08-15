@@ -19,9 +19,9 @@ import com.georgeludwigtech.common.setmanager.FileSystemSetManagerImpl;
 import com.georgeludwigtech.common.setmanager.SetItemImpl;
 import com.georgeludwigtech.common.setmanager.SetManager;
 import com.georgeludwigtech.common.util.SerializableRecordHelper;
+import com.sixbuilder.datatypes.twitter.TweetItem;
 import com.sixbuilder.twitterlib.RecommendedTweetConstants;
 import com.sixbuilder.twitterlib.helpers.HolderComponentEventCallback;
-import com.sixbuilder.twitterlib.helpers.TweetItem;
 
 /**
  * A component that shows the recommended tweets, curating, publishing and published.

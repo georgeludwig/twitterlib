@@ -14,9 +14,9 @@ import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.json.JSONObject;
 import org.apache.tapestry5.services.javascript.JavaScriptSupport;
 
+import com.sixbuilder.datatypes.twitter.TweetItem;
 import com.sixbuilder.twitterlib.RecommendedTweetConstants;
 import com.sixbuilder.twitterlib.helpers.HolderComponentEventCallback;
-import com.sixbuilder.twitterlib.helpers.TweetItem;
 
 /**
  * Component that renders a tweet to be curated or published, plus triggers some events.
@@ -60,7 +60,7 @@ public class RecommendedTweet implements ClientElement {
 		List<String> hashtags;
 		if (hashtagsAsSingleString != null) {
 			hashtags = new ArrayList<String>();
-			final String[] strings = hashtagsAsSingleString.split("[\\d]+");
+			final String[] strings = hashtagsAsSingleString.split("[\\s]+");
 			for (String string : strings) {
 				string = string.trim();
 				if (string.length() > 0) {
