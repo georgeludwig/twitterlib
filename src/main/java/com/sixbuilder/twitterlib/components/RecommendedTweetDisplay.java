@@ -43,6 +43,10 @@ public class RecommendedTweetDisplay {
 	
 	private static final Object[] EMPTY_OBJECT_ARRAY = new Object[0];
 	
+	@Parameter
+	@Property
+	private String queueId;
+	
 	@InjectComponent
 	private Zone curateZone;
 	

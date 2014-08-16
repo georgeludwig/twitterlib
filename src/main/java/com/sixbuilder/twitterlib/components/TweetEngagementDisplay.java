@@ -8,15 +8,18 @@ import org.apache.tapestry5.alerts.AlertManager;
 import org.apache.tapestry5.annotations.Cached;
 import org.apache.tapestry5.annotations.Events;
 import org.apache.tapestry5.annotations.InjectComponent;
+import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Persist;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.corelib.components.Zone;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.ajax.AjaxResponseRenderer;
+import org.lightcouch.NoDocumentException;
 
 import com.sixbuilder.twitterlib.TweetEngagementConstants;
 import com.sixbuilder.twitterlib.helpers.HolderComponentEventCallback;
 import com.sixbuilder.twitterlib.helpers.Tweet;
+import com.sixbuilder.twitterlib.services.QueueManager;
 
 /**
  * Component that shows the tweet actions and queue. 
@@ -62,6 +65,21 @@ public class TweetEngagementDisplay {
 	
 	@Inject
 	private ComponentResources resources;
+	
+	@Parameter
+	@Property
+	private String queueId;
+
+	@Inject
+	private QueueManager queueManager;
+	
+	void onActivate() {
+		try {
+			queueManager.get(queueId);
+		} catch (NoDocumentException ignore) {
+			queueManager.create(queueId);
+		}
+	}
 	
 	void setupRender() {
 		if (actions == null || actions.isEmpty()) {

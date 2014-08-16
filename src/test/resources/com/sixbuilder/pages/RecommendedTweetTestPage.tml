@@ -6,6 +6,7 @@
 
 <head>
     <link rel="stylesheet" type="text/css" href="${context:/layout/RecommendedTweetTestPage.css}"/>
+     <link rel="stylesheet" type="text/css" href="${context:/layout/Queue.css}"/>
 </head>
 <br />
 <h1>Recommended Tweet</h1>

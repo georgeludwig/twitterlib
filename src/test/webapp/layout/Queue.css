@@ -1,3 +1,9 @@
+.radio span {
+/*	position: absolute;
+ 	left: 120px;
+	top: 108px; */
+}
+
 .queue-settings select {
   display: inline;
   width: 70px;
