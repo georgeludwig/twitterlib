@@ -9,7 +9,6 @@
 <ul>
 	<li><t:pagelink page="RecommendedTweetTestPage">Tweet Recommender</t:pagelink></li>
 	<li><t:pagelink page="TweetEngagementTestPage">Tweet Engagement</t:pagelink></li>
-	<li><t:pagelink page="QueueTestPage">Queue Manager</t:pagelink></li>
 </ul>
 <br />
 <br />
