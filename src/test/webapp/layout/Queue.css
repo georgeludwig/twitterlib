@@ -1,7 +1,34 @@
-.radio span {
-/*	position: absolute;
+/* span containing ASAP text */ 
+span[data-reactid=".0.3.1.0.0.1.1.1"] {
+	position: absolute;
  	left: 120px;
-	top: 108px; */
+	top: 108px;
+}
+
+/* span containing Random Every text */ 
+span[data-reactid=".0.3.1.0.1.1.1.1"] {
+	position: absolute;
+ 	left: 120px;
+	top: 207px; 
+}
+
+/* first spinner for random */ 
+div[data-reactid=".0.3.1.0.1.1.1.2"] {
+	position: absolute;
+ 	left: 210px;
+}
+
+/* span containing to text */ 
+span[data-reactid=".0.3.1.0.1.1.1.3"] {
+	position: absolute;
+ 	left: 298px;
+	top: 207px; 
+}
+
+/* second spinner for random */ 
+div[data-reactid=".0.3.1.0.1.1.1.4"] {
+	position: absolute;
+ 	left: 318px;
 }
 
 .queue-settings select {
