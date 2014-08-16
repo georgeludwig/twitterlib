@@ -50,7 +50,9 @@
 				
 				<span class="tweetDeleteLink">
 					<a href="#" t:type="EventLink" t:event="delete" t:context="tweet.tweetId" t:zone="^">
-						<img src="${asset:classpath:com/sixbuilder/twitterlib/components/closeButton.png}" height="25" width="25"/>
+						<i t:type="twitterlib/FontAwesomeIcon" t:name="fa-times" />
+						<i t:type="twitterlib/FontAwesomeIcon" t:name="fa-times-circle" />
+						<!-- <img src="${asset:classpath:com/sixbuilder/twitterlib/components/closeButton.png}" height="25" width="25"/>  -->	
 					</a>
 				</span>
 				

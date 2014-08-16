@@ -1,32 +1,33 @@
 /* START OF COMMON.CSS */
-
-#curateZone ul, #publishingZone ul, #actionZone ul, #queueZone ul,
-#curateZone ul > li, #publishingZone ul > li, #actionZone ul > li, #queueZone ul > li{
+#curateZone ul,#publishingZone ul,#actionZone ul,#queueZone ul,#curateZone ul>li,#publishingZone ul>li,#actionZone ul>li,#queueZone ul>li
+	{
 	margin: 0;
 	padding: 0;
 	list-style-type: none;
 }
 
-#curateZone, #actionsZone {
+#curateZone,#actionsZone {
 	/* margin-right: 50px; */
+	
 }
 
-#curateZone, #publishingZone, #actionZone, #queueZone {
+#curateZone,#publishingZone,#actionZone,#queueZone {
 	/*display: table-cell; */
 	/* border: solid black 1px; */
+	
 }
 
 div.displayTable {
 	display: table;
 }
 
-p, ol, ul {
-    line-height: inherit;
-    clear: none;
+p,ol,ul {
+	line-height: inherit;
+	clear: none;
 }
 
 div.tweetEngagement {
-/*	width: 375px; */
+	/*	width: 375px; */
 	margin: 0;
 	clear: both;
 	top: 0px;
@@ -58,47 +59,45 @@ p.tweetCharacterCount {
 /* END OF COMMON.CSS */
 
 /* START SIXBUILDER GENERAL */
-
 html {
-    height: 100%;
+	height: 100%;
 }
 
 body {
-    margin: 0;
-    background: #FFFFFF;
-    font-family: Arial, Helvetica, sans-serif !important;
-    color: #626262;
-    height: 100%;
+	margin: 0;
+	background: #FFFFFF;
+	font-family: Arial, Helvetica, sans-serif !important;
+	color: #626262;
+	height: 100%;
 }
 
 form {
-    margin: 0;
-    padding: 0;
+	margin: 0;
+	padding: 0;
 }
 
 input {
-    padding: 5px;
-    background: #FEFEFE url( images/img13.gif ) repeat-x;
-    border: 1px solid #626262;
-    font: normal 1em Arial, Helvetica, sans-serif;
+	padding: 5px;
+	background: #FEFEFE url( images/img13.gif ) repeat-x;
+	border: 1px solid #626262;
+	font: normal 1em Arial, Helvetica, sans-serif;
 }
 
-
 h1 {
-    letter-spacing: -1px;
-    font-size: 2.2em;
-    font-family: Arial, Helvetica, sans-serif;
+	letter-spacing: -1px;
+	font-size: 2.2em;
+	font-family: Arial, Helvetica, sans-serif;
 }
 
 h2 {
-    letter-spacing: -1px;
-    font-size: 2em;
-    font-family: Arial, Helvetica, sans-serif;
+	letter-spacing: -1px;
+	font-size: 2em;
+	font-family: Arial, Helvetica, sans-serif;
 }
 
 h3 {
-    font-size: 1em;
-    font-family: Arial, Helvetica, sans-serif;
+	font-size: 1em;
+	font-family: Arial, Helvetica, sans-serif;
 }
 /* 
 a:link {
@@ -122,42 +121,38 @@ a:active {
 } */
 
 /* menu */
-
 .container {
-	width:800px !important;	
+	width: 800px !important;
 }
 
 .navContainer {
-	width:800px !important;	
+	width: 800px !important;
 }
 
 .navbar {
 	color: #FFFFFF !important;
 	height: 38px;
 	background-color: #2787C2;
-	margin-left:auto;
-	margin-right:auto;
+	margin-left: auto;
+	margin-right: auto;
 	border-bottom: 1px solid #95C4E1;
 }
 
-.navbar .nav > li > a:link,
-.navbar .nav > li > span > a:link {
+.navbar .nav>li>a:link,.navbar .nav>li>span>a:link {
 	color: #FFFFFF !important;
 }
 
-.navbar .nav > li > a:visited,
-.navbar .nav > li > span > a:visited {
+.navbar .nav>li>a:visited,.navbar .nav>li>span>a:visited {
 	color: #FFFFFF !important;
 }
 
-.navbar .nav > li > a:hover,
-.navbar .nav > li > span > a:hover {
+.navbar .nav>li>a:hover,.navbar .nav>li>span>a:hover {
 	color: #f68b28 !important;
 	text-decoration: none;
 }
 
 .navbar .nav {
-
+	
 }
 
 .navbar-fixed-top {
@@ -167,7 +162,7 @@ a:active {
 
 .divider-vertical {
 	background-color: #799EB6 !important;
-	border-right:1px solid #779DB4 !important;
+	border-right: 1px solid #779DB4 !important;
 	position: relative;
 	top: 0px;
 	height: 36px !important;
@@ -176,9 +171,9 @@ a:active {
 #pageTitle {
 	top: 11px;
 	left: -25px;
-	font-size:24px;
-	position:relative;
-	text-transform: lowercase;	
+	font-size: 24px;
+	position: relative;
+	text-transform: lowercase;
 }
 
 #titleMessage {
@@ -186,36 +181,41 @@ a:active {
 }
 
 #logo {
-	font-size:24px;
+	font-size: 24px;
 	position: relative;
 }
 
-.brand a:link {color:#FFFFFF;}      /* unvisited link */
-.brand a:visited {color:#FFFFFF;}  /* visited link */
+.brand a:link {
+	color: #FFFFFF;
+} /* unvisited link */
+.brand a:visited {
+	color: #FFFFFF;
+} /* visited link */
 .brand a:hover { /* mouse over link */
-	color:#FFFFFF;
-	text-decoration:none;
-	}  
-.brand a:active {color:#FFFFFF;}
+	color: #FFFFFF;
+	text-decoration: none;
+}
+
+.brand a:active {
+	color: #FFFFFF;
+}
 
 #waitMessage {
-	font-size:24px;
+	font-size: 24px;
 	position: relative;
-	top:-3px;
+	top: -3px;
 }
 
 img#gears {
-	position:relative;
-	left:1px;
+	position: relative;
+	left: 1px;
 	width: 25px;
 }
 
 #sixbmenu {
 	top: 1px;
-	float:right;
+	float: right;
 }
-
-
 
 .t-error-icon {
 	display: none;
@@ -226,10 +226,10 @@ img#gears {
 }
 
 .brand {
-	width:125px;
-	position:relative;
-	left:10px;
-	display:inline-block !important;
+	width: 125px;
+	position: relative;
+	left: 10px;
+	display: inline-block !important;
 }
 
 .dropdown {
@@ -238,9 +238,8 @@ img#gears {
 }
 
 .dropdown-menu {
-	min-width:100px !important;
+	min-width: 100px !important;
 }
-
 
 .disabledMenu {
 	color: lightgrey;
@@ -250,27 +249,27 @@ img#gears {
 }
 
 #imgSpan {
-	display:inline-block;
-	position:relative;
+	display: inline-block;
+	position: relative;
 	top: 2px;
 	left: -4px;
-	float:right;
+	float: right;
 }
 
 #userimage {
 	height: 32px;
 	width: 32px;
-	padding:0px 0px 0px 0px;
+	padding: 0px 0px 0px 0px;
 	border: 1px solid #2787C2;
-	border-radius:.5em;
+	border-radius: .5em;
 }
 
 #settings {
-	cursor:pointer;
+	cursor: pointer;
 }
 
 #settingsAsterisk {
-	font-size: 20px;	
+	font-size: 20px;
 }
 
 #settingsImage {
@@ -279,7 +278,7 @@ img#gears {
 }
 
 #settingsImage:hover {
-	background-image:url('images/settingsHover.png') ;	
+	background-image: url('images/settingsHover.png');
 }
 
 #settingslist {
@@ -288,55 +287,52 @@ img#gears {
 }
 
 /* Page */
-
 .credit {
-	margin-top:10px;
-	margin-bottom:10px;
-	text-align:center;
+	margin-top: 10px;
+	margin-bottom: 10px;
+	text-align: center;
 }
 
-DIV.t-beaneditor
-{
+DIV.t-beaneditor {
 	border: 2px outset royalblue !important;
 }
 
-.t-beaneditor-row
-{
+.t-beaneditor-row {
 	background: white;
 }
 
 fieldset.sixb {
 	width: 780px;
-	border:1px solid #2787c2;
-	border-radius:.5em;
-	padding:3px 10px 10px 10px;
+	border: 1px solid #2787c2;
+	border-radius: .5em;
+	padding: 3px 10px 10px 10px;
 	font-family: Arial, Helvetica, sans-serif !important;
-	margin-left:auto;
-	margin-right:auto;
+	margin-left: auto;
+	margin-right: auto;
 }
 
 legend.sixb {
 	margin-left: 5px;
-	text-align:left;
+	text-align: left;
 	font-size: 15px;
-	width:auto;
+	width: auto;
 	padding: 0px 4px;
-	border:1px solid #2787c2;
+	border: 1px solid #2787c2;
 	margin-bottom: 0px;
 	line-height: 20px;
-	border-radius:.25em;
+	border-radius: .25em;
 	font-family: Arial, Helvetica, sans-serif !important;
-	color:#f68b28;
+	color: #f68b28;
 }
 
 #waitAnimation {
-	position:relative;
-	left:375px:
+	position: relative;
+	left: 375px:
 }
 
 #formContainer {
-	margin-left:auto;
-	margin-right:auto;
+	margin-left: auto;
+	margin-right: auto;
 }
 
 .returnLink {
@@ -354,21 +350,21 @@ legend.sixb {
 }
 
 FORM {
-	z-index:0;   
+	z-index: 0;
 }
 
 DIV.t-beaneditor {
-   font-size: 14px;
-   font-family: Arial, Helvetica, sans-serif !important;
-   font-weight: normal;
+	font-size: 14px;
+	font-family: Arial, Helvetica, sans-serif !important;
+	font-weight: normal;
 }
 
 DIV.t-beaneditor-row LABEL {
-	position:relative;
-	top:5px;
+	position: relative;
+	top: 5px;
 }
 
-html > body div.t-error li {
+html>body div.t-error li {
 	margin-left: 20px !important;
 }
 
@@ -395,7 +391,7 @@ html > body div.t-error li {
 }
 
 .label-important {
-    background-color: #F68B28 !important;
+	background-color: #F68B28 !important;
 }
 
 .label-info {
@@ -436,22 +432,21 @@ input.error {
 }
 
 /* END SIXBUILDER GENERAL */
-
-#curateZone ul, #publishingZone ul, #actionZone ul, #queueZone ul,
-#curateZone ul > li, #publishingZone ul > li, #actionZone ul > li, #queueZone ul > li{
+#curateZone ul,#publishingZone ul,#actionZone ul,#queueZone ul,#curateZone ul>li,#publishingZone ul>li,#actionZone ul>li,#queueZone ul>li
+	{
 	margin: 0;
 	padding: 0;
 	list-style-type: none;
 }
 
-#curateZone, #publishingZone {
+#curateZone,#publishingZone {
 	margin-right: 50px;
 	width: 385px;
 }
 
-#curateZone, #publishingZone, #actionZone, #queueZone {
+#curateZone,#publishingZone,#actionZone,#queueZone {
 	display: table-cell;
-/*	width: 375px; */
+	/*	width: 375px; */
 }
 
 div.displayTable {
@@ -459,17 +454,16 @@ div.displayTable {
 }
 
 div.label {
-    font-size: 30px !important;
-    height: 30px;
-    padding-bottom: 5px;
-    text-align: center;
-    width: inherit;
+	font-size: 30px !important;
+	height: 30px;
+	padding-bottom: 5px;
+	text-align: center;
+	width: inherit;
 }
 
 /* START OF RECOMMENDEDTWEET.CSS */
-
 div.recommendedTweet {
-/*	width: 375px; */
+	/*	width: 375px; */
 	margin: 0;
 	clear: both;
 	top: 0px;
@@ -497,9 +491,8 @@ div.tweetPublishColumn {
 div.recommendedTweetSummaryView div.tweetPublishColumn input {
 	margin-bottom: 10px;
 } */
-
-div.recommendedTweetSummaryView div.tweetSummaryColumn,
-div.recommendedTweetSummaryView div.tweetDetailColumn {
+div.recommendedTweetSummaryView div.tweetSummaryColumn,div.recommendedTweetSummaryView div.tweetDetailColumn
+	{
 	padding: 0px;
 	margin-top: 0px;
 	/*background-color: blue;*/
@@ -520,14 +513,12 @@ div.recommendedTweetSummaryView div.tweetSnapshotColumn {
 	/*background-color: green;*/
 }
 
-div.recommendedTweetSummaryView div.tweetPublishColumn,
-div.recommendedTweetSummaryView div.tweetSummaryColumn,
-div.recommendedTweetSummaryView div.tweetSnapshotColumn {
+div.recommendedTweetSummaryView div.tweetPublishColumn,div.recommendedTweetSummaryView div.tweetSummaryColumn,div.recommendedTweetSummaryView div.tweetSnapshotColumn
+	{
 	display: table-cell;
 	margin-left: 0;
 	margin-right: 0;
 }
-
 
 div.recommendedTweet[data-mode=summary]:hover span.tweetDeleteLink {
 	display: inline;
@@ -536,12 +527,27 @@ div.recommendedTweet[data-mode=summary]:hover span.tweetDeleteLink {
 div.recommendedTweet span.tweetDeleteLink {
 	display: none;
 	position: absolute;
-	right: -0px;
-	top: -0px;
+	right: -5px;
+	top: -2px;
 	margin: 0px;
 	margin: 0px;
 	width: 25px;
 	height: 25px;
+	font-size: 25px;
+}
+
+.fa-times-circle {
+	color: red;
+	position: absolute;
+	top: -5px;
+	left: 8px;
+}
+
+.fa-times {
+	color: white;
+	position: absolute;
+	top: -6px;
+	left: 9px;
 }
 
 div.recommendedTweet div.tweetUrl p {
@@ -550,8 +556,8 @@ div.recommendedTweet div.tweetUrl p {
 	overflow: hidden;
 }
 
-div.recommendedTweet[data-mode=detail] div.tweetDetailColumn,
-div.recommendedTweet[data-mode=summary] div.tweetSummaryColumn {
+div.recommendedTweet[data-mode=detail] div.tweetDetailColumn,div.recommendedTweet[data-mode=summary] div.tweetSummaryColumn
+	{
 	display: table-cell;
 }
 
@@ -559,9 +565,8 @@ div.recommendedTweet[data-mode=detail] div.tweetActionButtons {
 	display: block;
 }
 
-div.recommendedTweet[data-mode=summary] div.tweetDetailColumn,
-div.recommendedTweet[data-mode=summary] div.tweetActionButtons, 
-div.recommendedTweet[data-mode=detail] div.tweetSummaryColumn {
+div.recommendedTweet[data-mode=summary] div.tweetDetailColumn,div.recommendedTweet[data-mode=summary] div.tweetActionButtons,div.recommendedTweet[data-mode=detail] div.tweetSummaryColumn
+	{
 	display: none;
 }
 
@@ -570,7 +575,8 @@ div.recommendedTweet div.tweetDetailColumn div.tweetText textarea {
 	/* min-height: 40px; */
 }
 
-div.recommendedTweet div.tweetEditSecondRow, div.recommendedTweet div.tweetUrlRow {
+div.recommendedTweet div.tweetEditSecondRow,div.recommendedTweet div.tweetUrlRow
+	{
 	float: left;
 	width: 250px;
 	padding: 1px !important;
@@ -602,25 +608,25 @@ div.recommendedTweet div.tweetUrlRow input.tweetUrl {
 	overflow: hidden;
 }
 
-div.recommendedTweet input.tweetShorten,
-div.recommendedTweet input.tweetSave,
-div.recommendedTweet input.tweetCancel {
+div.recommendedTweet input.tweetShorten,div.recommendedTweet input.tweetSave,div.recommendedTweet input.tweetCancel
+	{
 	width: auto;
 }
 
 div.recommendedTweet div.tweetActionButtons {
-	position: absolute:
-	width: 70px;
+	position: absolute: 
+	width:  70px;
 }
 
-div.recommendedTweet input.tweetSave,
-div.recommendedTweet input.tweetCancel {
+div.recommendedTweet input.tweetSave,div.recommendedTweet input.tweetCancel
+	{
 	margin-left: 0.5em;
 	font-size: 12px;
 }
 
 /* Icon from http://icondock.com/free/mini-pixel-icons */
 div.recommendedTweet .tweetAttachSnapshot {
+	
 }
 
 /* twitter bird icon for "tweet" button */
@@ -632,24 +638,17 @@ div.recommendedTweet .tweetAttachSnapshot {
 
 /* END OF RECOMMENDEDTWEET.CSS */
 
-
-
-
 /* from home.css */
 .mycenter {
 	display: inline-block;
-  	vertical-align: middle;
-  	line-height: normal;      
+	vertical-align: middle;
+	line-height: normal;
 }
 
-
-
-
 /* my hand stuff */
-
 .messages {
-	position: relative; 
-	vertical-align:top;
+	position: relative;
+	vertical-align: top;
 	width: 385px;
 }
 
@@ -669,22 +668,21 @@ div.recommendedTweet .tweetAttachSnapshot {
 	padding-left: 2px;
 }
 
-
 /*td {
  border: 1px solid black;
 } */
-
 .tweetText {
 	/* border: 1px solid; */
 	/* width: 281px; */
 	/* border-radius: 5px; */
+	
 }
 
 .displayTweet {
 	overflow: hidden;
 	white-space: nowrap;
 	text-overflow: ellipsis;
-	width:296px;
+	width: 296px;
 	padding-left: 3px;
 	padding-top: 5px;
 }
@@ -694,7 +692,6 @@ div.recommendedTweet .tweetAttachSnapshot {
 	left: -2px;
 }
 */
-
 .editableTweet {
 	width: 297px;
 	position: relative;
@@ -728,7 +725,7 @@ div.recommendedTweet .tweetAttachSnapshot {
 	overflow: hidden;
 	white-space: nowrap;
 	text-overflow: ellipsis;
-	width:296px;
+	width: 296px;
 	padding-left: 3px;
 	color: #3a87ad;
 }
@@ -757,7 +754,7 @@ div.recommendedTweet .tweetAttachSnapshot {
 	position: relative;
 	top: 0px;
 	padding: 0px;
-	height:20px;
+	height: 20px;
 	font-size: 13px;
 }
 
@@ -786,7 +783,7 @@ div.tweetUrlRow .tweetUrl {
 }
 
 div.tweetUrlRow {
-	width:300px !important;
+	width: 300px !important;
 	top: 9px;
 }
 
@@ -796,7 +793,7 @@ div.tweetUrlRow {
 
 .recommendedTweet[data-mode=summary] {
 	border: 1px solid #2787c2;
-	border-radius:8px;
+	border-radius: 8px;
 	margin-top: 2px;
 }
 
@@ -804,7 +801,7 @@ div.tweetUrlRow {
 	/*left: 2px;*/
 	position: relative;
 	border: 1px solid #f68b28;
-	border-radius:8px;
+	border-radius: 8px;
 	margin-top: 25px;
 	margin-bottom: 25px;
 }
