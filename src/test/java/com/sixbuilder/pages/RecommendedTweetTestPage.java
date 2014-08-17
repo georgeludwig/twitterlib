@@ -12,7 +12,6 @@ import org.apache.tapestry5.annotations.Persist;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.ajax.AjaxResponseRenderer;
-import org.lightcouch.NoDocumentException;
 
 import com.georgeludwigtech.common.setmanager.SetItem;
 import com.georgeludwigtech.common.setmanager.SetItemImpl;
@@ -24,7 +23,6 @@ import com.sixbuilder.helpers.TestPage;
 import com.sixbuilder.twitterlib.RecommendedTweetConstants;
 import com.sixbuilder.twitterlib.components.RecommendedTweet;
 import com.sixbuilder.twitterlib.components.RecommendedTweetDisplay;
-import com.sixbuilder.twitterlib.services.QueueManager;
 import com.sixbuilder.twitterlib.services.TweetItemDAO;
 
 /**
