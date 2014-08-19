@@ -84,6 +84,10 @@ public class Queue {
     JsonObject updateQueue(String queueId){
         JsonObject queue = (JsonObject) new JsonParser().parse(request.getParameter("queue"));
         queueManager.update(queueId, queue);
+        // TODO retrieve current queue items
+        // TODO re-calculate target date for all queue items
+        // based on latest queue settings
+        // TODO store updated queue items
         return success(queue);
     }
 

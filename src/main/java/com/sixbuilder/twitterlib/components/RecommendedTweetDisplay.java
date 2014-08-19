@@ -85,6 +85,7 @@ public class RecommendedTweetDisplay {
 		SetManager qSm = getQueuedSetManager(tempFileRootDir,queuedSetMgr);
 		cSm.removeSetItem(tweetItem.getTweetId());
 		qSm.removeSetItem(tweetItem.getTweetId());
+		// TODO remove corresponding QueueItem from queue, if it exists
 		ajaxResponseRenderer.addRender(curateZone);
 		ajaxResponseRenderer.addRender(publishingZone);
 	}
@@ -97,6 +98,8 @@ public class RecommendedTweetDisplay {
 		SetManager qSm = getQueuedSetManager(tempFileRootDir,queuedSetMgr);
 		cSm.removeSetItem(tweetItem.getTweetId());
 		qSm.addSetItem(new SetItemImpl(tweetItem.getTweetId()));
+		// TODO calculate target time based on queue settings
+		// TODO add a QueueItem to the queue
 		ajaxResponseRenderer.addRender(curateZone);
 		ajaxResponseRenderer.addRender(publishingZone);
 	}
@@ -108,6 +111,7 @@ public class RecommendedTweetDisplay {
 		SetManager qSm = getQueuedSetManager(tempFileRootDir,queuedSetMgr);
 		cSm.addSetItem(new SetItemImpl(tweetItem.getTweetId()));
 		qSm.removeSetItem(tweetItem.getTweetId());
+		// TODO remove corresponding QueueItem from queue, if it exists
 		ajaxResponseRenderer.addRender(curateZone);
 		ajaxResponseRenderer.addRender(publishingZone);
 	}
