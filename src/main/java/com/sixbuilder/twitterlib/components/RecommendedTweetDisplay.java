@@ -19,9 +19,11 @@ import com.georgeludwigtech.common.setmanager.FileSystemSetManagerImpl;
 import com.georgeludwigtech.common.setmanager.SetItemImpl;
 import com.georgeludwigtech.common.setmanager.SetManager;
 import com.georgeludwigtech.common.util.SerializableRecordHelper;
+import com.google.gson.JsonObject;
 import com.sixbuilder.datatypes.twitter.TweetItem;
 import com.sixbuilder.twitterlib.RecommendedTweetConstants;
 import com.sixbuilder.twitterlib.helpers.HolderComponentEventCallback;
+import com.sixbuilder.twitterlib.services.QueueManager;
 
 /**
  * A component that shows the recommended tweets, curating, publishing and published.
@@ -44,9 +46,16 @@ public class RecommendedTweetDisplay {
 	private static final Object[] EMPTY_OBJECT_ARRAY = new Object[0];
 	
 	@Parameter
-	@Property
 	private String queueId;
 	
+	public String getQueueId() {
+		return queueId;
+	}
+
+	public void setQueueId(String queueId) {
+		this.queueId = queueId;
+	}
+
 	@InjectComponent
 	private Zone curateZone;
 	
@@ -90,6 +99,9 @@ public class RecommendedTweetDisplay {
 		ajaxResponseRenderer.addRender(publishingZone);
 	}
 
+	@Inject
+	private QueueManager queueManager;
+	
 	@OnEvent(RecommendedTweetConstants.PUBLISH_TWEET_EVENT)
 	public void publish(TweetItem tweetItem) throws Exception {
 		triggerEvent(RecommendedTweetConstants.PUBLISH_TWEET_EVENT, resources.getContainerResources());
@@ -99,7 +111,8 @@ public class RecommendedTweetDisplay {
 		cSm.removeSetItem(tweetItem.getTweetId());
 		qSm.addSetItem(new SetItemImpl(tweetItem.getTweetId()));
 		// TODO calculate target time based on queue settings
-		// TODO add a QueueItem to the queue
+		JsonObject queue=queueManager.get(queueId);
+		// TODO add a QueueItem to the cloudant queue
 		ajaxResponseRenderer.addRender(curateZone);
 		ajaxResponseRenderer.addRender(publishingZone);
 	}
