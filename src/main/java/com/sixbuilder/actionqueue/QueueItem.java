@@ -1,5 +1,8 @@
 package com.sixbuilder.actionqueue;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 /**
  * A class representing a queued action
  * 
@@ -8,39 +11,30 @@ package com.sixbuilder.actionqueue;
  */
 public class QueueItem {
 	
+	private static ObjectMapper mapper = new ObjectMapper();
+	
+	public static QueueItem fromJson(String jsonString) throws Exception {
+		return mapper.readValue(jsonString, QueueItem.class);
+	}
+	
+	public String toJson() throws JsonProcessingException {
+		return mapper.writeValueAsString(this);
+	}
+		
 	/*
-	 * possible value for queueId
+	 * primary DB id for this item 
 	 */
-	public static final String QUEUE_CURATION="QUEUE_CURATION";
-	/*
-	 * possible value for queueId
-	 */
-	public static final String QUEUE_ENGAGEMENT="QUEUE_ENGAGEMENT";
-	/*
-	 * possible value for status 
-	 * the queue item has been created, but has not yet been allocated to
-	 */
-	public static final String STATUS_PENDING="STATUS_PENDING";
-	/*
-	 * possible value for status 
-	 * the queue item has been successfully proccessed
-	 * 
-	 */
-	public static final String STATUS_INPROCESS="STATUS_INPROCESS";
-	/*
-	 * possible value for status 
-	 */
-	public static final String STATUS_COMPLETE="STATUS_COMPLETE";
+	private String _id;
 	
 	/*
-	 * primary id for this item 
+	 * document version
 	 */
-	private String id;
+	private String _rev;
 	
 	/*
 	 * which queue is this, i.e. curation queue
 	 */
-	private String queueId;
+	private QueueId queueId;
 	
 	/*
 	 * id of the user
@@ -58,23 +52,32 @@ public class QueueItem {
 	private long targetDate;
 	
 	/*
-	 * the status o this queue item
+	 * the status of this queue item
 	 */
-	private String status;
+	private QueueItemStatus status;
 
-	public String getId() {
-		return id;
+	
+	public String get_id() {
+		return _id;
 	}
 
-	public void setId(String id) {
-		this.id = id;
+	public void set_id(String _id) {
+		this._id = _id;
 	}
 
-	public String getQueueId() {
+	public String get_rev() {
+		return _rev;
+	}
+
+	public void set_rev(String _rev) {
+		this._rev = _rev;
+	}
+
+	public QueueId getQueueId() {
 		return queueId;
 	}
 
-	public void setQueueId(String queueId) {
+	public void setQueueId(QueueId queueId) {
 		this.queueId = queueId;
 	}
 
@@ -102,14 +105,12 @@ public class QueueItem {
 		this.targetDate = targetDate;
 	}
 
-	public String getStatus() {
+	public QueueItemStatus getStatus() {
 		return status;
 	}
 
-	public void setStatus(String status) {
+	public void setStatus(QueueItemStatus status) {
 		this.status = status;
 	}
-	
-	
 	
 }

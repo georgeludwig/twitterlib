@@ -1,4 +1,5 @@
- <project
+
+<project
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0">
 	<modelVersion>4.0.0</modelVersion>
@@ -89,6 +90,12 @@
 		</dependency>
 
 		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+			<version>2.3.3</version>
+		</dependency>
+
+		<dependency>
 			<groupId>org.lightcouch</groupId>
 			<artifactId>lightcouch</artifactId>
 			<version>0.1.2</version>
@@ -166,10 +173,8 @@
 	<repositories>
 
 		<!-- This repository is only needed when the Tapestry version is a preview 
-			release, rather than a final release. 
-		<repository>
-			<id>apache-staging</id>
-		</repository> -->
+			release, rather than a final release. <repository> <id>apache-staging</id> 
+			</repository> -->
 		<repository>
 			<id>tapestry5-jquery-repo</id>
 			<url>http://nexus.devlab722.net/nexus/content/repositories/releases</url>
