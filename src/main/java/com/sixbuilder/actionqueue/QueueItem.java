@@ -1,5 +1,10 @@
 package com.sixbuilder.actionqueue;
 
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
+
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -9,6 +14,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  * @author George
  *
  */
+@JsonIgnoreProperties({"id", "revision"})
+@JsonInclude(Include.NON_NULL) 
 public class QueueItem {
 	
 	private static ObjectMapper mapper = new ObjectMapper();
@@ -22,14 +29,16 @@ public class QueueItem {
 	}
 		
 	/*
-	 * primary DB id for this item 
+	 * primary id for this item 
 	 */
-	private String _id;
+	@JsonProperty("_id")
+	private String id;
 	
 	/*
 	 * document version
 	 */
-	private String _rev;
+	@JsonProperty("_rev")
+	private String revision;
 	
 	/*
 	 * which queue is this, i.e. curation queue
@@ -57,20 +66,20 @@ public class QueueItem {
 	private QueueItemStatus status;
 
 	
-	public String get_id() {
-		return _id;
+	public String getId() {
+		return id;
 	}
 
-	public void set_id(String _id) {
-		this._id = _id;
+	public void setId(String id) {
+		this.id = id;
 	}
 
-	public String get_rev() {
-		return _rev;
+	public String getRevision() {
+		return revision;
 	}
 
-	public void set_rev(String _rev) {
-		this._rev = _rev;
+	public void setRevision(String revision) {
+		this.revision = revision;
 	}
 
 	public QueueId getQueueId() {
