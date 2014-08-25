@@ -33,8 +33,8 @@ public class QueueItemSerializationTest {
 		try {
 
 			HttpClient httpClient = new StdHttpClient.Builder()
-					.host("6btest.cloudant.com").port(443).username("6btest")
-					.password("6btesttacofranchisescope").enableSSL(true)
+					.host(AbstractTest.DBACCOUNT+".cloudant.com").port(443).username(AbstractTest.DBACCOUNT)
+					.password(AbstractTest.DBPWD).enableSSL(true)
 					.relaxedSSLSettings(true).build();
 
 			CouchDbInstance dbInstance = new StdCouchDbInstance(httpClient);
