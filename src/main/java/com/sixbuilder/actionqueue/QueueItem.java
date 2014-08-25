@@ -1,10 +1,7 @@
 package com.sixbuilder.actionqueue;
 
-import org.codehaus.jackson.annotate.JsonIgnoreProperties;
+import org.ektorp.support.CouchDbDocument;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonInclude.Include;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -14,10 +11,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  * @author George
  *
  */
-@JsonIgnoreProperties({"id", "revision"})
-@JsonInclude(Include.NON_NULL) 
-public class QueueItem {
+public class QueueItem extends CouchDbDocument {
 	
+	private static final long serialVersionUID = 1L;
+
 	private static ObjectMapper mapper = new ObjectMapper();
 	
 	public static QueueItem fromJson(String jsonString) throws Exception {
@@ -27,18 +24,6 @@ public class QueueItem {
 	public String toJson() throws JsonProcessingException {
 		return mapper.writeValueAsString(this);
 	}
-		
-	/*
-	 * primary id for this item 
-	 */
-	@JsonProperty("_id")
-	private String id;
-	
-	/*
-	 * document version
-	 */
-	@JsonProperty("_rev")
-	private String revision;
 	
 	/*
 	 * which queue is this, i.e. curation queue
@@ -66,22 +51,6 @@ public class QueueItem {
 	private QueueItemStatus status;
 
 	
-	public String getId() {
-		return id;
-	}
-
-	public void setId(String id) {
-		this.id = id;
-	}
-
-	public String getRevision() {
-		return revision;
-	}
-
-	public void setRevision(String revision) {
-		this.revision = revision;
-	}
-
 	public QueueId getQueueId() {
 		return queueId;
 	}
