@@ -31,7 +31,7 @@ public class QueueItemProcessor implements Runnable {
 				// get the pending tweets file
 				PendingTweetFileUtil util = getPendingTweetFileUtil(accountsRoot, accountName);
 				// get the Queued set manager
-				
+				// TODO
 				// get the twitterUtil
 				TwitterUtil tUtil=getTwitterUtil(accountsRoot, accountName);
 				// get the tweet
@@ -43,7 +43,7 @@ public class QueueItemProcessor implements Runnable {
 				// publish the tweet
 				tUtil.setStatus(tItem.getSummary());
 				// update the queue set manager
-				
+				// TODO
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
