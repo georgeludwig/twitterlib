@@ -45,6 +45,7 @@ public class QueueItemSerializationTest {
 
 			long now = System.currentTimeMillis();
 			QueueItem qi = new QueueItem();
+			qi.setId("myID");
 			qi.setDateCreated(now);
 			qi.setQueueId(QueueId.CURATION);
 			qi.setStatus(QueueItemStatus.PENDING);

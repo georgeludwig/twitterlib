@@ -43,7 +43,7 @@ public class QueueItemProcessor implements Runnable {
 				// publish the tweet
 				tUtil.setStatus(tItem.getSummary());
 				// update the queue set manager
-				// TODO
+				// TODO 
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
