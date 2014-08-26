@@ -18,6 +18,7 @@ import com.georgeludwigtech.common.setmanager.SetItemImpl;
 import com.georgeludwigtech.common.setmanager.SetManager;
 import com.georgeludwigtech.common.util.FileUtil;
 import com.georgeludwigtech.common.util.SerializableRecordHelper;
+import com.sixbuilder.actionqueue.QueueItemProcessor;
 import com.sixbuilder.datatypes.twitter.TweetItem;
 import com.sixbuilder.helpers.TestPage;
 import com.sixbuilder.twitterlib.RecommendedTweetConstants;
@@ -167,7 +168,7 @@ public class RecommendedTweetTestPage {
 			String testRoot = TestPage.getTestRoot();
 			if (testRoot.endsWith(SerializableRecordHelper.FILE_SEPARATOR))
 				testRoot = testRoot + SerializableRecordHelper.FILE_SEPARATOR;
-			File f = new File(testRoot + "curationSetManager");
+			File f = new File(testRoot + QueueItemProcessor.CURATION_SET_MANAGER_ROOT);
 			if (!f.exists())
 				f.mkdirs();
 			setManagerRootDir = f;

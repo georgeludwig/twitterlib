@@ -20,6 +20,7 @@ import com.georgeludwigtech.common.setmanager.SetItemImpl;
 import com.georgeludwigtech.common.setmanager.SetManager;
 import com.georgeludwigtech.common.util.SerializableRecordHelper;
 import com.google.gson.JsonObject;
+import com.sixbuilder.actionqueue.QueueItemProcessor;
 import com.sixbuilder.datatypes.twitter.TweetItem;
 import com.sixbuilder.twitterlib.RecommendedTweetConstants;
 import com.sixbuilder.twitterlib.helpers.HolderComponentEventCallback;
@@ -37,9 +38,6 @@ import com.sixbuilder.twitterlib.services.QueueManager;
 	RecommendedTweetConstants.LOAD_TWEET_EVENT,
 	RecommendedTweetConstants.MEH_TWEET_EVENT})
 public class RecommendedTweetDisplay {
-	
-	public static final String CURATION_SET_MANAGER_NAME="curationSetMgr";
-	public static final String QUEUED_SET_MANAGER_NAME="queuedSetMgr";
 	
 	public static final String UPDATE_ALL_LISTS = "updateAllLists";
 	
@@ -111,7 +109,7 @@ public class RecommendedTweetDisplay {
 		cSm.removeSetItem(tweetItem.getTweetId());
 		qSm.addSetItem(new SetItemImpl(tweetItem.getTweetId()));
 		// TODO calculate target time based on queue settings
-		JsonObject queue=queueManager.get(queueId);
+//		JsonObject queue=queueManager.get(queueId);
 		// TODO add a QueueItem to the cloudant queue
 		ajaxResponseRenderer.addRender(curateZone);
 		ajaxResponseRenderer.addRender(publishingZone);
@@ -132,12 +130,12 @@ public class RecommendedTweetDisplay {
 	SetManager curationSetMgr;
 	
 	public static SetManager getCurationSetManager(File tempFileRootDir, SetManager curationSetMgr) throws Exception {
-		synchronized(tempFileRootDir+CURATION_SET_MANAGER_NAME) {
+		synchronized(tempFileRootDir+QueueItemProcessor.CURATION_SET_MANAGER_NAME) {
 			if(curationSetMgr==null) {
 				String s=tempFileRootDir.getAbsolutePath();
 				if(!s.endsWith(SerializableRecordHelper.FILE_SEPARATOR))
 					s=s+SerializableRecordHelper.FILE_SEPARATOR;
-				s=s+CURATION_SET_MANAGER_NAME;
+				s=s+QueueItemProcessor.CURATION_SET_MANAGER_NAME;
 				SetManager sm=new FileSystemSetManagerImpl(new File(s));
 				curationSetMgr=sm;
 			}
@@ -148,12 +146,12 @@ public class RecommendedTweetDisplay {
 	SetManager queuedSetMgr;
 	
 	public static SetManager getQueuedSetManager(File tempFileRootDir, SetManager queuedSetMgr) throws Exception {
-		synchronized(tempFileRootDir+QUEUED_SET_MANAGER_NAME) {
+		synchronized(tempFileRootDir+QueueItemProcessor.QUEUED_SET_MANAGER_NAME) {
 			if(queuedSetMgr==null) {
 				String s=tempFileRootDir.getAbsolutePath();
 				if(!s.endsWith(SerializableRecordHelper.FILE_SEPARATOR))
 					s=s+SerializableRecordHelper.FILE_SEPARATOR;
-				s=s+QUEUED_SET_MANAGER_NAME;
+				s=s+QueueItemProcessor.QUEUED_SET_MANAGER_NAME;
 				SetManager sm=new FileSystemSetManagerImpl(new File(s));
 				queuedSetMgr=sm;
 			}

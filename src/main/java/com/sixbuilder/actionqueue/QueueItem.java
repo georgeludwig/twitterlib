@@ -35,6 +35,11 @@ public class QueueItem extends CouchDbDocument {
 	 */
 	private String userId;
 	
+	/**
+	 * the tweetId of the tweet in pendingTweetFileUtil
+	 */
+	private String tweetId;
+	
 	/*
 	 * the date that this queue item was created
 	 */
@@ -65,6 +70,14 @@ public class QueueItem extends CouchDbDocument {
 
 	public void setUserId(String userId) {
 		this.userId = userId;
+	}
+	
+	public String getTweetId() {
+		return tweetId;
+	}
+
+	public void setTweetId(String tweetId) {
+		this.tweetId = tweetId;
 	}
 	
 	public long getDateCreated() {

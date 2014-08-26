@@ -1,5 +1,6 @@
 package com.sixbuilder.services;
 
+import com.sixbuilder.actionqueue.AbstractTest;
 import com.sixbuilder.twitterlib.services.TweetItemDAO;
 import org.apache.tapestry5.SymbolConstants;
 import org.apache.tapestry5.ioc.MappedConfiguration;
@@ -51,14 +52,29 @@ public class AppModule
     }
     
     public static CouchDbClient buildCouchDbClient(){
-        CouchDbProperties properties = new CouchDbProperties()
-            .setDbName("test")
-            .setHost("tawus.cloudant.com")
-            .setProtocol("https")
-            .setPort(443)
-            .setUsername("coneryouldistabitstolder")
-            .setPassword("yPuMlWaQSSGN7KeA0tpxp64j");
+//        CouchDbProperties properties = new CouchDbProperties()
+//            .setDbName("test")
+//            .setHost("tawus.cloudant.com")
+//            .setProtocol("https")
+//            .setPort(443)
+//            .setUsername("coneryouldistabitstolder")
+//            .setPassword("yPuMlWaQSSGN7KeA0tpxp64j");
+    	
+    	CouchDbProperties properties = new CouchDbProperties()
+        .setDbName("test")
+        .setHost("6btest.cloudant.com")
+        .setProtocol("https")
+        .setPort(443)
+        .setUsername(AbstractTest.DBACCOUNT)
+        .setPassword(AbstractTest.DBPWD);
 
-        return new CouchDbClient(properties);
+    	CouchDbClient client= new CouchDbClient(properties);
+    	try {
+    		client.context().createDB("test");
+    	} catch(Exception e) {
+    		e.printStackTrace();
+    	}
+    	return client;
+     
     }
 }

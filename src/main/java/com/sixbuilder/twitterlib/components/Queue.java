@@ -15,6 +15,7 @@ import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.json.JSONObject;
 import org.apache.tapestry5.services.Request;
 import org.apache.tapestry5.services.javascript.JavaScriptSupport;
+import org.lightcouch.NoDocumentException;
 
 import javax.inject.Inject;
 
@@ -93,8 +94,16 @@ public class Queue {
 
     @OnEvent("get")
     JsonObject getQueue(String queueId){
-        JsonObject queue = queueManager.get(queueId);
-        return success(queue);
+    	try {
+	        JsonObject queue = queueManager.get(queueId);
+	        return success(queue);
+    	} catch(NoDocumentException e) {
+    		// create new document
+    		// TODO
+//    		JsonObject queue = queueManager.get(queueId);
+//	        return success(queue);
+    		return null;
+    	}
     }
 
     private JsonObject success(JsonObject queue) {
