@@ -19,7 +19,6 @@ import com.georgeludwigtech.common.setmanager.FileSystemSetManagerImpl;
 import com.georgeludwigtech.common.setmanager.SetItemImpl;
 import com.georgeludwigtech.common.setmanager.SetManager;
 import com.georgeludwigtech.common.util.SerializableRecordHelper;
-import com.google.gson.JsonObject;
 import com.sixbuilder.actionqueue.QueueItemProcessor;
 import com.sixbuilder.datatypes.twitter.TweetItem;
 import com.sixbuilder.twitterlib.RecommendedTweetConstants;

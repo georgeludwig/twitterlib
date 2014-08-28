@@ -25,11 +25,11 @@ public class QueueManagerImpl implements QueueManager {
     }
 
     public JsonObject create(String documentId) {
-        JsonObject queue = (JsonObject)new JsonParser().parse(queueAsString);
-        queue.add("_id", new JsonPrimitive(documentId));
-        Response response = dbClient.save(queue);
-        queue.add("_rev", new JsonPrimitive(response.getRev()));
-        return queue;
+        JsonObject queueSettings = (JsonObject)new JsonParser().parse(queueAsString);
+        queueSettings.add("_id", new JsonPrimitive(documentId));
+        Response response = dbClient.save(queueSettings);
+        queueSettings.add("_rev", new JsonPrimitive(response.getRev()));
+        return queueSettings;
     }
 
     public void update(String documentId, JsonObject queue) {
