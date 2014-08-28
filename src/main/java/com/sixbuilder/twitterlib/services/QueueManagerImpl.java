@@ -1,18 +1,16 @@
 package com.sixbuilder.twitterlib.services;
 
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-import com.google.gson.JsonPrimitive;
-import org.lightcouch.CouchDbClient;
-import org.lightcouch.Response;
-
 import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
 
+import org.ektorp.CouchDbConnector;
+
+import com.google.gson.JsonObject;
+
 public class QueueManagerImpl implements QueueManager {
 
-    private final CouchDbClient dbClient;
+    private final CouchDbConnector dbClient;
 
     private final static String queueAsString =
         "{start : {hour: 12, min: 00, am: \"PM\", timezone: \"US/Pacific\"}," +
@@ -20,35 +18,33 @@ public class QueueManagerImpl implements QueueManager {
         "  asap : true," +
         "random : true}";
 
-    public QueueManagerImpl(CouchDbClient dbClient) {
+    public QueueManagerImpl(CouchDbConnector dbClient) {
         this.dbClient = dbClient;
     }
 
-    public JsonObject create(String documentId) {
-        JsonObject queueSettings = (JsonObject)new JsonParser().parse(queueAsString);
-        queueSettings.add("_id", new JsonPrimitive(documentId));
-        Response response = dbClient.save(queueSettings);
-        queueSettings.add("_rev", new JsonPrimitive(response.getRev()));
-        return queueSettings;
+    public JsonObject create(String documentId) throws Exception {
+        QueueSettings qs=new QueueSettings();
+        qs.setId(documentId);
+    	dbClient.update(qs);
+    	JsonObject jso=qs.toJsonObject();
+        return jso;
     }
 
-    public void update(String documentId, JsonObject queue) {
+    public void update(String documentId, JsonObject queue) throws Exception {
         System.out.println(queue);
-        queue.add("_id", new JsonPrimitive(documentId));
-        queue.add("start-time", new JsonPrimitive(
-            toStartTime(queue).getTime()));
-        queue.add("end-time", new JsonPrimitive(
-            toEndTime(queue).getTime()));
-        Response response = dbClient.update(queue);
-        queue.add("_rev", new JsonPrimitive(response.getRev()));
+        QueueSettings qs=QueueSettings.fromJsonObject(queue);
+        dbClient.update(qs);
+        queue.addProperty(QueueSettings._REV, qs.getRevision());
     }
 
-    public JsonObject get(String documentId) {
-        return dbClient.find(JsonObject.class, documentId);
+    public JsonObject get(String documentId) throws Exception {
+    	QueueSettings js=dbClient.get(QueueSettings.class, documentId);
+    	JsonObject jso=js.toJsonObject();
+        return jso;
     }
 
     public void remove(JsonObject queue) {
-        dbClient.remove(queue);
+        dbClient.delete(queue);
     }
 
     protected Date toEndTime(JsonObject obj) {

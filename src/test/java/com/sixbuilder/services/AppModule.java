@@ -6,6 +6,12 @@ import org.apache.tapestry5.SymbolConstants;
 import org.apache.tapestry5.ioc.MappedConfiguration;
 import org.apache.tapestry5.ioc.ServiceBinder;
 import org.apache.tapestry5.ioc.annotations.SubModule;
+import org.ektorp.CouchDbConnector;
+import org.ektorp.CouchDbInstance;
+import org.ektorp.http.HttpClient;
+import org.ektorp.http.StdHttpClient;
+import org.ektorp.impl.StdCouchDbConnector;
+import org.ektorp.impl.StdCouchDbInstance;
 import org.got5.tapestry5.jquery.JQuerySymbolConstants;
 import org.lightcouch.CouchDbClient;
 import org.lightcouch.CouchDbProperties;
@@ -51,30 +57,70 @@ public class AppModule
         configuration.add(SymbolConstants.SUPPORTED_LOCALES, "en");
     }
     
-    public static CouchDbClient buildCouchDbClient(){
-//        CouchDbProperties properties = new CouchDbProperties()
-//            .setDbName("test")
-//            .setHost("tawus.cloudant.com")
-//            .setProtocol("https")
-//            .setPort(443)
-//            .setUsername("coneryouldistabitstolder")
-//            .setPassword("yPuMlWaQSSGN7KeA0tpxp64j");
+//    public static CouchDbClient buildCouchDbClient() throws Exception {
+////        CouchDbProperties properties = new CouchDbProperties()
+////            .setDbName("test")
+////            .setHost("tawus.cloudant.com")
+////            .setProtocol("https")
+////            .setPort(443)
+////            .setUsername("coneryouldistabitstolder")
+////            .setPassword("yPuMlWaQSSGN7KeA0tpxp64j");
+//    	
+//    	
+//    	HttpClient httpClient = new StdHttpClient.Builder()
+//			.host(AbstractTest.DBACCOUNT+".cloudant.com").port(443).username(AbstractTest.DBACCOUNT)
+//			.password(AbstractTest.DBPWD).enableSSL(true)
+//			.relaxedSSLSettings(true).build();
+//    	
+//    	CouchDbInstance dbInstance = new StdCouchDbInstance(httpClient);
+//		CouchDbConnector db = new StdCouchDbConnector("testdb", dbInstance);
+//		db.createDatabaseIfNotExists();
+//
+//
+//    	
+//    	
+//    	
+//    	
+//    	CouchDbProperties properties = new CouchDbProperties()
+//        .setDbName("test")
+//        .setHost("6btest.cloudant.com")
+//        .setProtocol("https")
+//        .setPort(443)
+//        .setUsername(AbstractTest.DBACCOUNT)
+//        .setPassword(AbstractTest.DBPWD);
+//
+//    	CouchDbClient client= new CouchDbClient(properties);
+//    	try {
+//    		client.context().createDB("test");
+//    	} catch(Exception e) {
+//    		e.printStackTrace();
+//    	}
+//    	return client;
+//     
+//    }
+    
+    public static CouchDbConnector buildCBC() throws Exception {
+    	HttpClient httpClient = new StdHttpClient.Builder()
+			.host(AbstractTest.DBACCOUNT+".cloudant.com").port(443).username(AbstractTest.DBACCOUNT)
+			.password(AbstractTest.DBPWD).enableSSL(true)
+			.relaxedSSLSettings(true).build();
     	
-    	CouchDbProperties properties = new CouchDbProperties()
-        .setDbName("test")
-        .setHost("6btest.cloudant.com")
-        .setProtocol("https")
-        .setPort(443)
-        .setUsername(AbstractTest.DBACCOUNT)
-        .setPassword(AbstractTest.DBPWD);
-
-    	CouchDbClient client= new CouchDbClient(properties);
-    	try {
-    		client.context().createDB("test");
-    	} catch(Exception e) {
-    		e.printStackTrace();
-    	}
-    	return client;
-     
+    	CouchDbInstance dbInstance = new StdCouchDbInstance(httpClient);
+		CouchDbConnector db = new StdCouchDbConnector(AbstractTest.QUEUE_TEST_DB_NAME, dbInstance);
+		db.createDatabaseIfNotExists();
+		return db;
     }
+    
+	public static CouchDbClient buildBlah() throws Exception {
+
+		CouchDbProperties properties = new CouchDbProperties().setDbName("test").setHost("6btest.cloudant.com").setProtocol("https").setPort(443).setUsername(AbstractTest.DBACCOUNT).setPassword(AbstractTest.DBPWD);
+
+		CouchDbClient client = new CouchDbClient(properties);
+		try {
+			client.context().createDB("test");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return client;
+	}
 }

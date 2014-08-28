@@ -1,7 +1,7 @@
 package com.sixbuilder.twitterlib.services;
 
 import org.ektorp.support.CouchDbDocument;
-import org.joda.time.DateTimeZone;
+
 import com.google.gson.JsonObject;
 import com.sixbuilder.twitterlib.helpers.Meridiem;
 
@@ -31,7 +31,7 @@ public class QueueSettings extends CouchDbDocument {
 		endHour=12;
 		endMinute=30;
 		endMeridiem=Meridiem.PM;
-		timeZone=DateTimeZone.forID("America/Los_Angeles");
+		timeZoneId="America/Los_Angeles";
 		asap=true;
 		random=true;
 		pause=false;
@@ -45,7 +45,7 @@ public class QueueSettings extends CouchDbDocument {
 	private Integer endHour;
 	private Integer endMinute;
 	private Meridiem endMeridiem;
-	private DateTimeZone timeZone;
+	private String timeZoneId;
 	private Boolean asap;
 	private Boolean random;
 	private Boolean pause;
@@ -100,12 +100,12 @@ public class QueueSettings extends CouchDbDocument {
 		this.endMeridiem = endMeridiem;
 	}
 
-	public DateTimeZone getTimeZone() {
-		return timeZone;
+	public String getTimeZoneId() {
+		return timeZoneId;
 	}
 
-	public void setTimeZone(DateTimeZone timeZone) {
-		this.timeZone = timeZone;
+	public void setTimeZoneId(String timeZoneId) {
+		this.timeZoneId = timeZoneId;
 	}
 
 	public Boolean getAsap() {
@@ -165,7 +165,7 @@ public class QueueSettings extends CouchDbDocument {
 		start.addProperty(HOUR, getStartHour());
 		start.addProperty(MINUTE, getStartMinute());
 		start.addProperty(MERIDIEM, getStartMeridiem().toString());
-		start.addProperty(TIMEZONE, getTimeZone().getID());
+		start.addProperty(TIMEZONE, getTimeZoneId());
 		//
 		jso.add(START, start);
 		// end
@@ -173,7 +173,7 @@ public class QueueSettings extends CouchDbDocument {
 		end.addProperty(HOUR, getStartHour());
 		end.addProperty(MINUTE, getStartMinute());
 		end.addProperty(MERIDIEM, getStartMeridiem().toString());
-		end.addProperty(TIMEZONE, getTimeZone().getID());
+		end.addProperty(TIMEZONE, getTimeZoneId());
 		end.addProperty(FROM, getRandomMin());
 		end.addProperty(TO, getRandomMax());
 		//
@@ -205,7 +205,7 @@ public class QueueSettings extends CouchDbDocument {
 		val=start.getAsJsonPrimitive(MERIDIEM).getAsString();
 		ret.setStartMeridiem(Meridiem.valueOf(val));
 		val=start.getAsJsonPrimitive(TIMEZONE).getAsString();
-		ret.setTimeZone(DateTimeZone.forID(val));
+		ret.setTimeZoneId(val);
 		// end
 		JsonObject end=jso.getAsJsonObject(END);
 		v=end.getAsJsonPrimitive(HOUR).getAsInt();

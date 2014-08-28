@@ -81,14 +81,14 @@ public class Queue {
     }
 
     @OnEvent("update")
-    JsonObject updateQueue(String queueId){
+    JsonObject updateQueue(String queueId) throws Exception {
         JsonObject queue = (JsonObject) new JsonParser().parse(request.getParameter("queue"));
         queueManager.update(queueId, queue);
         return success(queue);
     }
 
     @OnEvent("get")
-    JsonObject getQueue(String queueId){
+    JsonObject getQueue(String queueId) throws Exception {
         JsonObject queue = queueManager.get(queueId);
         return success(queue);
     }

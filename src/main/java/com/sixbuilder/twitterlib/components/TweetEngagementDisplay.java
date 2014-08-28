@@ -73,7 +73,7 @@ public class TweetEngagementDisplay {
 	@Inject
 	private QueueManager queueManager;
 	
-	void onActivate() {
+	void onActivate() throws Exception {
 		try {
 			queueManager.get(queueId);
 		} catch (NoDocumentException ignore) {

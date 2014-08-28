@@ -4,6 +4,8 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonPrimitive;
 import com.sixbuilder.twitterlib.services.QueueManager;
+import com.sixbuilder.twitterlib.services.QueueSettings;
+
 import org.apache.tapestry5.BindingConstants;
 import org.apache.tapestry5.ComponentResources;
 import org.apache.tapestry5.MarkupWriter;
@@ -15,6 +17,7 @@ import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.json.JSONObject;
 import org.apache.tapestry5.services.Request;
 import org.apache.tapestry5.services.javascript.JavaScriptSupport;
+import org.ektorp.DocumentNotFoundException;
 import org.lightcouch.NoDocumentException;
 
 import javax.inject.Inject;
@@ -82,7 +85,7 @@ public class Queue {
     }
 
     @OnEvent("update")
-    JsonObject updateQueue(String queueId){
+    JsonObject updateQueue(String queueId) throws Exception {
         JsonObject queue = (JsonObject) new JsonParser().parse(request.getParameter("queue"));
         queueManager.update(queueId, queue);
         // TODO retrieve current queue items
@@ -93,16 +96,16 @@ public class Queue {
     }
 
     @OnEvent("get")
-    JsonObject getQueue(String queueId){
+    JsonObject getQueue(String queueId) throws Exception {
     	try {
 	        JsonObject queue = queueManager.get(queueId);
 	        return success(queue);
-    	} catch(NoDocumentException e) {
+    	} catch(DocumentNotFoundException e) {
     		// create new document
-    		// TODO
-//    		JsonObject queue = queueManager.get(queueId);
-//	        return success(queue);
-    		return null;
+    		QueueSettings settings=new QueueSettings();
+    		settings.setId(queueId);
+    		JsonObject queue = queueManager.create(queueId);
+	        return success(queue);
     	}
     }
 
