@@ -1,7 +1,5 @@
 package com.sixbuilder.services;
 
-import com.sixbuilder.actionqueue.AbstractTest;
-import com.sixbuilder.twitterlib.services.TweetItemDAO;
 import org.apache.tapestry5.SymbolConstants;
 import org.apache.tapestry5.ioc.MappedConfiguration;
 import org.apache.tapestry5.ioc.ServiceBinder;
@@ -13,9 +11,9 @@ import org.ektorp.http.StdHttpClient;
 import org.ektorp.impl.StdCouchDbConnector;
 import org.ektorp.impl.StdCouchDbInstance;
 import org.got5.tapestry5.jquery.JQuerySymbolConstants;
-import org.lightcouch.CouchDbClient;
-import org.lightcouch.CouchDbProperties;
 
+import com.sixbuilder.actionqueue.AbstractTest;
+import com.sixbuilder.twitterlib.services.TweetItemDAO;
 import com.sixbuilder.twitterlib.services.TwitterLibModule;
 
 /**
@@ -57,48 +55,6 @@ public class AppModule
         configuration.add(SymbolConstants.SUPPORTED_LOCALES, "en");
     }
     
-//    public static CouchDbClient buildCouchDbClient() throws Exception {
-////        CouchDbProperties properties = new CouchDbProperties()
-////            .setDbName("test")
-////            .setHost("tawus.cloudant.com")
-////            .setProtocol("https")
-////            .setPort(443)
-////            .setUsername("coneryouldistabitstolder")
-////            .setPassword("yPuMlWaQSSGN7KeA0tpxp64j");
-//    	
-//    	
-//    	HttpClient httpClient = new StdHttpClient.Builder()
-//			.host(AbstractTest.DBACCOUNT+".cloudant.com").port(443).username(AbstractTest.DBACCOUNT)
-//			.password(AbstractTest.DBPWD).enableSSL(true)
-//			.relaxedSSLSettings(true).build();
-//    	
-//    	CouchDbInstance dbInstance = new StdCouchDbInstance(httpClient);
-//		CouchDbConnector db = new StdCouchDbConnector("testdb", dbInstance);
-//		db.createDatabaseIfNotExists();
-//
-//
-//    	
-//    	
-//    	
-//    	
-//    	CouchDbProperties properties = new CouchDbProperties()
-//        .setDbName("test")
-//        .setHost("6btest.cloudant.com")
-//        .setProtocol("https")
-//        .setPort(443)
-//        .setUsername(AbstractTest.DBACCOUNT)
-//        .setPassword(AbstractTest.DBPWD);
-//
-//    	CouchDbClient client= new CouchDbClient(properties);
-//    	try {
-//    		client.context().createDB("test");
-//    	} catch(Exception e) {
-//    		e.printStackTrace();
-//    	}
-//    	return client;
-//     
-//    }
-    
     public static CouchDbConnector buildCBC() throws Exception {
     	HttpClient httpClient = new StdHttpClient.Builder()
 			.host(AbstractTest.DBACCOUNT+".cloudant.com").port(443).username(AbstractTest.DBACCOUNT)
@@ -111,16 +67,4 @@ public class AppModule
 		return db;
     }
     
-	public static CouchDbClient buildBlah() throws Exception {
-
-		CouchDbProperties properties = new CouchDbProperties().setDbName("test").setHost("6btest.cloudant.com").setProtocol("https").setPort(443).setUsername(AbstractTest.DBACCOUNT).setPassword(AbstractTest.DBPWD);
-
-		CouchDbClient client = new CouchDbClient(properties);
-		try {
-			client.context().createDB("test");
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return client;
-	}
 }

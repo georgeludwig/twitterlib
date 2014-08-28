@@ -14,7 +14,7 @@ import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.corelib.components.Zone;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.ajax.AjaxResponseRenderer;
-import org.lightcouch.NoDocumentException;
+import org.ektorp.DocumentNotFoundException;
 
 import com.sixbuilder.twitterlib.TweetEngagementConstants;
 import com.sixbuilder.twitterlib.helpers.HolderComponentEventCallback;
@@ -76,7 +76,7 @@ public class TweetEngagementDisplay {
 	void onActivate() throws Exception {
 		try {
 			queueManager.get(queueId);
-		} catch (NoDocumentException ignore) {
+		} catch (DocumentNotFoundException ignore) {
 			queueManager.create(queueId);
 		}
 	}

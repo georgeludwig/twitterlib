@@ -88,19 +88,20 @@
 			<type>jar</type>
 			<scope>compile</scope>
 		</dependency>
-
-		<dependency>
+	
+	 <!-- 	<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-databind</artifactId>
 			<version>2.3.3</version>
-		</dependency>
-
+		</dependency> -->
+	
 		<dependency>
-			<groupId>org.lightcouch</groupId>
-			<artifactId>lightcouch</artifactId>
-			<version>0.1.2</version>
-		</dependency>
-
+			<groupId>com.google.code.gson</groupId>
+			<artifactId>gson</artifactId>
+			<version>2.2.4</version>
+			<scope>compile</scope>
+		</dependency> 
+	
 		<dependency>
 			<groupId>org.ektorp</groupId>
 			<artifactId>org.ektorp</artifactId>

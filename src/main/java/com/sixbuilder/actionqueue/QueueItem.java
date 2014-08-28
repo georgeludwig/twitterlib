@@ -2,8 +2,8 @@ package com.sixbuilder.actionqueue;
 
 import org.ektorp.support.CouchDbDocument;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+//import com.fasterxml.jackson.core.JsonProcessingException;
+//import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * A class representing a queued action
@@ -15,15 +15,15 @@ public class QueueItem extends CouchDbDocument {
 	
 	private static final long serialVersionUID = 1L;
 
-	private static ObjectMapper mapper = new ObjectMapper();
-	
-	public static QueueItem fromJson(String jsonString) throws Exception {
-		return mapper.readValue(jsonString, QueueItem.class);
-	}
-	
-	public String toJson() throws JsonProcessingException {
-		return mapper.writeValueAsString(this);
-	}
+//	private static ObjectMapper mapper = new ObjectMapper();
+//	
+//	public static QueueItem fromJson(String jsonString) throws Exception {
+//		return mapper.readValue(jsonString, QueueItem.class);
+//	}
+//	
+//	public String toJson() throws JsonProcessingException {
+//		return mapper.writeValueAsString(this);
+//	}
 	
 	/*
 	 * which queue is this, i.e. curation queue
