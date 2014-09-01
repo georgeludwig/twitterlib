@@ -12,7 +12,8 @@ public class QueueManagerImpl implements QueueManager {
 
     private final CouchDbConnector dbClient;
 
-    private final static String queueAsString =
+  @SuppressWarnings("unused")
+  private final static String queueAsString =
         "{start : {hour: 12, min: 00, am: \"PM\", timezone: \"US/Pacific\"}," +
         "   end : {hour: 12, min: 30, am: \"PM\", timezone: \"US/Pacific\", from:2, to:5}," +
         "  asap : true," +
