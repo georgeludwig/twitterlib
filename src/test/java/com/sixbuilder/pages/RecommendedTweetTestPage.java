@@ -18,12 +18,11 @@ import com.georgeludwigtech.common.setmanager.SetItemImpl;
 import com.georgeludwigtech.common.setmanager.SetManager;
 import com.georgeludwigtech.common.util.FileUtil;
 import com.georgeludwigtech.common.util.SerializableRecordHelper;
-import com.sixbuilder.actionqueue.QueueItemProcessor;
+import com.sixbuilder.AbstractTestSixBuilder;
+import com.sixbuilder.datatypes.persistence.PersistenceUtil;
 import com.sixbuilder.datatypes.twitter.TweetItem;
-import com.sixbuilder.helpers.TestPage;
 import com.sixbuilder.twitterlib.RecommendedTweetConstants;
 import com.sixbuilder.twitterlib.components.RecommendedTweet;
-import com.sixbuilder.twitterlib.components.RecommendedTweetDisplay;
 import com.sixbuilder.twitterlib.services.TweetItemDAO;
 
 /**
@@ -51,18 +50,17 @@ public class RecommendedTweetTestPage {
 	SetManager queuedSetMgr;
 
 	void init() throws Exception {
-		// clear all contents of test dir, including SetItem dir
-		File testRootDir = new File(TestPage.getTestRoot());
-		FileUtil.clearDirectory(testRootDir);
+		// clear all contents of test dir
+		String userPath=AbstractTestSixBuilder.getTestUserPath();
+		AbstractTestSixBuilder.setUpBasicFiles(userPath);
 		// copy pending tweet file from resources to test dir
 		ClassLoader classLoader = this.getClass().getClassLoader();
 		InputStream is = classLoader.getResourceAsStream("pendingTweets.txt");
-		File target = new File(testRootDir
+		File target = new File(userPath
 				+ SerializableRecordHelper.FILE_SEPARATOR + "pendingTweets.txt");
 		FileUtil.copy(is, target);
-		SetManager curationSetMgr = null;
-		curationSetMgr = RecommendedTweetDisplay.getCurationSetManager(
-				getTempFileRootDir(), curationSetMgr);
+		File testRootDir=new File(AbstractTestSixBuilder.getTestRoot());
+		SetManager curationSetMgr = PersistenceUtil.getCurationSetManager(testRootDir,AbstractTestSixBuilder.PRIMARY_TEST_USER_NAME);
 		for (TweetItem ti : getTweetItems()) {
 			curationSetMgr.addSetItem(new SetItemImpl(ti.getTweetId()));
 		}
@@ -75,7 +73,7 @@ public class RecommendedTweetTestPage {
 
 	void setupRender() throws Exception {
 		if (firstLoad == null) {
-			synchronized (getTempFileRootDir()) {
+			synchronized (AbstractTestSixBuilder.getTestRoot()) {
 				if (firstLoad == null) {
 					firstLoad = true;
 					init();
@@ -89,8 +87,8 @@ public class RecommendedTweetTestPage {
 
 	@OnEvent(RecommendedTweetConstants.CURATING_TWEETS_EVENT)
 	public List<TweetItem> getCurating() throws Exception {
-		curationSetMgr = RecommendedTweetDisplay.getCurationSetManager(
-				getTempFileRootDir(), curationSetMgr);
+		curationSetMgr = PersistenceUtil.getCurationSetManager(
+				new File(AbstractTestSixBuilder.getTestRoot()), AbstractTestSixBuilder.PRIMARY_TEST_USER_NAME);
 		Set<SetItem> c = curationSetMgr.getSet();
 		List<TweetItem> ret = new ArrayList<TweetItem>();
 		for (TweetItem ti : getTweetItems()) {
@@ -102,8 +100,8 @@ public class RecommendedTweetTestPage {
 
 	@OnEvent(RecommendedTweetConstants.PUBLISHING_TWEETS_EVENT)
 	public List<TweetItem> getPublishing() throws Exception {
-		queuedSetMgr = RecommendedTweetDisplay.getQueuedSetManager(
-				getTempFileRootDir(), queuedSetMgr);
+		queuedSetMgr = PersistenceUtil.getQueuedSetManager(
+				new File(AbstractTestSixBuilder.getTestRoot()), AbstractTestSixBuilder.PRIMARY_TEST_USER_NAME);
 		Set<SetItem> q = queuedSetMgr.getSet();
 		List<TweetItem> ret = new ArrayList<TweetItem>();
 		for (TweetItem ti : getTweetItems()) {
@@ -160,23 +158,30 @@ public class RecommendedTweetTestPage {
 		return "http://bitly/tweet";
 	}
 
-	@Persist
-	private File setManagerRootDir;
-
-	public File getTempFileRootDir() throws Exception {
-		if (setManagerRootDir == null) {
-			String testRoot = TestPage.getTestRoot();
-			if (testRoot.endsWith(SerializableRecordHelper.FILE_SEPARATOR))
-				testRoot = testRoot + SerializableRecordHelper.FILE_SEPARATOR;
-			File f = new File(testRoot + QueueItemProcessor.CURATION_SET_MANAGER_ROOT);
-			if (!f.exists())
-				f.mkdirs();
-			setManagerRootDir = f;
-		}
-		return setManagerRootDir;
+	public File getAccountsRoot() throws Exception {
+		return new File(AbstractTestSixBuilder.getTestRoot());
 	}
-
-	public void setTempFileRootDir(File f) {
-		setManagerRootDir = f;
+	
+	public String getAccountName() {
+		return AbstractTestSixBuilder.PRIMARY_TEST_USER_NAME;
 	}
+//	@Persist
+//	private File setManagerRootDir;
+//
+//	public File getTempFileRootDir() throws Exception {
+//		if (setManagerRootDir == null) {
+//			String testRoot = TestPage.getTestRoot();
+//			if (testRoot.endsWith(SerializableRecordHelper.FILE_SEPARATOR))
+//				testRoot = testRoot + SerializableRecordHelper.FILE_SEPARATOR;
+//			File f = new File(testRoot + QueueItemProcessor.CURATION_SET_MANAGER_ROOT);
+//			if (!f.exists())
+//				f.mkdirs();
+//			setManagerRootDir = f;
+//		}
+//		return setManagerRootDir;
+//	}
+//
+//	public void setTempFileRootDir(File f) {
+//		setManagerRootDir = f;
+//	}
 }

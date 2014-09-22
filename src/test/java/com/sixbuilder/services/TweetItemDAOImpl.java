@@ -1,5 +1,6 @@
 package com.sixbuilder.services;
 
+import com.sixbuilder.AbstractTestSixBuilder;
 import com.sixbuilder.datatypes.persistence.PendingTweetFileUtil;
 import com.sixbuilder.helpers.TestPage;
 import com.sixbuilder.twitterlib.services.TweetItemDAO;
@@ -20,7 +21,7 @@ public class TweetItemDAOImpl implements TweetItemDAO {
 	
 	public TweetItemDAOImpl() throws Exception {
 		if(pendingTweetFileUtil==null) {
-			pendingTweetFileUtil=new PendingTweetFileUtil(TestPage.getTestRoot()+PendingTweetFileUtil.FILENAME);	
+			pendingTweetFileUtil=new PendingTweetFileUtil(AbstractTestSixBuilder.getTestUserPath()+PendingTweetFileUtil.FILENAME);	
 			// now add tweet Ids && hashtags...these are missing from the test data
 			int i=0;
 			for(TweetItem item:pendingTweetFileUtil.getPendingTweetMap().values()) {

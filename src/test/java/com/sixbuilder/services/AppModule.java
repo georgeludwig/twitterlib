@@ -12,7 +12,7 @@ import org.ektorp.impl.StdCouchDbConnector;
 import org.ektorp.impl.StdCouchDbInstance;
 import org.got5.tapestry5.jquery.JQuerySymbolConstants;
 
-import com.sixbuilder.actionqueue.AbstractTest;
+import com.sixbuilder.AbstractTestSixBuilder;
 import com.sixbuilder.twitterlib.services.TweetItemDAO;
 import com.sixbuilder.twitterlib.services.TwitterLibModule;
 
@@ -57,12 +57,12 @@ public class AppModule
     
     public static CouchDbConnector buildCBC() throws Exception {
     	HttpClient httpClient = new StdHttpClient.Builder()
-			.host(AbstractTest.DBACCOUNT+".cloudant.com").port(443).username(AbstractTest.DBACCOUNT)
-			.password(AbstractTest.DBPWD).enableSSL(true)
+			.host(AbstractTestSixBuilder.DBACCOUNT+".cloudant.com").port(443).username(AbstractTestSixBuilder.DBACCOUNT)
+			.password(AbstractTestSixBuilder.DBPWD).enableSSL(true)
 			.relaxedSSLSettings(true).build();
     	
     	CouchDbInstance dbInstance = new StdCouchDbInstance(httpClient);
-		CouchDbConnector db = new StdCouchDbConnector(AbstractTest.QUEUE_TEST_DB_NAME, dbInstance);
+		CouchDbConnector db = new StdCouchDbConnector(AbstractTestSixBuilder.QUEUE_TEST_DB_NAME, dbInstance);
 		db.createDatabaseIfNotExists();
 		return db;
     }

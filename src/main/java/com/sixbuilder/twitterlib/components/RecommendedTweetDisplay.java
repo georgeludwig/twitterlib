@@ -15,11 +15,9 @@ import org.apache.tapestry5.corelib.components.Zone;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.ajax.AjaxResponseRenderer;
 
-import com.georgeludwigtech.common.setmanager.FileSystemSetManagerImpl;
 import com.georgeludwigtech.common.setmanager.SetItemImpl;
 import com.georgeludwigtech.common.setmanager.SetManager;
-import com.georgeludwigtech.common.util.SerializableRecordHelper;
-import com.sixbuilder.actionqueue.QueueItemProcessor;
+import com.sixbuilder.datatypes.persistence.PersistenceUtil;
 import com.sixbuilder.datatypes.twitter.TweetItem;
 import com.sixbuilder.twitterlib.RecommendedTweetConstants;
 import com.sixbuilder.twitterlib.helpers.HolderComponentEventCallback;
@@ -63,7 +61,10 @@ public class RecommendedTweetDisplay {
 	private TweetItem tweet;
 	
 	@Parameter(required = true, allowNull = false)
-	private File tempFileRootDir;
+	private File accountsRoot;
+	
+	@Parameter(required = true, allowNull = false)
+	private String accountName;
 
 	@Inject
 	private AjaxResponseRenderer ajaxResponseRenderer;
@@ -87,8 +88,8 @@ public class RecommendedTweetDisplay {
 	@OnEvent(RecommendedTweetConstants.DELETE_TWEET_EVENT)
 	public void delete(TweetItem tweetItem) throws Exception {
 		triggerEvent(RecommendedTweetConstants.DELETE_TWEET_EVENT, resources.getContainerResources());
-		SetManager cSm = getCurationSetManager(tempFileRootDir,curationSetMgr);
-		SetManager qSm = getQueuedSetManager(tempFileRootDir,queuedSetMgr);
+		SetManager cSm = getCurationSetManager(curationSetMgr);
+		SetManager qSm = getQueuedSetManager(queuedSetMgr);
 		cSm.removeSetItem(tweetItem.getTweetId());
 		qSm.removeSetItem(tweetItem.getTweetId());
 		// TODO remove corresponding QueueItem from queue, if it exists
@@ -103,8 +104,8 @@ public class RecommendedTweetDisplay {
 	public void publish(TweetItem tweetItem) throws Exception {
 		triggerEvent(RecommendedTweetConstants.PUBLISH_TWEET_EVENT, resources.getContainerResources());
 		triggerEvent(RecommendedTweetConstants.MEH_TWEET_EVENT, resources.getContainerResources());
-		SetManager cSm = getCurationSetManager(tempFileRootDir,curationSetMgr);
-		SetManager qSm = getQueuedSetManager(tempFileRootDir,queuedSetMgr);
+		SetManager cSm = getCurationSetManager(curationSetMgr);
+		SetManager qSm = getQueuedSetManager(queuedSetMgr);
 		cSm.removeSetItem(tweetItem.getTweetId());
 		qSm.addSetItem(new SetItemImpl(tweetItem.getTweetId()));
 		// TODO calculate target time based on queue settings
@@ -117,8 +118,8 @@ public class RecommendedTweetDisplay {
 	@OnEvent(RecommendedTweetConstants.MEH_TWEET_EVENT)
 	public void meh(TweetItem tweetItem) throws Exception {
 		triggerEvent(RecommendedTweetConstants.MEH_TWEET_EVENT, resources.getContainerResources());
-		SetManager cSm = getCurationSetManager(tempFileRootDir,curationSetMgr);
-		SetManager qSm = getQueuedSetManager(tempFileRootDir,queuedSetMgr);
+		SetManager cSm = getCurationSetManager(curationSetMgr);
+		SetManager qSm = getQueuedSetManager(queuedSetMgr);
 		cSm.addSetItem(new SetItemImpl(tweetItem.getTweetId()));
 		qSm.removeSetItem(tweetItem.getTweetId());
 		// TODO remove corresponding QueueItem from queue, if it exists
@@ -128,14 +129,10 @@ public class RecommendedTweetDisplay {
 
 	SetManager curationSetMgr;
 	
-	public static SetManager getCurationSetManager(File tempFileRootDir, SetManager curationSetMgr) throws Exception {
-		synchronized(tempFileRootDir+QueueItemProcessor.CURATION_SET_MANAGER_NAME) {
+	public SetManager getCurationSetManager(SetManager curationSetMgr) throws Exception {
+		synchronized(accountName+PersistenceUtil.CURATION_SET_MANAGER_NAME) {
 			if(curationSetMgr==null) {
-				String s=tempFileRootDir.getAbsolutePath();
-				if(!s.endsWith(SerializableRecordHelper.FILE_SEPARATOR))
-					s=s+SerializableRecordHelper.FILE_SEPARATOR;
-				s=s+QueueItemProcessor.CURATION_SET_MANAGER_NAME;
-				SetManager sm=new FileSystemSetManagerImpl(new File(s));
+				SetManager sm=PersistenceUtil.getCurationSetManager(accountsRoot, accountName);
 				curationSetMgr=sm;
 			}
 		}
@@ -144,14 +141,10 @@ public class RecommendedTweetDisplay {
 	
 	SetManager queuedSetMgr;
 	
-	public static SetManager getQueuedSetManager(File tempFileRootDir, SetManager queuedSetMgr) throws Exception {
-		synchronized(tempFileRootDir+QueueItemProcessor.QUEUED_SET_MANAGER_NAME) {
+	public SetManager getQueuedSetManager(SetManager queuedSetMgr) throws Exception {
+		synchronized(accountName+PersistenceUtil.QUEUED_SET_MANAGER_NAME) {
 			if(queuedSetMgr==null) {
-				String s=tempFileRootDir.getAbsolutePath();
-				if(!s.endsWith(SerializableRecordHelper.FILE_SEPARATOR))
-					s=s+SerializableRecordHelper.FILE_SEPARATOR;
-				s=s+QueueItemProcessor.QUEUED_SET_MANAGER_NAME;
-				SetManager sm=new FileSystemSetManagerImpl(new File(s));
+				SetManager sm=PersistenceUtil.getQueuedSetManager(accountsRoot, accountName);
 				queuedSetMgr=sm;
 			}
 		}
