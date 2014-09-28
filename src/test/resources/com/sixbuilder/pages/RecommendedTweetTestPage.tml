@@ -14,7 +14,13 @@
 <br />
 <fieldset class="sixb">
 	<legend class="sixb">Content</legend>
-	<div t:type="twitterlib/RecommendedTweetDisplay" accountsRoot="accountsRoot" accountName="accountName" queueId="queueId" />
+	<div t:type="twitterlib/RecommendedTweetDisplay"
+		dbAccountName="dbAccountName" dbPassword="dbPassword"
+		queueType="queueType"
+		queueSettingsDbName="queueSettingsDbName"
+		queueItemDbName="queueItemDbName"
+		accountsRoot="accountsRoot" userId="userId"
+		/>
 </fieldset>
 <br />
 <br />

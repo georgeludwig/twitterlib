@@ -1,6 +1,7 @@
 package com.sixbuilder.twitterlib.components;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.tapestry5.ComponentResources;
@@ -10,18 +11,36 @@ import org.apache.tapestry5.annotations.Events;
 import org.apache.tapestry5.annotations.InjectComponent;
 import org.apache.tapestry5.annotations.OnEvent;
 import org.apache.tapestry5.annotations.Parameter;
+import org.apache.tapestry5.annotations.Persist;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.corelib.components.Zone;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.ajax.AjaxResponseRenderer;
+import org.ektorp.CouchDbConnector;
+import org.ektorp.CouchDbInstance;
+import org.ektorp.http.HttpClient;
+import org.ektorp.http.StdHttpClient;
+import org.ektorp.impl.StdCouchDbConnector;
+import org.ektorp.impl.StdCouchDbInstance;
 
 import com.georgeludwigtech.common.setmanager.SetItemImpl;
 import com.georgeludwigtech.common.setmanager.SetManager;
+import com.georgeludwigtech.concurrent.threadpool.ThreadPool;
+import com.georgeludwigtech.concurrent.threadpool.ThreadPoolFactory;
+import com.georgeludwigtech.concurrent.threadpool.ThreadPoolSession;
+import com.sixbuilder.AbstractTestSixBuilder;
+import com.sixbuilder.actionqueue.QueueItem;
+import com.sixbuilder.actionqueue.QueueItemRepository;
+import com.sixbuilder.actionqueue.QueueItemStatus;
+import com.sixbuilder.actionqueue.QueueType;
 import com.sixbuilder.datatypes.persistence.PersistenceUtil;
 import com.sixbuilder.datatypes.twitter.TweetItem;
 import com.sixbuilder.twitterlib.RecommendedTweetConstants;
 import com.sixbuilder.twitterlib.helpers.HolderComponentEventCallback;
+import com.sixbuilder.twitterlib.helpers.QueueSettingsRepository;
+import com.sixbuilder.twitterlib.helpers.TargetTimeCalculator;
 import com.sixbuilder.twitterlib.services.QueueManager;
+import com.sixbuilder.twitterlib.services.QueueSettings;
 
 /**
  * A component that shows the recommended tweets, curating, publishing and published.
@@ -41,16 +60,18 @@ public class RecommendedTweetDisplay {
 	private static final Object[] EMPTY_OBJECT_ARRAY = new Object[0];
 	
 	@Parameter
-	private String queueId;
+	String dbAccountName;
+	@Parameter
+	String dbPassword;
+	@Parameter
+	String queueSettingsDbName;
+	@Parameter
+	String queueItemDbName;
 	
-	public String getQueueId() {
-		return queueId;
-	}
-
-	public void setQueueId(String queueId) {
-		this.queueId = queueId;
-	}
-
+	@Parameter
+	@Property
+	private QueueType queueType;
+	
 	@InjectComponent
 	private Zone curateZone;
 	
@@ -64,7 +85,8 @@ public class RecommendedTweetDisplay {
 	private File accountsRoot;
 	
 	@Parameter(required = true, allowNull = false)
-	private String accountName;
+	@Property
+	private String userId;
 
 	@Inject
 	private AjaxResponseRenderer ajaxResponseRenderer;
@@ -92,7 +114,13 @@ public class RecommendedTweetDisplay {
 		SetManager qSm = getQueuedSetManager(queuedSetMgr);
 		cSm.removeSetItem(tweetItem.getTweetId());
 		qSm.removeSetItem(tweetItem.getTweetId());
-		// TODO remove corresponding QueueItem from queue, if it exists
+		// find any QueueItems for this id, and delete them as well
+		QueueItemRepository repo=getQueueItemRepository();
+		List<QueueItem> itemList=repo.getPending(queueType,AbstractTestSixBuilder.PRIMARY_TEST_USER_NAME);
+		for(QueueItem item:itemList) {
+			if(item.getTweetId().equals(tweetItem.getTweetId()))
+				repo.delete(item);
+		}
 		ajaxResponseRenderer.addRender(curateZone);
 		ajaxResponseRenderer.addRender(publishingZone);
 	}
@@ -108,9 +136,33 @@ public class RecommendedTweetDisplay {
 		SetManager qSm = getQueuedSetManager(queuedSetMgr);
 		cSm.removeSetItem(tweetItem.getTweetId());
 		qSm.addSetItem(new SetItemImpl(tweetItem.getTweetId()));
-		// TODO calculate target time based on queue settings
-//		JsonObject queue=queueManager.get(queueId);
-		// TODO add a QueueItem to the cloudant queue
+		// get queue settings for this user
+//		QueueSettingsRepository settingsRepo=getQueueSettingsRepository();
+//		QueueSettings settings=settingsRepo.getQueueSettings(queueType,userId);
+		getQueueSettingsRunnable qsr=new getQueueSettingsRunnable(queueType,userId,getQueueSettingsRepository());
+		// get current contents of queue for user
+//		QueueItemRepository itemRepo=getQueueItemRepository();
+//		List<QueueItem>itemList=itemRepo.getPending(queueType, userId);
+		getQueueItemsRunnable qir=new getQueueItemsRunnable(queueType,userId,getQueueItemRepository());
+		List<Runnable>rl=new ArrayList<Runnable>();
+		rl.add(qsr);
+		rl.add(qir);
+		ThreadPoolSession.execute(rl, getUiThreadPool());
+		// create new queueItem
+		QueueItem newItem=new QueueItem();
+		newItem.setDateCreated(System.currentTimeMillis());
+		newItem.setTweetId(tweetItem.getTweetId());
+		newItem.setQueueType(queueType);
+		newItem.setStatus(QueueItemStatus.PENDING);
+		newItem.setUserId(userId);
+		// re-calc target times based on current queue settings
+		boolean changed=TargetTimeCalculator.calcTargetTime(qsr.queueSettings, newItem, qir.queueItems, System.currentTimeMillis());
+		// serialize new queue item
+		getQueueItemRepository().add(newItem);
+		// re-serialize existing items if they were changed
+		if(changed&&qir.queueItems.size()>0) {
+			getQueueItemRepository().update(qir.queueItems);
+		}
 		ajaxResponseRenderer.addRender(curateZone);
 		ajaxResponseRenderer.addRender(publishingZone);
 	}
@@ -122,7 +174,13 @@ public class RecommendedTweetDisplay {
 		SetManager qSm = getQueuedSetManager(queuedSetMgr);
 		cSm.addSetItem(new SetItemImpl(tweetItem.getTweetId()));
 		qSm.removeSetItem(tweetItem.getTweetId());
-		// TODO remove corresponding QueueItem from queue, if it exists
+		// remove corresponding QueueItem from queue, if it exists
+		QueueItemRepository repo=getQueueItemRepository();
+		List<QueueItem> itemList=repo.getPending(queueType,userId);
+		for(QueueItem item:itemList) {
+			if(item.getTweetId().equals(tweetItem.getTweetId()))
+				repo.delete(item);
+		}
 		ajaxResponseRenderer.addRender(curateZone);
 		ajaxResponseRenderer.addRender(publishingZone);
 	}
@@ -130,9 +188,9 @@ public class RecommendedTweetDisplay {
 	SetManager curationSetMgr;
 	
 	public SetManager getCurationSetManager(SetManager curationSetMgr) throws Exception {
-		synchronized(accountName+PersistenceUtil.CURATION_SET_MANAGER_NAME) {
+		synchronized(userId+PersistenceUtil.CURATION_SET_MANAGER_NAME) {
 			if(curationSetMgr==null) {
-				SetManager sm=PersistenceUtil.getCurationSetManager(accountsRoot, accountName);
+				SetManager sm=PersistenceUtil.getCurationSetManager(accountsRoot, userId);
 				curationSetMgr=sm;
 			}
 		}
@@ -142,9 +200,9 @@ public class RecommendedTweetDisplay {
 	SetManager queuedSetMgr;
 	
 	public SetManager getQueuedSetManager(SetManager queuedSetMgr) throws Exception {
-		synchronized(accountName+PersistenceUtil.QUEUED_SET_MANAGER_NAME) {
+		synchronized(userId+PersistenceUtil.QUEUED_SET_MANAGER_NAME) {
 			if(queuedSetMgr==null) {
-				SetManager sm=PersistenceUtil.getQueuedSetManager(accountsRoot, accountName);
+				SetManager sm=PersistenceUtil.getQueuedSetManager(accountsRoot, userId);
 				queuedSetMgr=sm;
 			}
 		}
@@ -169,6 +227,94 @@ public class RecommendedTweetDisplay {
 	public void updateAllLists() {
 		ajaxResponseRenderer.addRender(curateZone);
 		ajaxResponseRenderer.addRender(publishingZone);
+	}
+	
+	@Persist
+	private QueueItemRepository qRepo;
+	private Integer qRepoSem=new Integer(0);
+	QueueItemRepository getQueueItemRepository() {
+		if(qRepo==null) {
+			synchronized(qRepoSem) {
+				if(qRepo==null) {
+					HttpClient httpClient = new StdHttpClient.Builder()
+						.host(dbAccountName + ".cloudant.com").port(443)
+						.username(dbAccountName).password(dbPassword)
+						.enableSSL(true).relaxedSSLSettings(true).build();
+					CouchDbInstance dbInstance = new StdCouchDbInstance(httpClient);
+					CouchDbConnector db = new StdCouchDbConnector(queueItemDbName, dbInstance);
+					db.createDatabaseIfNotExists();
+					QueueItemRepository r = new QueueItemRepository(db);
+					qRepo=r;
+				}
+			}
+		}
+		return qRepo;
+	}
+	
+	@Persist
+	private QueueSettingsRepository settingsRepo;
+	private Integer settingsRepoSem=new Integer(0);
+	QueueSettingsRepository getQueueSettingsRepository() {
+		if(settingsRepo==null) {
+			synchronized(settingsRepoSem) {
+ 				if(settingsRepo==null) {
+					HttpClient httpClient = new StdHttpClient.Builder()
+						.host(dbAccountName + ".cloudant.com").port(443)
+						.username(dbAccountName).password(dbPassword)
+						.enableSSL(true).relaxedSSLSettings(true).build();
+					CouchDbInstance dbInstance = new StdCouchDbInstance(httpClient);
+					CouchDbConnector db = new StdCouchDbConnector(queueSettingsDbName, dbInstance);
+					db.createDatabaseIfNotExists();
+					QueueSettingsRepository r = new QueueSettingsRepository(db);
+					settingsRepo=r;
+				}
+			}
+		}
+		return settingsRepo;
+	}
+	
+	class getQueueSettingsRunnable implements Runnable {
+		private QueueType queueType;
+		private String userId;
+		QueueSettingsRepository repo;
+		public getQueueSettingsRunnable(QueueType queueType,String userId,QueueSettingsRepository repo) {
+			this.queueType=queueType;
+			this.userId=userId;
+			this.repo=repo;
+		}
+		public QueueSettings queueSettings;
+		public void run() {
+			queueSettings=repo.getQueueSettings(queueType, userId);
+		}
+	}
+	
+	class getQueueItemsRunnable implements Runnable {
+		private QueueType queueType;
+		private String userId;
+		private QueueItemRepository repo;
+		public getQueueItemsRunnable(QueueType queueType,String userId,QueueItemRepository repo) {
+			this.queueType=queueType;
+			this.userId=userId;
+			this.repo=repo;
+		}
+		public List<QueueItem> queueItems;
+		public void run() {
+			queueItems=repo.getPending(queueType, userId);
+		}
+	}
+	
+	@Persist
+	private ThreadPool uiThreadPool;
+	private Integer uiTpSem=new Integer(0);
+	private ThreadPool getUiThreadPool() {
+		if(uiThreadPool==null) {
+			synchronized(uiTpSem) {
+				if(uiThreadPool==null) {
+					uiThreadPool=ThreadPoolFactory.getNewInstance("UiThreadPool", 2);
+				}
+			}
+		}
+		return uiThreadPool;
 	}
 	
 }

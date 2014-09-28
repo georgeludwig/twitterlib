@@ -7,45 +7,54 @@ import java.util.TimeZone;
 import org.ektorp.CouchDbConnector;
 
 import com.google.gson.JsonObject;
+import com.sixbuilder.actionqueue.QueueType;
+import com.sixbuilder.twitterlib.helpers.QueueSettingsRepository;
 
 public class QueueManagerImpl implements QueueManager {
 
-    private final CouchDbConnector dbClient;
-
   @SuppressWarnings("unused")
   private final static String queueAsString =
+		"queueType: 'TEST'," +
+		"userId: 'testUserId'," +
         "{start : {hour: 12, min: 00, am: \"PM\", timezone: \"US/Pacific\"}," +
         "   end : {hour: 12, min: 30, am: \"PM\", timezone: \"US/Pacific\", from:2, to:5}," +
         "  asap : true," +
         "random : true}";
 
     public QueueManagerImpl(CouchDbConnector dbClient) {
-        this.dbClient = dbClient;
+        setQueueSettingsRepository(new QueueSettingsRepository(dbClient));
     }
 
     public JsonObject create(String documentId) throws Exception {
         QueueSettings qs=new QueueSettings();
         qs.setId(documentId);
-    	dbClient.update(qs);
+    	getQueueSettingsRepository().update(qs);
     	JsonObject jso=qs.toJsonObject();
         return jso;
     }
 
     public void update(String documentId, JsonObject queue) throws Exception {
-        System.out.println(queue);
         QueueSettings qs=QueueSettings.fromJsonObject(queue);
-        dbClient.update(qs);
+        getQueueSettingsRepository().update(qs);
         queue.addProperty(QueueSettings._REV, qs.getRevision());
     }
 
-    public JsonObject get(String documentId) throws Exception {
-    	QueueSettings js=dbClient.get(QueueSettings.class, documentId);
-    	JsonObject jso=js.toJsonObject();
+    public JsonObject get(String userId) throws Exception {
+    	//QueueSettings js=dbClient.get(QueueSettings.class, documentId);
+    	QueueSettings qs=getQueueSettingsRepository().getTestSettings(userId);
+    	if(qs==null) {
+    		qs=new QueueSettings();
+    		qs.setUserId(userId);
+    		qs.setQueueType(QueueType.TEST);
+    		getQueueSettingsRepository().add(qs);
+    	}
+    	JsonObject jso=qs.toJsonObject();
         return jso;
     }
 
     public void remove(JsonObject queue) {
-        dbClient.delete(queue);
+    	QueueSettings qs=QueueSettings.fromJsonObject(queue);
+    	getQueueSettingsRepository().delete(qs);
     }
 
     protected Date toEndTime(JsonObject obj) {
@@ -85,5 +94,14 @@ public class QueueManagerImpl implements QueueManager {
         return calendar.getTime();
     }
 
+    private QueueSettingsRepository queueSettingsRepository;
+
+	public QueueSettingsRepository getQueueSettingsRepository() {
+		return queueSettingsRepository;
+	}
+
+	public void setQueueSettingsRepository(QueueSettingsRepository queueSettingsRepository) {
+		this.queueSettingsRepository = queueSettingsRepository;
+	}
 }
 

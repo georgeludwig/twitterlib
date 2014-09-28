@@ -24,12 +24,12 @@ import javax.inject.Inject;
 @Import(library = {"queue-manager.js", "react.js", "queue.js", "init-queue.js"})
 public class Queue {
 
-    /**
-     * Cloudant document id
-     */
     @Parameter
-    private String queueId;
+    private String queueType;
 
+    @Parameter
+    private String userId;
+    
     /**
      * Time interval between two updates
      */
@@ -76,11 +76,11 @@ public class Queue {
     }
 
     private String getQueueUpdateURL() {
-        return resources.createEventLink("update", queueId).toURI();
+        return resources.createEventLink("update", userId).toURI();
     }
 
     private String getQueueURL(){
-        return resources.createEventLink("get", queueId).toURI();
+        return resources.createEventLink("get", userId).toURI();
     }
 
     @OnEvent("update")

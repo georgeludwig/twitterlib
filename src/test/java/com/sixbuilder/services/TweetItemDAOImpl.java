@@ -1,14 +1,13 @@
 package com.sixbuilder.services;
 
-import com.sixbuilder.AbstractTestSixBuilder;
-import com.sixbuilder.datatypes.persistence.PendingTweetFileUtil;
-import com.sixbuilder.helpers.TestPage;
-import com.sixbuilder.twitterlib.services.TweetItemDAO;
-import com.sixbuilder.datatypes.twitter.TweetItem;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+
+import com.sixbuilder.AbstractTestSixBuilder;
+import com.sixbuilder.datatypes.persistence.PendingTweetFileUtil;
+import com.sixbuilder.datatypes.twitter.TweetItem;
+import com.sixbuilder.twitterlib.services.TweetItemDAO;
 
 /**
  * {@link com.sixbuilder.twitterlib.services.TweetItemDAO} implementation
@@ -42,9 +41,10 @@ public class TweetItemDAOImpl implements TweetItemDAO {
 	}
 
 	public void delete(TweetItem tweetItem) throws Exception {
+		// don't bother deleting from the pending tweet file; the set managers take care of the display
+		// for now, we just remove it from both set managers...handled by ReccommendedTweetDisplay
 //		pendingTweetFileUtil.getPendingTweetMap().remove(tweetItem.getUrl());
 //		pendingTweetFileUtil.serialize();
-		// for now, we just remove it from both set managers...handled by ReccommendedTweetDisplay
 	}
 	
 	public TweetItem findById(String id) throws Exception {

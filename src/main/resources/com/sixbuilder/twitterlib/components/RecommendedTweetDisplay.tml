@@ -26,7 +26,7 @@
 					<div class="label label-info message">
 						<span class="mycenter">Queue</span>
 						<span style="position: relative; top: -25px; right:-70px;">
-							<div t:type="twitterlib/Queue" queueId="queueId" />
+							<div t:type="twitterlib/Queue" queueType="queueType" userId="userId" />
 						</span>
 					</div>
 					<div class="publishTweets" t:type="Zone" t:id="publishingZone"

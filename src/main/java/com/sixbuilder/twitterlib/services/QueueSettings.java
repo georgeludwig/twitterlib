@@ -3,6 +3,7 @@ package com.sixbuilder.twitterlib.services;
 import org.ektorp.support.CouchDbDocument;
 
 import com.google.gson.JsonObject;
+import com.sixbuilder.actionqueue.QueueType;
 import com.sixbuilder.twitterlib.helpers.Meridiem;
 
 public class QueueSettings extends CouchDbDocument {
@@ -11,6 +12,8 @@ public class QueueSettings extends CouchDbDocument {
 	
 	public static final String _ID="_id";
 	public static final String _REV="_rev";
+	public static final String QUEUETYPE="queueType";
+	public static final String USERID="userId";
 	public static final String START="start";
 	public static final String END="end";
 	public static final String HOUR="hour";
@@ -25,13 +28,15 @@ public class QueueSettings extends CouchDbDocument {
 	
 	public QueueSettings() {
 		// set defaults
+		queueType=QueueType.TEST;
+		userId="testUserId";
 		startHour=12;
 		startMinute=0;
 		startMeridiem=Meridiem.PM;
 		endHour=12;
 		endMinute=30;
 		endMeridiem=Meridiem.PM;
-		timeZoneId="America/Los_Angeles";
+		timeZoneId="US/Hawaii";
 		asap=true;
 		random=true;
 		pause=false;
@@ -39,6 +44,8 @@ public class QueueSettings extends CouchDbDocument {
 		randomMax=5;
 	}
 
+	private QueueType queueType;
+	private String userId;
 	private Integer startHour;
 	private Integer startMinute;
 	private Meridiem startMeridiem;
@@ -52,6 +59,22 @@ public class QueueSettings extends CouchDbDocument {
 	private Integer randomMin;
 	private Integer randomMax;
 	
+	public QueueType getQueueType() {
+		return queueType;
+	}
+
+	public void setQueueType(QueueType queueType) {
+		this.queueType = queueType;
+	}
+
+	public String getUserId() {
+		return userId;
+	}
+
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
+
 	public Integer getStartHour() {
 		return startHour;
 	}
@@ -160,13 +183,16 @@ public class QueueSettings extends CouchDbDocument {
 			jso.addProperty(_ID, getId());
 		if(getRevision()!=null)
 			jso.addProperty(_REV, getRevision());
+		// queueType
+		jso.addProperty(QUEUETYPE,getQueueType().toString());
+		// userId
+		jso.addProperty(USERID,getUserId());
 		// start
 		JsonObject start = new JsonObject();
 		start.addProperty(HOUR, getStartHour());
 		start.addProperty(MINUTE, getStartMinute());
 		start.addProperty(MERIDIEM, getStartMeridiem().toString());
 		start.addProperty(TIMEZONE, getTimeZoneId());
-		//
 		jso.add(START, start);
 		// end
 		JsonObject end = new JsonObject();
@@ -176,7 +202,6 @@ public class QueueSettings extends CouchDbDocument {
 		end.addProperty(TIMEZONE, getTimeZoneId());
 		end.addProperty(FROM, getRandomMin());
 		end.addProperty(TO, getRandomMax());
-		//
 		jso.add(END, end);
 		//
 		jso.addProperty(ASAP,getAsap());
@@ -196,6 +221,12 @@ public class QueueSettings extends CouchDbDocument {
 		// rev
 		val=jso.getAsJsonPrimitive(_REV).getAsString();
 		ret.setRevision(val);
+		// userId
+		val=jso.getAsJsonPrimitive(USERID).getAsString();
+		ret.setUserId(val);
+		// queueType
+		val=jso.getAsJsonPrimitive(QUEUETYPE).getAsString();
+		ret.setQueueType(QueueType.getByString(val));
 		// start
 		JsonObject start=jso.getAsJsonObject(START);
 		Integer v=start.getAsJsonPrimitive(HOUR).getAsInt();

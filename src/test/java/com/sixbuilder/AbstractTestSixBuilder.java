@@ -9,6 +9,7 @@ import twitter4j.UserList;
 
 import com.georgeludwigtech.common.util.FileUtil;
 import com.georgeludwigtechnology.twitterutil.TwitterUtil;
+import com.sixbuilder.datatypes.account.AccountManager;
 import com.sixbuilder.datatypes.account.User;
 import com.sixbuilder.datatypes.twitter.TwitterSearch;
 import com.sixbuilder.jobsequence.Context;
@@ -26,9 +27,9 @@ public abstract class AbstractTestSixBuilder {
 	// for the actionqueue
 	public static final String DBACCOUNT="6btest";
 	public static final String DBPWD="6btesttacofranchisescope";
-	public static final String QUEUE_TEST_DB_NAME="queueTest";
-	public static final String USERNAME="6bldr";
-		
+//	public static final String QUEUE_TEST_DB_NAME="queueTest";
+//	public static final String QUEUE_SETTINGS_TEST_DB_NAME="queueSettingsTest";
+	
 	// klout credentials
 	public static final String KLOUT_APIKEY="vtk3p75vudw7tskb8zkr5v35 ";
 	
@@ -50,7 +51,7 @@ public abstract class AbstractTestSixBuilder {
 	}
 
 	public static String getTestUserPath() throws Exception {
-		return getTestUserPath(PRIMARY_TEST_USER_NAME);
+		return getTestUserPath(new File(getTestRoot()),PRIMARY_TEST_USER_NAME);
 	}
 	
 	/**
@@ -61,6 +62,8 @@ public abstract class AbstractTestSixBuilder {
 		// create a search params object
 		TwitterSearch params=new TwitterSearch();
 		// serialize the params
+		File f=new File(userPath);
+		f.mkdirs();
 		params.serializeToFile(new File(userPath,Context.SEARCH_XML_FILENAME));
 		//ClassLoader classLoader = ClassLoader.getSystemClassLoader();
 		ClassLoader classLoader=Thread.currentThread().getContextClassLoader();
@@ -131,9 +134,9 @@ public abstract class AbstractTestSixBuilder {
 		return list;
 	}
 	
-	public static String getTestUserPath(String user) throws Exception {
-		String path=getTestRoot()+user+FILE_SEPARATOR;
-		return path;
+	public static String getTestUserPath(File accountsRoot,String user) throws Exception {
+		String s=AccountManager.getAccountPath(accountsRoot.toString(),user);
+		return s;
 	}
 	
 	public static String getTestRoot() throws Exception {
@@ -209,7 +212,7 @@ public abstract class AbstractTestSixBuilder {
 	 * @throws Exception
 	 */
 	public static TwitterUtil getPrimaryTwitterUtil() throws Exception {
-		String path=getTestUserPath(PRIMARY_TEST_USER_NAME);
+		String path=getTestUserPath();
 		return getTwitterUtil(PRIMARY_TEST_USER_NAME,path);
 	}
 	
@@ -219,7 +222,7 @@ public abstract class AbstractTestSixBuilder {
 	 * @throws Exception
 	 */
 	public static TwitterUtil getSecondaryTwitterUtil() throws Exception {
-		String path=getTestUserPath(SECONDARY_TEST_USER_NAME);
+		String path=getTestUserPath(new File(getTestRoot()),SECONDARY_TEST_USER_NAME);
 		return getTwitterUtil(SECONDARY_TEST_USER_NAME,path);
 	}
 }

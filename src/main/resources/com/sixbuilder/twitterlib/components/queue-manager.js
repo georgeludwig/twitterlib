@@ -1,6 +1,8 @@
 var QueueManager = function (callbacks, lazyLoad) {
   this.callbacks = callbacks;
   this.queue = {
+	queueType: 'TEST',
+	userId: 'testUserId',
     start: {hour: 12, min: 0, am: "PM", timezone: "US/Pacific"},
     end: {hour: 12, min: 30, am: "PM", from: 2, to: 5, timezone:"US/Pacific"},
     asap: true,

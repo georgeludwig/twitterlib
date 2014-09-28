@@ -13,6 +13,7 @@ import org.ektorp.impl.StdCouchDbInstance;
 import org.got5.tapestry5.jquery.JQuerySymbolConstants;
 
 import com.sixbuilder.AbstractTestSixBuilder;
+import com.sixbuilder.twitterlib.helpers.QueueSettingsRepository;
 import com.sixbuilder.twitterlib.services.TweetItemDAO;
 import com.sixbuilder.twitterlib.services.TwitterLibModule;
 
@@ -62,7 +63,7 @@ public class AppModule
 			.relaxedSSLSettings(true).build();
     	
     	CouchDbInstance dbInstance = new StdCouchDbInstance(httpClient);
-		CouchDbConnector db = new StdCouchDbConnector(AbstractTestSixBuilder.QUEUE_TEST_DB_NAME, dbInstance);
+		CouchDbConnector db = new StdCouchDbConnector(QueueSettingsRepository.DBNAME, dbInstance);
 		db.createDatabaseIfNotExists();
 		return db;
     }

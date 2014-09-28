@@ -16,6 +16,7 @@ import org.ektorp.impl.StdCouchDbConnector;
 import org.ektorp.impl.StdCouchDbInstance;
 
 import com.sixbuilder.AbstractTestSixBuilder;
+import com.sixbuilder.twitterlib.helpers.QueueSettingsRepository;
 import com.sixbuilder.twitterlib.services.TwitterLibModule;
 
 @SubModule({TapestryModule.class, TapestryIOCModule.class, TwitterLibModule.class})
@@ -34,7 +35,7 @@ public class TestModule {
 			.relaxedSSLSettings(true).build();
     	
     	CouchDbInstance dbInstance = new StdCouchDbInstance(httpClient);
-		CouchDbConnector db = new StdCouchDbConnector(AbstractTestSixBuilder.QUEUE_TEST_DB_NAME, dbInstance);
+		CouchDbConnector db = new StdCouchDbConnector(QueueSettingsRepository.DBNAME, dbInstance);
 		db.createDatabaseIfNotExists();
 		return db;
     }
