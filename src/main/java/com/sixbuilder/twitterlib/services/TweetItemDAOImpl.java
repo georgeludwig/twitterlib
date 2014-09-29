@@ -1,4 +1,4 @@
-package com.sixbuilder.services;
+package com.sixbuilder.twitterlib.services;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -37,7 +37,6 @@ public class TweetItemDAOImpl implements TweetItemDAO {
 		Collection<TweetItem> c=pendingTweetFileUtil.getPendingTweetMap().values();
 		itemList.addAll(c);
 		return itemList;
-				
 	}
 
 	public void delete(TweetItem tweetItem) throws Exception {
@@ -59,7 +58,7 @@ public class TweetItemDAOImpl implements TweetItemDAO {
 	}
 
 	public void update(TweetItem tweetItem) throws Exception {
-		// here we don't bother with saving anything
+		// we save all at once
 		pendingTweetFileUtil.serialize();
 	}
 

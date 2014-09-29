@@ -14,8 +14,10 @@ import org.got5.tapestry5.jquery.JQuerySymbolConstants;
 
 import com.sixbuilder.AbstractTestSixBuilder;
 import com.sixbuilder.twitterlib.helpers.QueueSettingsRepository;
+import com.sixbuilder.twitterlib.services.TweetDAO;
 import com.sixbuilder.twitterlib.services.TweetItemDAO;
 import com.sixbuilder.twitterlib.services.TwitterLibModule;
+import com.sixbuilder.twitterlib.services.TweetItemDAOImpl;
 
 /**
  * This module is automatically included as part of the Tapestry IoC Registry, it's a good place to

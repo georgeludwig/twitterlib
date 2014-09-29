@@ -1,4 +1,4 @@
-package com.sixbuilder.services;
+package com.sixbuilder.twitterlib.services;
 
 import java.util.List;
 

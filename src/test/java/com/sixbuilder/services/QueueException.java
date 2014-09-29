@@ -2,7 +2,9 @@ package com.sixbuilder.services;
 
 public class QueueException extends RuntimeException {
 
-    public QueueException(String message) {
+	private static final long serialVersionUID = 1L;
+
+	public QueueException(String message) {
         super(message);
     }
 

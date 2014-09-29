@@ -3,6 +3,7 @@ package com.sixbuilder.pages;
 import java.io.File;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
@@ -89,8 +90,8 @@ public class RecommendedTweetTestPage {
 			UrlSnapshotServiceRequest req=new UrlSnapshotServiceRequest();
 			req.setTargetUrl(ti.getUrl());
 			req.setServiceUrl("http://my.6builder.com:3001");
-			req.setWidth(300);
-			req.setHeight(240);
+			req.setWidth(1280);
+			req.setHeight(1024);
 			UrlSnapshotServiceResponse resp = UrlSnapshotServiceClient.snap(req);
 			ti.setSnapshotUrl(resp.getImageUrl());
 		}
@@ -153,7 +154,7 @@ public class RecommendedTweetTestPage {
 				new File(AbstractTestSixBuilder.getTestRoot()), AbstractTestSixBuilder.PRIMARY_TEST_USER_NAME);
 		Set<SetItem> c = curationSetMgr.getSet();
 		List<TweetItem> ret = new ArrayList<TweetItem>();
-		for (TweetItem ti : getTweetItems()) {
+		for(TweetItem ti : getTweetItems()) {
 			if (c.contains(new SetItemImpl(ti.getTweetId())))
 				ret.add(ti);
 		}
@@ -166,10 +167,11 @@ public class RecommendedTweetTestPage {
 				new File(AbstractTestSixBuilder.getTestRoot()), AbstractTestSixBuilder.PRIMARY_TEST_USER_NAME);
 		Set<SetItem> q = queuedSetMgr.getSet();
 		List<TweetItem> ret = new ArrayList<TweetItem>();
-		for (TweetItem ti : getTweetItems()) {
+		for(TweetItem ti : getTweetItems()) {
 			if (q.contains(new SetItemImpl(ti.getTweetId())))
 				ret.add(ti);
 		}
+		Collections.sort(ret);
 		return ret;
 	}
 
