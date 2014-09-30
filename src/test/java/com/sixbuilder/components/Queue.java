@@ -1,9 +1,7 @@
 package com.sixbuilder.components;
 
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-import com.google.gson.JsonPrimitive;
-import com.sixbuilder.twitterlib.services.QueueManager;
+import javax.inject.Inject;
+
 import org.apache.tapestry5.BindingConstants;
 import org.apache.tapestry5.ComponentResources;
 import org.apache.tapestry5.MarkupWriter;
@@ -16,7 +14,11 @@ import org.apache.tapestry5.json.JSONObject;
 import org.apache.tapestry5.services.Request;
 import org.apache.tapestry5.services.javascript.JavaScriptSupport;
 
-import javax.inject.Inject;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import com.google.gson.JsonPrimitive;
+import com.sixbuilder.twitterlib.services.QueueSettings;
+import com.sixbuilder.twitterlib.services.QueueSettingsDAO;
 
 @Import(library = {"queue-manager.js", "react.js", "queue.js", "init-queue.js"})
 public class Queue {
@@ -25,7 +27,7 @@ public class Queue {
      * Cloudant document id
      */
     @Parameter
-    private String queueId;
+    private String queueId; 
 
     /**
      * Time interval between two updates
@@ -45,7 +47,7 @@ public class Queue {
     private ComponentResources resources;
 
     @Inject
-    private QueueManager queueManager;
+    private QueueSettingsDAO queueSettingsDAO;
 
     @Inject
     private Request request;
@@ -83,14 +85,17 @@ public class Queue {
     @OnEvent("update")
     JsonObject updateQueue(String queueId) throws Exception {
         JsonObject queue = (JsonObject) new JsonParser().parse(request.getParameter("queue"));
-        queueManager.update(queueId, queue);
+        //queueManager.update(queueId, queue);
+        QueueSettings settings=QueueSettings.fromJsonObject(queue);
+        queueSettingsDAO.update(settings);
         return success(queue);
     }
 
     @OnEvent("get")
     JsonObject getQueue(String queueId) throws Exception {
-        JsonObject queue = queueManager.get(queueId);
-        return success(queue);
+        //JsonObject queue = queueManager.get(queueId);
+    	QueueSettings settings=queueSettingsDAO.getQueueSettings(queueId);
+        return success(settings.toJsonObject());
     }
 
     private JsonObject success(JsonObject queue) {

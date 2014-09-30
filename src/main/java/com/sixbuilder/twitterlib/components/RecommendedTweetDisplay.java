@@ -39,8 +39,10 @@ import com.sixbuilder.twitterlib.RecommendedTweetConstants;
 import com.sixbuilder.twitterlib.helpers.HolderComponentEventCallback;
 import com.sixbuilder.twitterlib.helpers.QueueSettingsRepository;
 import com.sixbuilder.twitterlib.helpers.TargetTimeCalculator;
+import com.sixbuilder.twitterlib.services.QueueItemDAO;
 import com.sixbuilder.twitterlib.services.QueueManager;
 import com.sixbuilder.twitterlib.services.QueueSettings;
+import com.sixbuilder.twitterlib.services.QueueSettingsDAO;
 
 /**
  * A component that shows the recommended tweets, curating, publishing and published.
@@ -67,6 +69,11 @@ public class RecommendedTweetDisplay {
 	String queueSettingsDbName;
 	@Parameter
 	String queueItemDbName;
+	
+	@Inject
+	private QueueItemDAO queueItemDAO;
+	@Inject
+	private QueueSettingsDAO queueSettingsDAO;
 	
 	@Parameter
 	@Property
@@ -110,40 +117,36 @@ public class RecommendedTweetDisplay {
 	@OnEvent(RecommendedTweetConstants.DELETE_TWEET_EVENT)
 	public void delete(TweetItem tweetItem) throws Exception {
 		triggerEvent(RecommendedTweetConstants.DELETE_TWEET_EVENT, resources.getContainerResources());
+		// find any QueueItems for this id, and delete them as well
+		List<QueueItem> itemList=queueItemDAO.getPending(queueType,AbstractTestSixBuilder.PRIMARY_TEST_USER_NAME);
+		for(QueueItem item:itemList) {
+			if(item.getTweetId().equals(tweetItem.getTweetId()))
+				queueItemDAO.delete(item);
+		}
+		// adjust setmanagers
 		SetManager cSm = getCurationSetManager(curationSetMgr);
 		SetManager qSm = getQueuedSetManager(queuedSetMgr);
 		cSm.removeSetItem(tweetItem.getTweetId());
 		qSm.removeSetItem(tweetItem.getTweetId());
-		// find any QueueItems for this id, and delete them as well
-		QueueItemRepository repo=getQueueItemRepository();
-		List<QueueItem> itemList=repo.getPending(queueType,AbstractTestSixBuilder.PRIMARY_TEST_USER_NAME);
-		for(QueueItem item:itemList) {
-			if(item.getTweetId().equals(tweetItem.getTweetId()))
-				repo.delete(item);
-		}
 		ajaxResponseRenderer.addRender(curateZone);
 		ajaxResponseRenderer.addRender(publishingZone);
 	}
 
-	@Inject
-	private QueueManager queueManager;
+//	@Inject
+//	private QueueManager queueManager;
 	
 	@OnEvent(RecommendedTweetConstants.PUBLISH_TWEET_EVENT)
 	public void publish(TweetItem tweetItem) throws Exception {
 		triggerEvent(RecommendedTweetConstants.PUBLISH_TWEET_EVENT, resources.getContainerResources());
 		triggerEvent(RecommendedTweetConstants.MEH_TWEET_EVENT, resources.getContainerResources());
-		SetManager cSm = getCurationSetManager(curationSetMgr);
-		SetManager qSm = getQueuedSetManager(queuedSetMgr);
-		cSm.removeSetItem(tweetItem.getTweetId());
-		qSm.addSetItem(new SetItemImpl(tweetItem.getTweetId()));
 		// get queue settings for this user
 //		QueueSettingsRepository settingsRepo=getQueueSettingsRepository();
 //		QueueSettings settings=settingsRepo.getQueueSettings(queueType,userId);
-		getQueueSettingsRunnable qsr=new getQueueSettingsRunnable(queueType,userId,getQueueSettingsRepository());
+		getQueueSettingsRunnable qsr=new getQueueSettingsRunnable(queueType,userId,queueSettingsDAO.getRepo());
 		// get current contents of queue for user
 //		QueueItemRepository itemRepo=getQueueItemRepository();
 //		List<QueueItem>itemList=itemRepo.getPending(queueType, userId);
-		getQueueItemsRunnable qir=new getQueueItemsRunnable(queueType,userId,getQueueItemRepository());
+		getQueueItemsRunnable qir=new getQueueItemsRunnable(queueType,userId,queueItemDAO.getRepo());
 		List<Runnable>rl=new ArrayList<Runnable>();
 		rl.add(qsr);
 		rl.add(qir);
@@ -158,11 +161,16 @@ public class RecommendedTweetDisplay {
 		// re-calc target times based on current queue settings
 		boolean changed=TargetTimeCalculator.calcTargetTime(qsr.queueSettings, newItem, qir.queueItems, System.currentTimeMillis());
 		// serialize new queue item
-		getQueueItemRepository().add(newItem);
+		queueItemDAO.add(newItem);
 		// re-serialize existing items if they were changed
 		if(changed&&qir.queueItems.size()>0) {
-			getQueueItemRepository().update(qir.queueItems);
+			queueItemDAO.update(qir.queueItems);
 		}
+		// adjust set managers
+		SetManager cSm = getCurationSetManager(curationSetMgr);
+		SetManager qSm = getQueuedSetManager(queuedSetMgr);
+		cSm.removeSetItem(tweetItem.getTweetId());
+		qSm.addSetItem(new SetItemImpl(tweetItem.getTweetId()));
 		ajaxResponseRenderer.addRender(curateZone);
 		ajaxResponseRenderer.addRender(publishingZone);
 	}
@@ -170,17 +178,17 @@ public class RecommendedTweetDisplay {
 	@OnEvent(RecommendedTweetConstants.MEH_TWEET_EVENT)
 	public void meh(TweetItem tweetItem) throws Exception {
 		triggerEvent(RecommendedTweetConstants.MEH_TWEET_EVENT, resources.getContainerResources());
+		// remove corresponding QueueItem from queue, if it exists
+		List<QueueItem> itemList=queueItemDAO.getPending(queueType,userId);
+		for(QueueItem item:itemList) {
+			if(item.getTweetId().equals(tweetItem.getTweetId()))
+				queueItemDAO.delete(item);
+		}
+		// adjust setmanagers
 		SetManager cSm = getCurationSetManager(curationSetMgr);
 		SetManager qSm = getQueuedSetManager(queuedSetMgr);
 		cSm.addSetItem(new SetItemImpl(tweetItem.getTweetId()));
 		qSm.removeSetItem(tweetItem.getTweetId());
-		// remove corresponding QueueItem from queue, if it exists
-		QueueItemRepository repo=getQueueItemRepository();
-		List<QueueItem> itemList=repo.getPending(queueType,userId);
-		for(QueueItem item:itemList) {
-			if(item.getTweetId().equals(tweetItem.getTweetId()))
-				repo.delete(item);
-		}
 		ajaxResponseRenderer.addRender(curateZone);
 		ajaxResponseRenderer.addRender(publishingZone);
 	}
@@ -229,49 +237,49 @@ public class RecommendedTweetDisplay {
 		ajaxResponseRenderer.addRender(publishingZone);
 	}
 	
-	@Persist
-	private QueueItemRepository qRepo;
-	private Integer qRepoSem=new Integer(0);
-	QueueItemRepository getQueueItemRepository() {
-		if(qRepo==null) {
-			synchronized(qRepoSem) {
-				if(qRepo==null) {
-					HttpClient httpClient = new StdHttpClient.Builder()
-						.host(dbAccountName + ".cloudant.com").port(443)
-						.username(dbAccountName).password(dbPassword)
-						.enableSSL(true).relaxedSSLSettings(true).build();
-					CouchDbInstance dbInstance = new StdCouchDbInstance(httpClient);
-					CouchDbConnector db = new StdCouchDbConnector(queueItemDbName, dbInstance);
-					db.createDatabaseIfNotExists();
-					QueueItemRepository r = new QueueItemRepository(db);
-					qRepo=r;
-				}
-			}
-		}
-		return qRepo;
-	}
-	
-	@Persist
-	private QueueSettingsRepository settingsRepo;
-	private Integer settingsRepoSem=new Integer(0);
-	QueueSettingsRepository getQueueSettingsRepository() {
-		if(settingsRepo==null) {
-			synchronized(settingsRepoSem) {
- 				if(settingsRepo==null) {
-					HttpClient httpClient = new StdHttpClient.Builder()
-						.host(dbAccountName + ".cloudant.com").port(443)
-						.username(dbAccountName).password(dbPassword)
-						.enableSSL(true).relaxedSSLSettings(true).build();
-					CouchDbInstance dbInstance = new StdCouchDbInstance(httpClient);
-					CouchDbConnector db = new StdCouchDbConnector(queueSettingsDbName, dbInstance);
-					db.createDatabaseIfNotExists();
-					QueueSettingsRepository r = new QueueSettingsRepository(db);
-					settingsRepo=r;
-				}
-			}
-		}
-		return settingsRepo;
-	}
+//	@Persist
+//	private QueueItemRepository qRepo;
+//	private Integer qRepoSem=new Integer(0);
+//	QueueItemRepository getQueueItemRepository() {
+//		if(qRepo==null) {
+//			synchronized(qRepoSem) {
+//				if(qRepo==null) {
+//					HttpClient httpClient = new StdHttpClient.Builder()
+//						.host(dbAccountName + ".cloudant.com").port(443)
+//						.username(dbAccountName).password(dbPassword)
+//						.enableSSL(true).relaxedSSLSettings(true).build();
+//					CouchDbInstance dbInstance = new StdCouchDbInstance(httpClient);
+//					CouchDbConnector db = new StdCouchDbConnector(queueItemDbName, dbInstance);
+//					db.createDatabaseIfNotExists();
+//					QueueItemRepository r = new QueueItemRepository(db);
+//					qRepo=r;
+//				}
+//			}
+//		}
+//		return qRepo;
+//	}
+//	
+//	@Persist
+//	private QueueSettingsRepository settingsRepo;
+//	private Integer settingsRepoSem=new Integer(0);
+//	QueueSettingsRepository getQueueSettingsRepository() {
+//		if(settingsRepo==null) {
+//			synchronized(settingsRepoSem) {
+// 				if(settingsRepo==null) {
+//					HttpClient httpClient = new StdHttpClient.Builder()
+//						.host(dbAccountName + ".cloudant.com").port(443)
+//						.username(dbAccountName).password(dbPassword)
+//						.enableSSL(true).relaxedSSLSettings(true).build();
+//					CouchDbInstance dbInstance = new StdCouchDbInstance(httpClient);
+//					CouchDbConnector db = new StdCouchDbConnector(queueSettingsDbName, dbInstance);
+//					db.createDatabaseIfNotExists();
+//					QueueSettingsRepository r = new QueueSettingsRepository(db);
+//					settingsRepo=r;
+//				}
+//			}
+//		}
+//		return settingsRepo;
+//	}
 	
 	class getQueueSettingsRunnable implements Runnable {
 		private QueueType queueType;

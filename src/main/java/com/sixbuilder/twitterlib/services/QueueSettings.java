@@ -215,12 +215,15 @@ public class QueueSettings extends CouchDbDocument {
 	
 	public static QueueSettings fromJsonObject(JsonObject jso) {
 		QueueSettings ret=new QueueSettings();
-		// id
-		String val=jso.getAsJsonPrimitive(_ID).getAsString();
-		ret.setId(val);
-		// rev
-		val=jso.getAsJsonPrimitive(_REV).getAsString();
-		ret.setRevision(val);
+		String val=null;
+		try {
+			// id
+			val=jso.getAsJsonPrimitive(_ID).getAsString();
+			ret.setId(val);
+			// rev
+			val=jso.getAsJsonPrimitive(_REV).getAsString();
+			ret.setRevision(val);
+		} catch(NullPointerException e) {}
 		// userId
 		val=jso.getAsJsonPrimitive(USERID).getAsString();
 		ret.setUserId(val);

@@ -1,10 +1,6 @@
 package com.sixbuilder.twitterlib.components;
 
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-import com.google.gson.JsonPrimitive;
-import com.sixbuilder.twitterlib.services.QueueManager;
-import com.sixbuilder.twitterlib.services.QueueSettings;
+import javax.inject.Inject;
 
 import org.apache.tapestry5.BindingConstants;
 import org.apache.tapestry5.ComponentResources;
@@ -19,13 +15,18 @@ import org.apache.tapestry5.services.Request;
 import org.apache.tapestry5.services.javascript.JavaScriptSupport;
 import org.ektorp.DocumentNotFoundException;
 
-import javax.inject.Inject;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import com.google.gson.JsonPrimitive;
+import com.sixbuilder.actionqueue.QueueType;
+import com.sixbuilder.twitterlib.services.QueueSettings;
+import com.sixbuilder.twitterlib.services.QueueSettingsDAO;
 
 @Import(library = {"queue-manager.js", "react.js", "queue.js", "init-queue.js"})
 public class Queue {
 
     @Parameter
-    private String queueType;
+    private QueueType queueType;
 
     @Parameter
     private String userId;
@@ -47,8 +48,9 @@ public class Queue {
     @Inject
     private ComponentResources resources;
 
-    @Inject
-    private QueueManager queueManager;
+//    @Inject
+//    private QueueManager queueManager;
+    @Inject QueueSettingsDAO queueSettingsDAO;
 
     @Inject
     private Request request;
@@ -86,24 +88,29 @@ public class Queue {
     @OnEvent("update")
     JsonObject updateQueue(String queueId) throws Exception {
         JsonObject queue = (JsonObject) new JsonParser().parse(request.getParameter("queue"));
-        queueManager.update(queueId, queue);
+        QueueSettings settings=QueueSettings.fromJsonObject(queue);
+        queueSettingsDAO.update(settings);
         // TODO retrieve current queue items
         // TODO re-calculate target date for all queue items
         // based on latest queue settings
         // TODO store updated queue items
-        return success(queue);
+        return success(settings.toJsonObject());
     }
 
     @OnEvent("get")
     JsonObject getQueue(String queueId) throws Exception {
     	try {
-	        JsonObject queue = queueManager.get(queueId);
+    		QueueSettings settings=queueSettingsDAO.getQueueSettings(queueId);
+	        JsonObject queue = settings.toJsonObject();
 	        return success(queue);
     	} catch(DocumentNotFoundException e) {
     		// create new document
     		QueueSettings settings=new QueueSettings();
-    		settings.setId(queueId);
-    		JsonObject queue = queueManager.create(queueId);
+    		settings.setQueueType(queueType);
+    		settings.setUserId(userId);
+    		settings.setQueueType(queueType);
+    		queueSettingsDAO.add(settings);
+    		JsonObject queue = settings.toJsonObject();
 	        return success(queue);
     	}
     }

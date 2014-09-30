@@ -28,15 +28,15 @@ public class TestModule {
         defaults.add(SymbolConstants.PRODUCTION_MODE, false);
     }
 
-    public static CouchDbConnector buildCBC() throws Exception {
-    	HttpClient httpClient = new StdHttpClient.Builder()
-			.host(AbstractTestSixBuilder.DBACCOUNT+".cloudant.com").port(443).username(AbstractTestSixBuilder.DBACCOUNT)
-			.password(AbstractTestSixBuilder.DBPWD).enableSSL(true)
-			.relaxedSSLSettings(true).build();
-    	
-    	CouchDbInstance dbInstance = new StdCouchDbInstance(httpClient);
-		CouchDbConnector db = new StdCouchDbConnector(QueueSettingsRepository.DBNAME, dbInstance);
-		db.createDatabaseIfNotExists();
-		return db;
-    }
+//    public static CouchDbConnector buildCouchDbConnector() throws Exception {
+//    	HttpClient httpClient = new StdHttpClient.Builder()
+//			.host(AbstractTestSixBuilder.DBACCOUNT+".cloudant.com").port(443).username(AbstractTestSixBuilder.DBACCOUNT)
+//			.password(AbstractTestSixBuilder.DBPWD).enableSSL(true)
+//			.relaxedSSLSettings(true).build();
+//    	
+//    	CouchDbInstance dbInstance = new StdCouchDbInstance(httpClient);
+//		CouchDbConnector db = new StdCouchDbConnector(QueueSettingsRepository.DBNAME, dbInstance);
+//		db.createDatabaseIfNotExists();
+//		return db;
+//    }
 }

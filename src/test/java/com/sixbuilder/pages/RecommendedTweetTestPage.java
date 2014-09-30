@@ -86,14 +86,18 @@ public class RecommendedTweetTestPage {
 		FileUtil.copy(is, target);
 		// create snapshots
 		PendingTweetFileUtil util=new PendingTweetFileUtil(AbstractTestSixBuilder.getTestUserPath()+PendingTweetFileUtil.FILENAME);	
+		int ctr=0;
 		for(TweetItem ti:util.getPendingTweetMap().values()) {
-			UrlSnapshotServiceRequest req=new UrlSnapshotServiceRequest();
-			req.setTargetUrl(ti.getUrl());
-			req.setServiceUrl("http://my.6builder.com:3001");
-			req.setWidth(1280);
-			req.setHeight(1024);
-			UrlSnapshotServiceResponse resp = UrlSnapshotServiceClient.snap(req);
-			ti.setSnapshotUrl(resp.getImageUrl());
+			if(ctr<5) {
+				UrlSnapshotServiceRequest req=new UrlSnapshotServiceRequest();
+				req.setTargetUrl(ti.getUrl());
+				req.setServiceUrl("http://my.6builder.com:3001");
+				req.setWidth(1280);
+				req.setHeight(1024);
+				UrlSnapshotServiceResponse resp = UrlSnapshotServiceClient.snap(req);
+				ti.setSnapshotUrl(resp.getImageUrl());
+			}
+			ctr++;
 		}
 		util.serialize();
 		// create curation setitems
