@@ -48,8 +48,6 @@ public class Queue {
     @Inject
     private ComponentResources resources;
 
-//    @Inject
-//    private QueueManager queueManager;
     @Inject QueueSettingsDAO queueSettingsDAO;
 
     @Inject

@@ -233,7 +233,4 @@ public class RecommendedTweetTestPage {
 		return new File(AbstractTestSixBuilder.getTestRoot());
 	}
 	
-//	public String getAccountName() {
-//		return AbstractTestSixBuilder.PRIMARY_TEST_USER_NAME;
-//	}
 }

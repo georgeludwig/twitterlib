@@ -16,12 +16,6 @@ import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.corelib.components.Zone;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.ajax.AjaxResponseRenderer;
-import org.ektorp.CouchDbConnector;
-import org.ektorp.CouchDbInstance;
-import org.ektorp.http.HttpClient;
-import org.ektorp.http.StdHttpClient;
-import org.ektorp.impl.StdCouchDbConnector;
-import org.ektorp.impl.StdCouchDbInstance;
 
 import com.georgeludwigtech.common.setmanager.SetItemImpl;
 import com.georgeludwigtech.common.setmanager.SetManager;
@@ -40,7 +34,6 @@ import com.sixbuilder.twitterlib.helpers.HolderComponentEventCallback;
 import com.sixbuilder.twitterlib.helpers.QueueSettingsRepository;
 import com.sixbuilder.twitterlib.helpers.TargetTimeCalculator;
 import com.sixbuilder.twitterlib.services.QueueItemDAO;
-import com.sixbuilder.twitterlib.services.QueueManager;
 import com.sixbuilder.twitterlib.services.QueueSettings;
 import com.sixbuilder.twitterlib.services.QueueSettingsDAO;
 
@@ -131,21 +124,14 @@ public class RecommendedTweetDisplay {
 		ajaxResponseRenderer.addRender(curateZone);
 		ajaxResponseRenderer.addRender(publishingZone);
 	}
-
-//	@Inject
-//	private QueueManager queueManager;
 	
 	@OnEvent(RecommendedTweetConstants.PUBLISH_TWEET_EVENT)
 	public void publish(TweetItem tweetItem) throws Exception {
 		triggerEvent(RecommendedTweetConstants.PUBLISH_TWEET_EVENT, resources.getContainerResources());
 		triggerEvent(RecommendedTweetConstants.MEH_TWEET_EVENT, resources.getContainerResources());
 		// get queue settings for this user
-//		QueueSettingsRepository settingsRepo=getQueueSettingsRepository();
-//		QueueSettings settings=settingsRepo.getQueueSettings(queueType,userId);
 		getQueueSettingsRunnable qsr=new getQueueSettingsRunnable(queueType,userId,queueSettingsDAO.getRepo());
 		// get current contents of queue for user
-//		QueueItemRepository itemRepo=getQueueItemRepository();
-//		List<QueueItem>itemList=itemRepo.getPending(queueType, userId);
 		getQueueItemsRunnable qir=new getQueueItemsRunnable(queueType,userId,queueItemDAO.getRepo());
 		List<Runnable>rl=new ArrayList<Runnable>();
 		rl.add(qsr);
@@ -236,50 +222,6 @@ public class RecommendedTweetDisplay {
 		ajaxResponseRenderer.addRender(curateZone);
 		ajaxResponseRenderer.addRender(publishingZone);
 	}
-	
-//	@Persist
-//	private QueueItemRepository qRepo;
-//	private Integer qRepoSem=new Integer(0);
-//	QueueItemRepository getQueueItemRepository() {
-//		if(qRepo==null) {
-//			synchronized(qRepoSem) {
-//				if(qRepo==null) {
-//					HttpClient httpClient = new StdHttpClient.Builder()
-//						.host(dbAccountName + ".cloudant.com").port(443)
-//						.username(dbAccountName).password(dbPassword)
-//						.enableSSL(true).relaxedSSLSettings(true).build();
-//					CouchDbInstance dbInstance = new StdCouchDbInstance(httpClient);
-//					CouchDbConnector db = new StdCouchDbConnector(queueItemDbName, dbInstance);
-//					db.createDatabaseIfNotExists();
-//					QueueItemRepository r = new QueueItemRepository(db);
-//					qRepo=r;
-//				}
-//			}
-//		}
-//		return qRepo;
-//	}
-//	
-//	@Persist
-//	private QueueSettingsRepository settingsRepo;
-//	private Integer settingsRepoSem=new Integer(0);
-//	QueueSettingsRepository getQueueSettingsRepository() {
-//		if(settingsRepo==null) {
-//			synchronized(settingsRepoSem) {
-// 				if(settingsRepo==null) {
-//					HttpClient httpClient = new StdHttpClient.Builder()
-//						.host(dbAccountName + ".cloudant.com").port(443)
-//						.username(dbAccountName).password(dbPassword)
-//						.enableSSL(true).relaxedSSLSettings(true).build();
-//					CouchDbInstance dbInstance = new StdCouchDbInstance(httpClient);
-//					CouchDbConnector db = new StdCouchDbConnector(queueSettingsDbName, dbInstance);
-//					db.createDatabaseIfNotExists();
-//					QueueSettingsRepository r = new QueueSettingsRepository(db);
-//					settingsRepo=r;
-//				}
-//			}
-//		}
-//		return settingsRepo;
-//	}
 	
 	class getQueueSettingsRunnable implements Runnable {
 		private QueueType queueType;
