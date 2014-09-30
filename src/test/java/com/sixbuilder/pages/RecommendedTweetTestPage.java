@@ -30,6 +30,7 @@ import com.sixbuilder.datatypes.persistence.PersistenceUtil;
 import com.sixbuilder.datatypes.twitter.TweetItem;
 import com.sixbuilder.twitterlib.RecommendedTweetConstants;
 import com.sixbuilder.twitterlib.components.RecommendedTweet;
+import com.sixbuilder.twitterlib.helpers.TweetItemComparatorByTargetDate;
 import com.sixbuilder.twitterlib.services.QueueItemDAO;
 import com.sixbuilder.twitterlib.services.TweetItemDAO;
 
@@ -71,7 +72,7 @@ public class RecommendedTweetTestPage {
 		InputStream is = classLoader.getResourceAsStream("pendingTweets.txt");
 		File target = new File(userPath+SerializableRecordHelper.FILE_SEPARATOR + "pendingTweets.txt");
 		FileUtil.copy(is, target);
-		// create snapshots
+		// create snapshots, assing ids
 		PendingTweetFileUtil util=new PendingTweetFileUtil(AbstractTestSixBuilder.getTestUserPath()+PendingTweetFileUtil.FILENAME);	
 		int ctr=0;
 		for(TweetItem ti:util.getPendingTweetMap().values()) {
@@ -84,6 +85,7 @@ public class RecommendedTweetTestPage {
 				UrlSnapshotServiceResponse resp = UrlSnapshotServiceClient.snap(req);
 				ti.setSnapshotUrl(resp.getImageUrl());
 			}
+			ti.setTweetId(String.valueOf(ctr));
 			ctr++;
 		}
 		util.serialize();
@@ -140,7 +142,7 @@ public class RecommendedTweetTestPage {
 			if (q.contains(new SetItemImpl(ti.getTweetId())))
 				ret.add(ti);
 		}
-		Collections.sort(ret);
+		Collections.sort(ret,new TweetItemComparatorByTargetDate());
 		return ret;
 	}
 
@@ -152,7 +154,7 @@ public class RecommendedTweetTestPage {
 	public void delete(TweetItem tweetItem) throws Exception {
 		// the ReccommendedTweetDisplay should have handled the set manager stuff as well
 		// as the queue item stuff
-		tweetItemDAO.delete(tweetItem);
+		//tweetItemDAO.delete(tweetItem);
 		alertManager.success(String.format(
 				"Message with id %s was successfully deleted",
 				tweetItem.getTweetId()));
@@ -162,7 +164,7 @@ public class RecommendedTweetTestPage {
 	public void publish(TweetItem tweetItem) throws Exception {
 		// the ReccommendedTweetDisplay should have handled the set manager stuff as well
 		// as the queue item stuff
-		tweetItemDAO.update(tweetItem);
+		//tweetItemDAO.update(tweetItem);
 		alertManager.success(String.format(
 				"Message with id %s was successfully selected to be published",
 				tweetItem.getTweetId()));
@@ -172,7 +174,7 @@ public class RecommendedTweetTestPage {
 	public void meh(TweetItem tweetItem) throws Exception {
 		// the ReccommendedTweetDisplay should have handled the set manager stuff as well
 		// as the queue item stuff
-		tweetItemDAO.update(tweetItem);
+		//tweetItemDAO.update(tweetItem);
 		alertManager.success(String.format(
 				"Message with id %s was successfully meh'd",
 				tweetItem.getTweetId()));

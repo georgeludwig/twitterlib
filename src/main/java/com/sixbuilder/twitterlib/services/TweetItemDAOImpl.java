@@ -1,13 +1,11 @@
 package com.sixbuilder.twitterlib.services;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 import com.sixbuilder.AbstractTestSixBuilder;
 import com.sixbuilder.datatypes.persistence.PendingTweetFileUtil;
 import com.sixbuilder.datatypes.twitter.TweetItem;
-import com.sixbuilder.twitterlib.services.TweetItemDAO;
 
 /**
  * {@link com.sixbuilder.twitterlib.services.TweetItemDAO} implementation
@@ -15,27 +13,16 @@ import com.sixbuilder.twitterlib.services.TweetItemDAO;
  * @author Thiago H. de Paula Figueiredo (http://machina.com.br/thiago)
  */
 public class TweetItemDAOImpl implements TweetItemDAO {
-
-	private PendingTweetFileUtil pendingTweetFileUtil;
 	
-	public TweetItemDAOImpl() throws Exception {
-		if(pendingTweetFileUtil==null) {
-			pendingTweetFileUtil=new PendingTweetFileUtil(AbstractTestSixBuilder.getTestUserPath()+PendingTweetFileUtil.FILENAME);	
-			// now add tweet Ids && hashtags...these are missing from the test data
-			int i=0;
-			for(TweetItem item:pendingTweetFileUtil.getPendingTweetMap().values()) {
-				item.setTweetId(String.valueOf(i));
-				i++;
-				item.setRecommendedHashtags("#hashtag1 #hashtag2 #hashtag3");
-			}
-			pendingTweetFileUtil.serialize();
-		}
-	}
+	public TweetItemDAOImpl() throws Exception {}
 
-	public List<TweetItem>getAll() {
+	public List<TweetItem>getAll() throws Exception {
+//		List<TweetItem>itemList=new ArrayList<TweetItem>();
+//		Collection<TweetItem> c=pendingTweetFileUtil.getPendingTweetMap().values();
+//		itemList.addAll(c);
+		PendingTweetFileUtil util=new PendingTweetFileUtil(AbstractTestSixBuilder.getTestUserPath()+PendingTweetFileUtil.FILENAME);
 		List<TweetItem>itemList=new ArrayList<TweetItem>();
-		Collection<TweetItem> c=pendingTweetFileUtil.getPendingTweetMap().values();
-		itemList.addAll(c);
+		itemList.addAll(util.getPendingTweetMap().values());
 		return itemList;
 	}
 
@@ -48,7 +35,7 @@ public class TweetItemDAOImpl implements TweetItemDAO {
 	
 	public TweetItem findById(String id) throws Exception {
 		TweetItem tweetItem = null;
-		for (TweetItem item : pendingTweetFileUtil.getPendingTweetMap().values()) {
+		for (TweetItem item : getAll()) {
 			if (item.getTweetId().equals(id)) {
 				tweetItem = item;
 				break;
@@ -59,7 +46,9 @@ public class TweetItemDAOImpl implements TweetItemDAO {
 
 	public void update(TweetItem tweetItem) throws Exception {
 		// we save all at once
-		pendingTweetFileUtil.serialize();
+		PendingTweetFileUtil util=new PendingTweetFileUtil(AbstractTestSixBuilder.getTestUserPath()+PendingTweetFileUtil.FILENAME);
+		util.addRecordToCollection(tweetItem);
+		util.serialize();
 	}
 
 }

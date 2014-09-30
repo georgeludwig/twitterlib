@@ -39,7 +39,7 @@ public class QueueItemDAOImpl implements QueueItemDAO {
 	}
 
 	public List<QueueItem> getPending(QueueType queueType, String userId) {
-		return getPending(queueType, userId);
+		return repo.getPending(queueType, userId);
 	}
 
 	public void delete(List<QueueItem> queueItemList) {

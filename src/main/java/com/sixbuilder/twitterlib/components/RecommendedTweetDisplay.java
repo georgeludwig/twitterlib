@@ -36,6 +36,7 @@ import com.sixbuilder.twitterlib.helpers.TargetTimeCalculator;
 import com.sixbuilder.twitterlib.services.QueueItemDAO;
 import com.sixbuilder.twitterlib.services.QueueSettings;
 import com.sixbuilder.twitterlib.services.QueueSettingsDAO;
+import com.sixbuilder.twitterlib.services.TweetItemDAO;
 
 /**
  * A component that shows the recommended tweets, curating, publishing and published.
@@ -58,6 +59,8 @@ public class RecommendedTweetDisplay {
 	private QueueItemDAO queueItemDAO;
 	@Inject
 	private QueueSettingsDAO queueSettingsDAO;
+	@Inject
+	private TweetItemDAO tweetItemDAO;
 	
 	@Parameter
 	@Property
@@ -100,7 +103,6 @@ public class RecommendedTweetDisplay {
 	
 	@OnEvent(RecommendedTweetConstants.DELETE_TWEET_EVENT)
 	public void delete(TweetItem tweetItem) throws Exception {
-		triggerEvent(RecommendedTweetConstants.DELETE_TWEET_EVENT, resources.getContainerResources());
 		// find any QueueItems for this id, and delete them as well
 		List<QueueItem> itemList=queueItemDAO.getPending(queueType,AbstractTestSixBuilder.PRIMARY_TEST_USER_NAME);
 		for(QueueItem item:itemList) {
@@ -112,14 +114,13 @@ public class RecommendedTweetDisplay {
 		SetManager qSm = getQueuedSetManager(queuedSetMgr);
 		cSm.removeSetItem(tweetItem.getTweetId());
 		qSm.removeSetItem(tweetItem.getTweetId());
+		triggerEvent(RecommendedTweetConstants.DELETE_TWEET_EVENT, resources.getContainerResources());
 		ajaxResponseRenderer.addRender(curateZone);
 		ajaxResponseRenderer.addRender(publishingZone);
 	}
 	
 	@OnEvent(RecommendedTweetConstants.PUBLISH_TWEET_EVENT)
 	public void publish(TweetItem tweetItem) throws Exception {
-		triggerEvent(RecommendedTweetConstants.PUBLISH_TWEET_EVENT, resources.getContainerResources());
-		triggerEvent(RecommendedTweetConstants.MEH_TWEET_EVENT, resources.getContainerResources());
 		// get queue settings for this user
 		getQueueSettingsRunnable qsr=new getQueueSettingsRunnable(queueType,userId,queueSettingsDAO.getRepo());
 		// get current contents of queue for user
@@ -129,16 +130,20 @@ public class RecommendedTweetDisplay {
 		rl.add(qir);
 		ThreadPoolSession.execute(rl, getUiThreadPool());
 		// create new queueItem
-		QueueItem newItem=new QueueItem();
-		newItem.setDateCreated(System.currentTimeMillis());
-		newItem.setTweetId(tweetItem.getTweetId());
-		newItem.setQueueType(queueType);
-		newItem.setStatus(QueueItemStatus.PENDING);
-		newItem.setUserId(userId);
+		QueueItem actionQueueItem=new QueueItem();
+		actionQueueItem.setDateCreated(System.currentTimeMillis());
+		actionQueueItem.setTweetId(tweetItem.getTweetId());
+		actionQueueItem.setQueueType(queueType);
+		actionQueueItem.setStatus(QueueItemStatus.PENDING);
+		actionQueueItem.setUserId(userId);
 		// re-calc target times based on current queue settings
-		boolean changed=TargetTimeCalculator.calcTargetTime(qsr.queueSettings, newItem, qir.queueItems, System.currentTimeMillis());
+		boolean changed=TargetTimeCalculator.calcTargetTime(qsr.queueSettings, actionQueueItem, qir.queueItems, System.currentTimeMillis());
 		// serialize new queue item
-		queueItemDAO.add(newItem);
+		queueItemDAO.add(actionQueueItem);
+		// set target date for tweet item
+		tweetItem.setTargetPublicationDate(actionQueueItem.getTargetDate());
+		// serialize tweet item, to save it's target date for proper sorting
+		tweetItemDAO.update(tweetItem);
 		// re-serialize existing items if they were changed
 		if(changed&&qir.queueItems.size()>0) {
 			queueItemDAO.update(qir.queueItems);
@@ -148,13 +153,13 @@ public class RecommendedTweetDisplay {
 		SetManager qSm = getQueuedSetManager(queuedSetMgr);
 		cSm.removeSetItem(tweetItem.getTweetId());
 		qSm.addSetItem(new SetItemImpl(tweetItem.getTweetId()));
+		triggerEvent(RecommendedTweetConstants.PUBLISH_TWEET_EVENT, resources.getContainerResources());
 		ajaxResponseRenderer.addRender(curateZone);
 		ajaxResponseRenderer.addRender(publishingZone);
 	}
 
 	@OnEvent(RecommendedTweetConstants.MEH_TWEET_EVENT)
 	public void meh(TweetItem tweetItem) throws Exception {
-		triggerEvent(RecommendedTweetConstants.MEH_TWEET_EVENT, resources.getContainerResources());
 		// remove corresponding QueueItem from queue, if it exists
 		List<QueueItem> itemList=queueItemDAO.getPending(queueType,userId);
 		for(QueueItem item:itemList) {
@@ -166,6 +171,7 @@ public class RecommendedTweetDisplay {
 		SetManager qSm = getQueuedSetManager(queuedSetMgr);
 		cSm.addSetItem(new SetItemImpl(tweetItem.getTweetId()));
 		qSm.removeSetItem(tweetItem.getTweetId());
+		triggerEvent(RecommendedTweetConstants.MEH_TWEET_EVENT, resources.getContainerResources());
 		ajaxResponseRenderer.addRender(curateZone);
 		ajaxResponseRenderer.addRender(publishingZone);
 	}
