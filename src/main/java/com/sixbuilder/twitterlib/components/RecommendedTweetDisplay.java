@@ -54,15 +54,6 @@ public class RecommendedTweetDisplay {
 	
 	private static final Object[] EMPTY_OBJECT_ARRAY = new Object[0];
 	
-	@Parameter
-	String dbAccountName;
-	@Parameter
-	String dbPassword;
-	@Parameter
-	String queueSettingsDbName;
-	@Parameter
-	String queueItemDbName;
-	
 	@Inject
 	private QueueItemDAO queueItemDAO;
 	@Inject

@@ -13,12 +13,6 @@ import org.apache.tapestry5.annotations.Persist;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.ajax.AjaxResponseRenderer;
-import org.ektorp.CouchDbConnector;
-import org.ektorp.CouchDbInstance;
-import org.ektorp.http.HttpClient;
-import org.ektorp.http.StdHttpClient;
-import org.ektorp.impl.StdCouchDbConnector;
-import org.ektorp.impl.StdCouchDbInstance;
 
 import com.georgeludwigtech.common.setmanager.SetItem;
 import com.georgeludwigtech.common.setmanager.SetItemImpl;
@@ -30,14 +24,13 @@ import com.georgeludwigtech.urlsnapshotserviceclient.UrlSnapshotServiceRequest;
 import com.georgeludwigtech.urlsnapshotserviceclient.UrlSnapshotServiceResponse;
 import com.sixbuilder.AbstractTestSixBuilder;
 import com.sixbuilder.actionqueue.QueueItem;
-import com.sixbuilder.actionqueue.QueueItemRepository;
 import com.sixbuilder.actionqueue.QueueType;
 import com.sixbuilder.datatypes.persistence.PendingTweetFileUtil;
 import com.sixbuilder.datatypes.persistence.PersistenceUtil;
 import com.sixbuilder.datatypes.twitter.TweetItem;
 import com.sixbuilder.twitterlib.RecommendedTweetConstants;
 import com.sixbuilder.twitterlib.components.RecommendedTweet;
-import com.sixbuilder.twitterlib.helpers.QueueSettingsRepository;
+import com.sixbuilder.twitterlib.services.QueueItemDAO;
 import com.sixbuilder.twitterlib.services.TweetItemDAO;
 
 /**
@@ -46,20 +39,14 @@ import com.sixbuilder.twitterlib.services.TweetItemDAO;
 public class RecommendedTweetTestPage {
 
 	@Property
-	private String dbAccountName=AbstractTestSixBuilder.DBACCOUNT;
-	@Property
-	private String dbPassword=AbstractTestSixBuilder.DBPWD;
-	@Property
 	private String userId=AbstractTestSixBuilder.PRIMARY_TEST_USER_NAME;
 	@Property
 	private QueueType queueType=QueueType.TEST;
-	@Property
-	private String queueSettingsDbName=QueueSettingsRepository.DBNAME;
-	@Property
-	private String queueItemDbName=QueueItemRepository.DBNAME;
 	
 	@Inject
 	private TweetItemDAO tweetItemDAO;
+	@Inject
+	private QueueItemDAO queueItemDAO;
 
 	@Property
 	private TweetItem tweet;
@@ -107,30 +94,8 @@ public class RecommendedTweetTestPage {
 			curationSetMgr.addSetItem(new SetItemImpl(ti.getTweetId()));
 		}
 		// clear out any existing queue items
-		QueueItemRepository repo=getQueueItemRepository();
-		List<QueueItem>itemList=repo.getAll();
-		repo.delete(itemList);
-	}
-	
-	private QueueItemRepository qRepo;
-	private Integer repoSem=new Integer(0);
-	QueueItemRepository getQueueItemRepository() {
-		if(qRepo==null) {
-			synchronized(repoSem) {
-				if(qRepo==null) {
-					HttpClient httpClient = new StdHttpClient.Builder()
-						.host(AbstractTestSixBuilder.DBACCOUNT + ".cloudant.com").port(443)
-						.username(AbstractTestSixBuilder.DBACCOUNT).password(AbstractTestSixBuilder.DBPWD)
-						.enableSSL(true).relaxedSSLSettings(true).build();
-					CouchDbInstance dbInstance = new StdCouchDbInstance(httpClient);
-					CouchDbConnector db = new StdCouchDbConnector(queueItemDbName, dbInstance);
-					db.createDatabaseIfNotExists();
-					QueueItemRepository qr = new QueueItemRepository(db);
-					qRepo=qr;
-				}
-			}
-		}
-		return qRepo;
+		List<QueueItem>itemList=queueItemDAO.getAll();
+		queueItemDAO.delete(itemList);
 	}
 	
 	public String getQueueId() {
