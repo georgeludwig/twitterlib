@@ -33,6 +33,7 @@ import com.sixbuilder.twitterlib.RecommendedTweetConstants;
 import com.sixbuilder.twitterlib.helpers.HolderComponentEventCallback;
 import com.sixbuilder.twitterlib.helpers.QueueSettingsRepository;
 import com.sixbuilder.twitterlib.helpers.TargetTimeCalculator;
+import com.sixbuilder.twitterlib.helpers.Util;
 import com.sixbuilder.twitterlib.services.QueueItemDAO;
 import com.sixbuilder.twitterlib.services.QueueSettings;
 import com.sixbuilder.twitterlib.services.QueueSettingsDAO;
@@ -128,7 +129,7 @@ public class RecommendedTweetDisplay {
 		List<Runnable>rl=new ArrayList<Runnable>();
 		rl.add(qsr);
 		rl.add(qir);
-		ThreadPoolSession.execute(rl, getUiThreadPool());
+		ThreadPoolSession.execute(rl,Util.getUiThreadPool());
 		// create new queueItem
 		QueueItem actionQueueItem=new QueueItem();
 		actionQueueItem.setDateCreated(System.currentTimeMillis());
@@ -137,11 +138,13 @@ public class RecommendedTweetDisplay {
 		actionQueueItem.setStatus(QueueItemStatus.PENDING);
 		actionQueueItem.setUserId(userId);
 		// re-calc target times based on current queue settings
-		boolean changed=TargetTimeCalculator.calcTargetTime(qsr.queueSettings, actionQueueItem, qir.queueItems, System.currentTimeMillis());
+		boolean changed=TargetTimeCalculator.calcTargetTime(qsr.queueSettings, actionQueueItem, qir.queueItems, System.currentTimeMillis(),false);
 		// serialize new queue item
 		queueItemDAO.add(actionQueueItem);
 		// set target date for tweet item
+		tweetItem.setPublish(true);
 		tweetItem.setTargetPublicationDate(actionQueueItem.getTargetDate());
+		tweetItem.setPubTargetDisplay(TargetTimeCalculator.getTimeDisplayString(qsr.queueSettings.getTimeZoneId(), actionQueueItem.getTargetDate()));
 		// serialize tweet item, to save it's target date for proper sorting
 		tweetItemDAO.update(tweetItem);
 		// re-serialize existing items if they were changed
@@ -248,20 +251,6 @@ public class RecommendedTweetDisplay {
 		public void run() {
 			queueItems=repo.getPending(queueType, userId);
 		}
-	}
-	
-	@Persist
-	private ThreadPool uiThreadPool;
-	private Integer uiTpSem=new Integer(0);
-	private ThreadPool getUiThreadPool() {
-		if(uiThreadPool==null) {
-			synchronized(uiTpSem) {
-				if(uiThreadPool==null) {
-					uiThreadPool=ThreadPoolFactory.getNewInstance("UiThreadPool", 2);
-				}
-			}
-		}
-		return uiThreadPool;
 	}
 	
 }

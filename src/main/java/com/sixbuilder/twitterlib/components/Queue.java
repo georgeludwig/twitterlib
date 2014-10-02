@@ -1,5 +1,7 @@
 package com.sixbuilder.twitterlib.components;
 
+import java.util.List;
+
 import javax.inject.Inject;
 
 import org.apache.tapestry5.BindingConstants;
@@ -18,13 +20,21 @@ import org.ektorp.DocumentNotFoundException;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonPrimitive;
+import com.sixbuilder.actionqueue.QueueItem;
 import com.sixbuilder.actionqueue.QueueType;
+import com.sixbuilder.datatypes.twitter.TweetItem;
+import com.sixbuilder.twitterlib.RecommendedTweetConstants;
+import com.sixbuilder.twitterlib.helpers.HolderComponentEventCallback;
+import com.sixbuilder.twitterlib.helpers.TargetTimeCalculator;
+import com.sixbuilder.twitterlib.services.QueueItemDAO;
 import com.sixbuilder.twitterlib.services.QueueSettings;
 import com.sixbuilder.twitterlib.services.QueueSettingsDAO;
 
 @Import(library = {"queue-manager.js", "react.js", "queue.js", "init-queue.js"})
 public class Queue {
 
+	private static final Object[] EMPTY_OBJECT_ARRAY = new Object[0];
+	
     @Parameter
     private QueueType queueType;
 
@@ -49,6 +59,8 @@ public class Queue {
     private ComponentResources resources;
 
     @Inject QueueSettingsDAO queueSettingsDAO;
+    
+    @Inject QueueItemDAO queueItemDAO;
 
     @Inject
     private Request request;
@@ -84,34 +96,21 @@ public class Queue {
     }
 
     @OnEvent("update")
-    JsonObject updateQueue(String queueId) throws Exception {
+    JsonObject updateQueue(String userId) throws Exception {
         JsonObject queue = (JsonObject) new JsonParser().parse(request.getParameter("queue"));
         QueueSettings settings=QueueSettings.fromJsonObject(queue);
         queueSettingsDAO.update(settings);
-        // TODO retrieve current queue items
-        // TODO re-calculate target date for all queue items
-        // based on latest queue settings
-        // TODO store updated queue items
+        recalcQueue(settings);
+        // TODO serialize tweeetitems
         return success(settings.toJsonObject());
     }
 
     @OnEvent("get")
-    JsonObject getQueue(String queueId) throws Exception {
-    	try {
-    		QueueSettings settings=queueSettingsDAO.getQueueSettings(queueId);
-	        JsonObject queue = settings.toJsonObject();
-	        return success(queue);
-    	} catch(DocumentNotFoundException e) {
-    		// create new document
-    		QueueSettings settings=new QueueSettings();
-    		settings.setQueueType(queueType);
-    		settings.setUserId(userId);
-    		settings.setQueueType(queueType);
-    		queueSettingsDAO.add(settings);
-    		JsonObject queue = settings.toJsonObject();
-	        return success(queue);
-    	}
-    }
+    JsonObject getQueue(String userId) throws Exception {
+		QueueSettings settings=queueSettingsDAO.getQueueSettings(queueType,userId);
+        JsonObject queue = settings.toJsonObject();
+        return success(queue);
+	}
 
     private JsonObject success(JsonObject queue) {
         JsonObject result = new JsonObject();
@@ -119,5 +118,24 @@ public class Queue {
         result.add("queue", queue);
         return result;
     }
+
+    private void recalcQueue(QueueSettings queueSettings) {
+    	// get current contents of queue for user
+    	List<QueueItem>queueItems=queueItemDAO.getPending(queueType, userId);
+    	// re-calc target times based on current queue settings
+		boolean changed=TargetTimeCalculator.calcTargetTime(queueSettings, null, queueItems, System.currentTimeMillis(),true);
+		// re-serialize existing items if they were changed
+		if(changed&&queueItems.size()>0) {
+			queueItemDAO.update(queueItems);
+			// TODO update the tweetItems by triggering container event
+		}		
+    }
+    
+    @SuppressWarnings("unchecked")
+	public List<TweetItem> triggerEvent(String event, ComponentResources resources) {
+		final HolderComponentEventCallback<Object> callback = new HolderComponentEventCallback<Object>();
+		resources.triggerEvent(event, EMPTY_OBJECT_ARRAY, callback);
+		return (List<TweetItem>) callback.getResult();
+	}
 
 }

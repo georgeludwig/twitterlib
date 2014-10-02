@@ -46,7 +46,7 @@ public class QueueSettingsRepository extends CouchDbRepositorySupport<QueueSetti
 			s=new QueueSettings();
 			s.setQueueType(queueType);
 			s.setUserId(userId);
-			update(s);
+			add(s);
 		}
 		return s;
 	}

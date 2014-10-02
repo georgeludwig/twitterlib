@@ -18,11 +18,17 @@ public class QueueSettingsDAOImpl implements QueueSettingsDAO {
 	public QueueSettingsDAOImpl() {
 		HttpClient httpClient = new StdHttpClient.Builder()
 		.host(AbstractTestSixBuilder.DBACCOUNT + ".cloudant.com").port(443)
+		.socketTimeout(120000)
+		.connectionTimeout(120000)
 		.username(AbstractTestSixBuilder.DBACCOUNT).password(AbstractTestSixBuilder.DBPWD)
 		.enableSSL(true).relaxedSSLSettings(true).build();
 		CouchDbInstance dbInstance = new StdCouchDbInstance(httpClient);
 		CouchDbConnector db = new StdCouchDbConnector(QueueSettingsRepository.DBNAME, dbInstance);
-		db.createDatabaseIfNotExists();
+		try {
+			db.createDatabaseIfNotExists();
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
 		repo = new QueueSettingsRepository(db);
 	}
 

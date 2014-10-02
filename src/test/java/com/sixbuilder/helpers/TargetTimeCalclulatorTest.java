@@ -35,7 +35,7 @@ public class TargetTimeCalclulatorTest {
 		QueueItem item=new QueueItem();
 		long now=System.currentTimeMillis();
 		// test ASAP random
-		TargetTimeCalculator.calcTargetTime(settings, item, null, now);
+		TargetTimeCalculator.calcTargetTime(settings, item, null, now, false);
 		long diff=item.getTargetDate()-now;
 		assertTrue(diff==Time.MIN_MILLIS);	
 		// 3am
@@ -51,9 +51,9 @@ public class TargetTimeCalclulatorTest {
 		settings.setRandom(true);
 		settings.setRandomMin(1);
 		settings.setRandomMax(1);
-		TargetTimeCalculator.calcTargetTime(settings, item, null, now);
+		TargetTimeCalculator.calcTargetTime(settings, item, null, now, false);
 		diff=item.getTargetDate()-now;
-		DateTime startBy=TargetTimeCalculator.getStartDateTime(now, settings);
+		DateTime startBy=TargetTimeCalculator.getStartDateTime(settings);
 		assertTrue(item.getTargetDate()==startBy.getMillis()+Time.MIN_MILLIS);
 	}
 	

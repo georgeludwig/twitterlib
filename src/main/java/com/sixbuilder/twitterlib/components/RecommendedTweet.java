@@ -156,4 +156,8 @@ public class RecommendedTweet implements ClientElement {
 		return (TweetItem) callback.getResult();
 	}
 	
+	public boolean isPublish() {
+		return tweet.isPublish();
+	}
+	
 }

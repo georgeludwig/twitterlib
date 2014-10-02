@@ -20,6 +20,8 @@ public class QueueItemDAOImpl implements QueueItemDAO {
 	public QueueItemDAOImpl() {
 		HttpClient httpClient = new StdHttpClient.Builder()
 		.host(AbstractTestSixBuilder.DBACCOUNT + ".cloudant.com").port(443)
+		.socketTimeout(120000)
+		.connectionTimeout(120000)
 		.username(AbstractTestSixBuilder.DBACCOUNT).password(AbstractTestSixBuilder.DBPWD)
 		.enableSSL(true).relaxedSSLSettings(true).build();
 		CouchDbInstance dbInstance = new StdCouchDbInstance(httpClient);
