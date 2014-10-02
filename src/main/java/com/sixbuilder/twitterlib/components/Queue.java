@@ -15,7 +15,6 @@ import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.json.JSONObject;
 import org.apache.tapestry5.services.Request;
 import org.apache.tapestry5.services.javascript.JavaScriptSupport;
-import org.ektorp.DocumentNotFoundException;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -23,7 +22,6 @@ import com.google.gson.JsonPrimitive;
 import com.sixbuilder.actionqueue.QueueItem;
 import com.sixbuilder.actionqueue.QueueType;
 import com.sixbuilder.datatypes.twitter.TweetItem;
-import com.sixbuilder.twitterlib.RecommendedTweetConstants;
 import com.sixbuilder.twitterlib.helpers.HolderComponentEventCallback;
 import com.sixbuilder.twitterlib.helpers.TargetTimeCalculator;
 import com.sixbuilder.twitterlib.services.QueueItemDAO;
