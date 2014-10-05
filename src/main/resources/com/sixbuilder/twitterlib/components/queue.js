@@ -260,6 +260,19 @@ var QueueWidget = React.createClass({displayName: 'QueueWidget',
 
   queueLoaded: function () {
     this.setState({qm: this.state.qm, queue: this.initialize(this.state.qm.queue)});
+    var publishingZone = document.getElementById('publishingZone');
+    if (publishingZone) {
+	    var zoneManager = Tapestry.findZoneManagerForZone('publishingZone'); // FIXME: pass this through parameter.
+	    if (zoneManager) {
+	    	zoneManager.updateFromURL(this.props.updateQueueViewURL);
+	    }
+	    else {
+	    	console.log('Zone manager for publishingZone not found');
+	    }
+	}
+	else {
+		console.log('Element publishingZone not found');
+	}
   },
 
   getInitialState: function () {

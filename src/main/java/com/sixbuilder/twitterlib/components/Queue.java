@@ -33,6 +33,8 @@ public class Queue {
 
 	private static final Object[] EMPTY_OBJECT_ARRAY = new Object[0];
 	
+	public static final String UPDATE_QUEUE_VIEW_EVENT = "updateQueueView";
+	
     @Parameter
     private QueueType queueType;
 
@@ -63,6 +65,11 @@ public class Queue {
     @Inject
     private Request request;
 
+    @OnEvent(UPDATE_QUEUE_VIEW_EVENT)
+    Object updateQueueView() {
+    	return resources.getContainerResources().triggerEvent(UPDATE_QUEUE_VIEW_EVENT, EMPTY_OBJECT_ARRAY, null);
+    }
+
     @BeginRender
     boolean addElement(MarkupWriter writer){
         assignedClientId = javaScriptSupport.allocateClientId(clientId);
@@ -80,7 +87,8 @@ public class Queue {
         JSONObject params = new JSONObject()
             .put("callbacks", callbacks)
             .put("lazyLoad", false)
-            .put("element", assignedClientId);
+            .put("element", assignedClientId)
+            .put("updateQueueViewURL", resources.createEventLink(UPDATE_QUEUE_VIEW_EVENT).toAbsoluteURI());
 
         javaScriptSupport.addInitializerCall("initQueue", params);
     }

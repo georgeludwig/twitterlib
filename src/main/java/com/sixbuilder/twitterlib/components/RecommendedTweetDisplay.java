@@ -223,6 +223,11 @@ public class RecommendedTweetDisplay {
 		ajaxResponseRenderer.addRender(publishingZone);
 	}
 	
+	@OnEvent(Queue.UPDATE_QUEUE_VIEW_EVENT)
+	public void updatePublishingZone() {
+		ajaxResponseRenderer.addRender(publishingZone);
+	}
+	
 	class getQueueSettingsRunnable implements Runnable {
 		private QueueType queueType;
 		private String userId;
