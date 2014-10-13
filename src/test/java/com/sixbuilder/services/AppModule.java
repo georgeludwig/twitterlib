@@ -4,17 +4,8 @@ import org.apache.tapestry5.SymbolConstants;
 import org.apache.tapestry5.ioc.MappedConfiguration;
 import org.apache.tapestry5.ioc.ServiceBinder;
 import org.apache.tapestry5.ioc.annotations.SubModule;
-import org.ektorp.CouchDbConnector;
-import org.ektorp.CouchDbInstance;
-import org.ektorp.http.HttpClient;
-import org.ektorp.http.StdHttpClient;
-import org.ektorp.impl.StdCouchDbConnector;
-import org.ektorp.impl.StdCouchDbInstance;
 import org.got5.tapestry5.jquery.JQuerySymbolConstants;
 
-import com.sixbuilder.AbstractTestSixBuilder;
-import com.sixbuilder.actionqueue.QueueItemRepository;
-import com.sixbuilder.twitterlib.helpers.QueueSettingsRepository;
 import com.sixbuilder.twitterlib.services.QueueItemDAO;
 import com.sixbuilder.twitterlib.services.QueueSettingsDAO;
 import com.sixbuilder.twitterlib.services.TweetDAO;
@@ -48,7 +39,7 @@ public class AppModule {
 		// (a random hexadecimal number), but may be further overriden by
 		// DevelopmentModule or
 		// QaModule.
-		configuration.override(SymbolConstants.APPLICATION_VERSION, "1.0-SNAPSHOT");
+		configuration.override(SymbolConstants.APPLICATION_VERSION, "1.0-SNAPSHOT-a");
 		configuration.override(SymbolConstants.HMAC_PASSPHRASE, "sadjlhsadsdilçahsdfajklçjfh");
 	}
 

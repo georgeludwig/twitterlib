@@ -685,6 +685,7 @@ div.recommendedTweet .tweetAttachSnapshot {
 	width: 296px;
 	padding-left: 3px;
 	padding-top: 5px;
+	height: 19px;
 }
 
 /*
@@ -700,7 +701,7 @@ div.recommendedTweet .tweetAttachSnapshot {
 	resize: vertical;
 	padding: 0px;
 	border-radius: 5px;
-	/*height: 49px !important;*/
+	height: 80px;
 }
 
 .tweetAttachSnapshot {
@@ -708,6 +709,7 @@ div.recommendedTweet .tweetAttachSnapshot {
 }
 
 .tweetSuggestedHashtags {
+	display: none;
 	width: 275px;
 	height: 15px;
 	position: relative;
@@ -718,6 +720,7 @@ div.recommendedTweet .tweetAttachSnapshot {
 }
 
 .summaryHashtags {
+	display: none;
 	height: 18px;
 	position: relative;
 	left: 0px;
@@ -730,10 +733,16 @@ div.recommendedTweet .tweetAttachSnapshot {
 	color: #3a87ad;
 }
 
+.ccText {
+	position: relative;
+	top: 0px;
+	left: 2px;
+}
+
 .tweetCharacterCount {
 	position: relative;
-	top: -15px;
-	left: 285px;
+	top: 0px;
+	left: 0px;
 }
 
 .tweetUrlRow {
@@ -818,4 +827,11 @@ div.tweetUrlRow {
 .recommendedTweet[data-mode=summary] img.urlSnapshot {
 	left: 1px;
 	position: relative;
+}
+
+.targetTime {
+	position: relative;
+	top:3px;
+	left:5px;
+	color: #3a87ad;
 }
