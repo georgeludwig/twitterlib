@@ -41,6 +41,7 @@ public class RecommendedTweetTestPage {
 
 	@Property
 	private String userId=AbstractTestSixBuilder.PRIMARY_TEST_USER_NAME;
+
 	@Property
 	private QueueType queueType=QueueType.TEST;
 	
@@ -147,7 +148,7 @@ public class RecommendedTweetTestPage {
 	}
 
 	public List<TweetItem> getTweetItems() throws Exception {
-		return tweetItemDAO.getAll();
+		return tweetItemDAO.getAll(getAccountsRoot(),userId);
 	}
 
 	@OnEvent(RecommendedTweetConstants.DELETE_TWEET_EVENT)
@@ -183,13 +184,12 @@ public class RecommendedTweetTestPage {
 	@OnEvent(RecommendedTweetConstants.SHORTEN_URL_EVENT)
 	public TweetItem shortenUrl(TweetItem tweetItem) throws Exception {
 		tweetItem.setShortenedUrl(shortenUrlUsingBitly(tweetItem.getUrl()));
-		tweetItemDAO.update(tweetItem);
 		return tweetItem;
 	}
 
 	@OnEvent(RecommendedTweetConstants.LOAD_TWEET_EVENT)
 	public TweetItem load(String id) throws Exception {
-		return tweetItemDAO.findById(id);
+		return tweetItemDAO.findById(getAccountsRoot(),userId,id);
 	}
 
 	private String shortenUrlUsingBitly(String url) {

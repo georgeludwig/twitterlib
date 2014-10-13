@@ -1,5 +1,7 @@
 package com.sixbuilder.twitterlib.components;
 
+import java.io.File;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -27,6 +29,7 @@ import com.sixbuilder.twitterlib.helpers.TargetTimeCalculator;
 import com.sixbuilder.twitterlib.services.QueueItemDAO;
 import com.sixbuilder.twitterlib.services.QueueSettings;
 import com.sixbuilder.twitterlib.services.QueueSettingsDAO;
+import com.sixbuilder.twitterlib.services.TweetItemDAO;
 
 @Import(library = {"queue-manager.js", "react.js", "queue.js", "init-queue.js"})
 public class Queue {
@@ -38,6 +41,9 @@ public class Queue {
     @Parameter
     private QueueType queueType;
 
+    @Parameter
+    private File accountsRoot;
+    
     @Parameter
     private String userId;
     
@@ -61,6 +67,9 @@ public class Queue {
     @Inject QueueSettingsDAO queueSettingsDAO;
     
     @Inject QueueItemDAO queueItemDAO;
+    
+	@Inject
+	private TweetItemDAO tweetItemDAO;
 
     @Inject
     private Request request;
@@ -107,7 +116,6 @@ public class Queue {
         QueueSettings settings=QueueSettings.fromJsonObject(queue);
         queueSettingsDAO.update(settings);
         recalcQueue(settings);
-        // TODO serialize tweeetitems
         return success(settings.toJsonObject());
     }
 
@@ -125,15 +133,32 @@ public class Queue {
         return result;
     }
 
-    private void recalcQueue(QueueSettings queueSettings) {
+    private void recalcQueue(QueueSettings queueSettings) throws Exception {
     	// get current contents of queue for user
     	List<QueueItem>queueItems=queueItemDAO.getPending(queueType, userId);
     	// re-calc target times based on current queue settings
 		boolean changed=TargetTimeCalculator.calcTargetTime(queueSettings, null, queueItems, System.currentTimeMillis(),true);
 		// re-serialize existing items if they were changed
 		if(changed&&queueItems.size()>0) {
+			// update the queue items
 			queueItemDAO.update(queueItems);
-			// TODO update the tweetItems by triggering container event
+			// get list of tweet items
+			List<TweetItem>tiList=tweetItemDAO.getAll(accountsRoot, userId);
+			HashMap<String,TweetItem> tiMap=new HashMap<String,TweetItem>();
+			for(TweetItem ti:tiList) {
+				tiMap.put(ti.getTweetId(),ti);
+			}
+			// update the tweetItems
+			for(QueueItem qi:queueItems) {
+				// find tweetitem with same id
+				TweetItem ti=tiMap.get(qi.getTweetId());
+				String s=ti.getPubTargetDisplay();
+				ti.setTargetPublicationDate(qi.getTargetDate());
+				s=TargetTimeCalculator.getTimeDisplayString(queueSettings.getTimeZoneId(), qi.getTargetDate());
+				ti.setPubTargetDisplay(s);
+				tweetItemDAO.update(accountsRoot, userId, ti);
+			}
+			
 		}		
     }
     

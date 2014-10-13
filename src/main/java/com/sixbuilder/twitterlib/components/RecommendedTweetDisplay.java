@@ -11,7 +11,6 @@ import org.apache.tapestry5.annotations.Events;
 import org.apache.tapestry5.annotations.InjectComponent;
 import org.apache.tapestry5.annotations.OnEvent;
 import org.apache.tapestry5.annotations.Parameter;
-import org.apache.tapestry5.annotations.Persist;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.corelib.components.Zone;
 import org.apache.tapestry5.ioc.annotations.Inject;
@@ -19,8 +18,6 @@ import org.apache.tapestry5.services.ajax.AjaxResponseRenderer;
 
 import com.georgeludwigtech.common.setmanager.SetItemImpl;
 import com.georgeludwigtech.common.setmanager.SetManager;
-import com.georgeludwigtech.concurrent.threadpool.ThreadPool;
-import com.georgeludwigtech.concurrent.threadpool.ThreadPoolFactory;
 import com.georgeludwigtech.concurrent.threadpool.ThreadPoolSession;
 import com.sixbuilder.AbstractTestSixBuilder;
 import com.sixbuilder.actionqueue.QueueItem;
@@ -56,6 +53,14 @@ public class RecommendedTweetDisplay {
 	
 	private static final Object[] EMPTY_OBJECT_ARRAY = new Object[0];
 	
+	@Parameter(required = true, allowNull = false)
+	@Property
+	private File accountsRoot;
+	
+	@Parameter(required = true, allowNull = false)
+	@Property
+	private String userId;
+	
 	@Inject
 	private QueueItemDAO queueItemDAO;
 	@Inject
@@ -76,13 +81,6 @@ public class RecommendedTweetDisplay {
 	@Property
 	private TweetItem tweet;
 	
-	@Parameter(required = true, allowNull = false)
-	private File accountsRoot;
-	
-	@Parameter(required = true, allowNull = false)
-	@Property
-	private String userId;
-
 	@Inject
 	private AjaxResponseRenderer ajaxResponseRenderer;
 	
@@ -146,7 +144,7 @@ public class RecommendedTweetDisplay {
 		tweetItem.setTargetPublicationDate(actionQueueItem.getTargetDate());
 		tweetItem.setPubTargetDisplay(TargetTimeCalculator.getTimeDisplayString(qsr.queueSettings.getTimeZoneId(), actionQueueItem.getTargetDate()));
 		// serialize tweet item, to save it's target date for proper sorting
-		tweetItemDAO.update(tweetItem);
+		tweetItemDAO.update(accountsRoot,userId,tweetItem);
 		// re-serialize existing items if they were changed
 		if(changed&&qir.queueItems.size()>0) {
 			queueItemDAO.update(qir.queueItems);
@@ -169,6 +167,8 @@ public class RecommendedTweetDisplay {
 			if(item.getTweetId().equals(tweetItem.getTweetId()))
 				queueItemDAO.delete(item);
 		}
+		tweetItem.setPubTargetDisplay(null);
+		tweetItemDAO.update(accountsRoot, userId, tweetItem);
 		// adjust setmanagers
 		SetManager cSm = getCurationSetManager(curationSetMgr);
 		SetManager qSm = getQueuedSetManager(queuedSetMgr);

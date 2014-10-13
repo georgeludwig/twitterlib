@@ -8,13 +8,13 @@ import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.LocalDateTime;
 
+import com.georgeludwigtech.common.util.Time;
 import com.sixbuilder.actionqueue.QueueItem;
 import com.sixbuilder.twitterlib.services.QueueSettings;
 
 public abstract class TargetTimeCalculator {
 	
 	public static Random random=new Random();
-
 
 	// returns true if there was a re-calc of target times for existing items
 	public static boolean calcTargetTime(QueueSettings queueSettings, QueueItem newItem, List<QueueItem>existingItems, long now, boolean recalcAll) {
@@ -48,8 +48,8 @@ public abstract class TargetTimeCalculator {
 			if(start<now)
 				start=now;
 		}
-		// if end is random (ASAP), we just need to calc a random time for the new item 
-		if(queueSettings.getRandom()) {
+		// special case: if end is random (ASAP), there's a new item, and !recalc all, just need to calc a random time for the new item 
+		if(queueSettings.getRandom()&&newItem!=null&&!recalcAll) {
 			long reference=start;
 			if(existingItems.size()>0&&!recalcAll) {
 				// get the item that is furthest in the future
@@ -59,11 +59,9 @@ public abstract class TargetTimeCalculator {
 			// add random time to reference
 			int intervalInMinutes = random.nextInt((queueSettings.getRandomMax()-queueSettings.getRandomMin()) + 1)+queueSettings.getRandomMin();
 			long targetDate=reference+(intervalInMinutes*60000);
-			if(newItem!=null) // when we update the queue settings, queueitem will be null
-				newItem.setTargetDate(targetDate);
-		}
-		// otherwise we need to recalc times for all items based on end time
-		if(recalcAll) {
+			newItem.setTargetDate(targetDate);
+		} else {
+			// recalc all
 			DateTime dt=getEndDateTime(queueSettings);
 			long end=dt.getMillis();
 			// create unified list of items for convenience
@@ -71,12 +69,27 @@ public abstract class TargetTimeCalculator {
 			tempList.addAll(existingItems);
 			if(newItem!=null) // when we update the queue settings, queueitem will be null
 				tempList.add(newItem);
-			// calc action interval 
-			long interval=(end-start)/tempList.size();
-			// iterate through item list, setting new target dates
-			for(int i=1;i<=tempList.size();i++) {
-				QueueItem item=tempList.get(i-1);
-				item.setTargetDate(start+(i*interval));
+			if(tempList.size()>0) {
+				// we've got a start time and end time, we just need to decide 
+				// if it's a random interval, or a spread interval
+				if(queueSettings.getRandom()) {
+					long reference=start;
+					for(int i=0;i<tempList.size();i++) {
+						QueueItem item=tempList.get(i);
+						int intervalInMinutes = random.nextInt((queueSettings.getRandomMax()-queueSettings.getRandomMin()) + 1)+queueSettings.getRandomMin();
+						long target=reference+(i*intervalInMinutes*Time.MIN_MILLIS);
+						item.setTargetDate(target);
+						reference=target;
+					}
+				} else {
+					// calc spread interval 
+					long interval=(end-start)/tempList.size();
+					// iterate through item list, setting new target dates
+					for(int i=0;i<tempList.size();i++) {
+						QueueItem item=tempList.get(i);
+						item.setTargetDate(start+(i*interval));
+					}
+				}
 			}
 		}
 		if(hasExistingItems&&recalcAll)

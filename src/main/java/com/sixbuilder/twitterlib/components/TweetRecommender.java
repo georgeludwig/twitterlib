@@ -6,12 +6,14 @@ import com.sixbuilder.twitterlib.services.TweetItemDAO;
 import org.apache.tapestry5.alerts.AlertManager;
 import org.apache.tapestry5.annotations.InjectComponent;
 import org.apache.tapestry5.annotations.OnEvent;
+import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Persist;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.corelib.components.Zone;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.ajax.AjaxResponseRenderer;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,6 +27,13 @@ import java.util.List;
 //	RecommendedTweetConstants.SHORTEN_URL_EVENT, RecommendedTweetConstants.SAVE_TWEET_EVENT})
 public class TweetRecommender {
 
+	@Parameter(required = true, allowNull = false)
+	private File accountsRoot;
+	
+	@Parameter(required = true, allowNull = false)
+	@Property
+	private String userId;
+	
 	@Inject
 	private TweetItemDAO tweetItemDAO;
 	
@@ -63,14 +72,14 @@ public class TweetRecommender {
 	}
 
 	public List<TweetItem> getTweetItems() throws Exception {
-		return tweetItemDAO.getAll();
+		return tweetItemDAO.getAll(accountsRoot,userId);
 	}
 	
 	@OnEvent(RecommendedTweetConstants.DELETE_TWEET_EVENT)
 	public void delete(TweetItem tweetItem) throws Exception {
 		curating.remove(tweetItem);
 		publishing.remove(tweetItem);
-		tweetItemDAO.delete(tweetItem);
+		tweetItemDAO.delete(accountsRoot,userId,tweetItem);
 		alertManager.success(String.format("Message with id %s was successfully deleted", tweetItem.getTweetId()));
 		ajaxResponseRenderer.addRender(curateZone);
 		ajaxResponseRenderer.addRender(publishingZone);
@@ -81,7 +90,7 @@ public class TweetRecommender {
 		curating.remove(tweetItem);
 		publishing.add(tweetItem);
 		tweetItem.setPublish(true);
-		tweetItemDAO.update(tweetItem);
+		tweetItemDAO.update(accountsRoot,userId,tweetItem);
 		alertManager.success(String.format("Message with id %s was successfully selected to be published", tweetItem.getTweetId()));
 		ajaxResponseRenderer.addRender(curateZone);
 		ajaxResponseRenderer.addRender(publishingZone);
@@ -90,13 +99,13 @@ public class TweetRecommender {
 	@OnEvent(RecommendedTweetConstants.SHORTEN_URL_EVENT)
 	public TweetItem shortenUrl(TweetItem tweetItem) throws Exception {
 		tweetItem.setShortenedUrl(shortenUrlUsingBitly(tweetItem.getUrl()));
-		tweetItemDAO.update(tweetItem);
+		tweetItemDAO.update(accountsRoot,userId,tweetItem);
 		return tweetItem;
 	}
 	
 	@OnEvent(RecommendedTweetConstants.SAVE_TWEET_EVENT)
 	public void save(TweetItem tweetItem) throws Exception {
-		tweetItemDAO.update(tweetItem);
+		tweetItemDAO.update(accountsRoot,userId,tweetItem);
 	}
 	
 	@OnEvent(RecommendedTweetConstants.SHORTEN_URL_EVENT)
