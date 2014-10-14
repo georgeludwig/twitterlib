@@ -14,6 +14,7 @@ import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.corelib.components.Zone;
 import org.apache.tapestry5.ioc.annotations.Inject;
+import org.apache.tapestry5.services.Request;
 import org.apache.tapestry5.services.ajax.AjaxResponseRenderer;
 
 import com.georgeludwigtech.common.setmanager.SetItemImpl;
@@ -77,6 +78,9 @@ public class RecommendedTweetDisplay {
 	
 	@InjectComponent
 	private Zone publishingZone;
+
+	@Inject
+    private Request request;
 	
 	@Property
 	private TweetItem tweet;
@@ -169,7 +173,7 @@ public class RecommendedTweetDisplay {
 		}
 		tweetItem.setPubTargetDisplay(null);
 		tweetItemDAO.update(accountsRoot, userId, tweetItem);
-		// adjust setmanagers
+		// adjust set managers
 		SetManager cSm = getCurationSetManager(curationSetMgr);
 		SetManager qSm = getQueuedSetManager(queuedSetMgr);
 		cSm.addSetItem(new SetItemImpl(tweetItem.getTweetId()));
@@ -179,6 +183,11 @@ public class RecommendedTweetDisplay {
 		ajaxResponseRenderer.addRender(publishingZone);
 	}
 
+	// this is the event called by ajax poller to update publishing list, if publishing daemon has published something
+	Object onRefreshPublishingZone() {
+		return request.isXHR() ? publishingZone.getBody() : null;
+	}
+	
 	SetManager curationSetMgr;
 	
 	public SetManager getCurationSetManager(SetManager curationSetMgr) throws Exception {

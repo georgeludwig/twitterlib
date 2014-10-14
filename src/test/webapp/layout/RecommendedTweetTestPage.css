@@ -834,4 +834,19 @@ div.tweetUrlRow {
 	top:3px;
 	left:5px;
 	color: #3a87ad;
+	padding-bottom: 2px;
+}
+
+.publishShim {
+	height: 12px;	
+}
+
+#queueSpan {
+	position: relative;
+	top: -24px;
+	right:-70px;
+}
+
+.pause {
+	display: none;
 }

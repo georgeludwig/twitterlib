@@ -10,8 +10,7 @@
 					<div class="label label-important">
 						<span class="mycenter">Action</span>
 					</div>
-					<div class="curateTweets" t:type="Zone" t:id="curateZone"
-						id="curateZone">
+					<div class="curateTweets" t:type="Zone" t:id="curateZone" id="curateZone" t:update="show">
 						<ul>
 							<li t:type="Loop" t:source="curating" t:value="tweet">
 								<div t:type="twitterlib/RecommendedTweet" tweet="tweet" />
@@ -25,12 +24,12 @@
 					<br />
 					<div class="label label-info message">
 						<span class="mycenter">Queue</span>
-						<span style="position: relative; top: -25px; right:-70px;">
+						<span id="queueSpan">
 							<div t:type="twitterlib/Queue" accountsRoot="accountsRoot" queueType="queueType" userId="userId" />
 						</span>
 					</div>
-					<div class="publishTweets" t:type="Zone" t:id="publishingZone"
-						id="publishingZone">
+					<div class="publishTweets" t:type="Zone" t:id="publishingZone" id="publishingZone" t:update="show"
+						t:mixins="twitterlib/ZonePeriodicUpdater" t:event="refreshPublishingZone" t:frequencySecs="3" t:maxUpdates="10000" >
 						<ul>
 							<li t:type="Loop" t:source="publishing" t:value="tweet">
 								<div t:type="twitterlib/RecommendedTweet" tweet="tweet" />

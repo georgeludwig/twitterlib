@@ -6,12 +6,10 @@
 		<div class="recommendedTweetSummaryView">
 			
 			<div class="tweetSummaryColumn">
-				<div class="targetTime">
-					<t:if test="publish">
-						will be published at: ${tweet.pubTargetDisplay}
-					<p:else>&nbsp;</p:else>
-					</t:if>
-				</div>
+				<t:if test="publish">
+					<div class="targetTime">will be published at: ${tweet.pubTargetDisplay}</div>
+				<p:else><div class="publishShim">&nbsp;</div></p:else>
+				</t:if>
 				<div class="tweetText">
 					<p class="displayTweet">
 						${tweet.summary}
