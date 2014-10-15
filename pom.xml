@@ -15,10 +15,6 @@
 		<url>https://github.com/georgeludwig/twitterlib</url>
 	</scm>
 
-	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-	</properties>
-	
 	<dependencies>
 		<dependency>
 			<groupId>org.apache.tapestry</groupId>
@@ -210,6 +206,7 @@
 	</repositories>
 
 	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<tapestry-release-version>5.3.7</tapestry-release-version>
 		<servlet-api-release-version>2.5</servlet-api-release-version>
 		<testng-release-version>5.14.10</testng-release-version>
