@@ -1,0 +1,654 @@
+/* START OF COMMON.CSS */
+
+#curateZone ul, #publishingZone ul, #actionZone ul, #queueZone ul,
+#curateZone ul > li, #publishingZone ul > li, #actionZone ul > li, #queueZone ul > li{
+	margin: 0;
+	padding: 0;
+	list-style-type: none;
+}
+
+#curateZone, #actionsZone {
+	/* margin-right: 50px; */
+}
+
+#curateZone, #publishingZone, #actionZone, #queueZone {
+	/*display: table-cell; */
+	/* border: solid black 1px; */
+}
+
+div.displayTable {
+	display: table;
+}
+
+p, ol, ul {
+    line-height: inherit;
+    clear: none;
+}
+
+div.tweetEngagement {
+/*	width: 375px; 
+	margin: 0; */
+	clear: both;
+	top: 0px;
+	left: 0px;
+	position: relative;
+	border: 1px solid #2787C2;
+	border-radius: 8px;
+	margin-top: 2px;
+}
+
+div.tweetEngagementSummaryView {
+	display: table;
+	margin-bottom: 0;
+}
+
+p.tweetCharacterCount {
+	display: inline;
+	float: left;
+}
+
+.tweetCharacterCount {
+	color: green;
+}
+
+.tweetCharacterCountWarning {
+	color: yellow;
+}
+
+.tweetCharacterCountError {
+	color: red;
+}
+
+/* END OF COMMON.CSS */
+
+/* START SIXBUILDER GENERAL */
+
+html {
+    height: 100%;
+}
+
+body {
+    margin: 0;
+    background: #FFFFFF;
+    font-family: Arial, Helvetica, sans-serif !important;
+    color: #626262;
+    height: 100%;
+}
+
+form {
+    margin: 0;
+    padding: 0;
+}
+
+input {
+    padding: 5px;
+    background: #FEFEFE url( images/img13.gif ) repeat-x;
+    border: 1px solid #626262;
+    font: normal 1em Arial, Helvetica, sans-serif;
+}
+
+
+h1 {
+    letter-spacing: -1px;
+    font-size: 2.2em;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+h2 {
+    letter-spacing: -1px;
+    font-size: 2em;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+h3 {
+    font-size: 1em;
+    font-family: Arial, Helvetica, sans-serif;
+}
+/* 
+a:link {
+    color: #2787C2 !important;
+    text-decoration: none;
+}
+
+a:visited {
+    text-decoration: none;
+    color: #2787C2 !important;
+}
+
+a:hover {
+    text-decoration: underline;
+    color: #f68b28 !important;
+}
+
+a:active {
+    text-decoration: underline;
+    color: #f68b28 !important;
+} */
+
+/* menu */
+
+.container {
+	width:800px !important;	
+}
+
+.navContainer {
+	width:800px !important;	
+}
+
+.navbar {
+	color: #FFFFFF !important;
+	height: 38px;
+	background-color: #2787C2;
+	margin-left:auto;
+	margin-right:auto;
+	border-bottom: 1px solid #95C4E1;
+}
+
+.navbar .nav > li > a:link,
+.navbar .nav > li > span > a:link {
+	color: #FFFFFF !important;
+}
+
+.navbar .nav > li > a:visited,
+.navbar .nav > li > span > a:visited {
+	color: #FFFFFF !important;
+}
+
+.navbar .nav > li > a:hover,
+.navbar .nav > li > span > a:hover {
+	color: #f68b28 !important;
+	text-decoration: none;
+}
+
+.navbar .nav {
+
+}
+
+.navbar-fixed-top {
+	left: 0px !important;
+	top: 0px !important;
+}
+
+.divider-vertical {
+	background-color: #799EB6 !important;
+	border-right:1px solid #779DB4 !important;
+	position: relative;
+	top: 0px;
+	height: 36px !important;
+}
+
+#pageTitle {
+	top: 11px;
+	left: -25px;
+	font-size:24px;
+	position:relative;
+	text-transform: lowercase;	
+}
+
+#titleMessage {
+	color: #f68b28;
+}
+
+#logo {
+	font-size:24px;
+	position: relative;
+}
+
+.brand a:link {color:#FFFFFF;}      /* unvisited link */
+.brand a:visited {color:#FFFFFF;}  /* visited link */
+.brand a:hover { /* mouse over link */
+	color:#FFFFFF;
+	text-decoration:none;
+	}  
+.brand a:active {color:#FFFFFF;}
+
+#waitMessage {
+	font-size:24px;
+	position: relative;
+	top:-3px;
+}
+
+img#gears {
+	position:relative;
+	left:1px;
+	width: 25px;
+}
+
+#sixbmenu {
+	top: 1px;
+	float:right;
+}
+
+
+
+.t-error-icon {
+	display: none;
+}
+
+#userName {
+	
+}
+
+.brand {
+	width:125px;
+	position:relative;
+	left:10px;
+	display:inline-block !important;
+}
+
+.dropdown {
+	position: relative;
+	top: 10px;
+}
+
+.dropdown-menu {
+	min-width:100px !important;
+}
+
+
+.disabledMenu {
+	color: lightgrey;
+	padding: 0px 0px 3px 15px;
+	line-height: 18px;
+	top: 0px;
+}
+
+#imgSpan {
+	display:inline-block;
+	position:relative;
+	top: 2px;
+	left: -4px;
+	float:right;
+}
+
+#userimage {
+	height: 32px;
+	width: 32px;
+	padding:0px 0px 0px 0px;
+	border: 1px solid #2787C2;
+	border-radius:.5em;
+}
+
+#settings {
+	cursor:pointer;
+}
+
+#settingsAsterisk {
+	font-size: 20px;	
+}
+
+#settingsImage {
+	width: 15px;
+	background-image: url('images/settings.png');
+}
+
+#settingsImage:hover {
+	background-image:url('images/settingsHover.png') ;	
+}
+
+#settingslist {
+	top: 20px;
+	left: -7px;
+}
+
+/* Page */
+
+.credit {
+	margin-top:10px;
+	margin-bottom:10px;
+	text-align:center;
+}
+
+DIV.t-beaneditor
+{
+	border: 2px outset royalblue !important;
+}
+
+.t-beaneditor-row
+{
+	background: white;
+}
+
+fieldset.sixb {
+	width: 780px;
+	border:1px solid #2787c2;
+	border-radius:.5em;
+	padding:3px 10px 10px 10px;
+	font-family: Arial, Helvetica, sans-serif !important;
+	margin-left:auto;
+	margin-right:auto;
+}
+
+legend.sixb {
+	margin-left: 5px;
+	text-align:left;
+	font-size: 15px;
+	width:auto;
+	padding: 0px 4px;
+	border:1px solid #2787c2;
+	margin-bottom: 0px;
+	line-height: 20px;
+	border-radius:.25em;
+	font-family: Arial, Helvetica, sans-serif !important;
+	color:#f68b28;
+}
+
+#waitAnimation {
+	position:relative;
+	left:375px:
+}
+
+#formContainer {
+	margin-left:auto;
+	margin-right:auto;
+}
+
+.returnLink {
+	margin-left: auto;
+	margin-right: auto;
+	width: 800px;
+}
+
+.button-group {
+	text-align: center;
+}
+
+.formMessage {
+	text-align: center;
+}
+
+FORM {
+	z-index:0;   
+}
+
+DIV.t-beaneditor {
+   font-size: 14px;
+   font-family: Arial, Helvetica, sans-serif !important;
+   font-weight: normal;
+}
+
+DIV.t-beaneditor-row LABEL {
+	position:relative;
+	top:5px;
+}
+
+html > body div.t-error li {
+	margin-left: 20px !important;
+}
+
+/* fixing tapetry's error display */
+.myError {
+	border-color: red;
+	font-style: italic;
+	color: red;
+}
+
+/* fixing bootstraps button and label behavior */
+.label {
+	cursor: auto;
+	padding-top: 2px !important;
+}
+
+.badge {
+	cursor: default;
+	padding-top: 2px !important;
+}
+
+.badge {
+	cursor: default !important;
+}
+
+.label-important {
+    background-color: #F68B28 !important;
+}
+
+.label-info {
+	background-color: #2787c2 !important;
+}
+
+.disabled {
+	color: #999999;
+	display: block;
+	padding: 3px 15px;
+	clear: both;
+	font-weight: normal;
+	line-height: 18px;
+	white-space: nowrap;
+}
+
+#user {
+	line-height: 19px;
+}
+
+.error-container {
+	display: inline;
+	height: 100%;
+	width: 100%;
+}
+
+.alert-error {
+	position: absolute;
+	/* width: 400px ;
+	margin-left: auto ;
+	margin-right: auto ; */
+}
+
+input.error {
+	background-color: #f2dede;
+	border-color: #eed3d7;
+	color: #b94a48;
+}
+
+/* END SIXBUILDER GENERAL */
+
+#curateZone ul, #publishingZone ul, #actionZone ul, #queueZone ul,
+#curateZone ul > li, #publishingZone ul > li, #actionZone ul > li, #queueZone ul > li{
+	margin: 0;
+	padding: 0;
+	list-style-type: none;
+}
+
+#actionZone, #publishingZone {
+	margin-right: 50px;
+	width: 385px;
+}
+
+#curateZone, #publishingZone, #actionZone, #queueZone {
+	display: table-cell;
+/*	width: 375px; */
+}
+
+#tweetengagement-conversation-zone {
+	border-radius: 8px;	
+}
+
+div.displayTable {
+	display: table;
+}
+
+div.label {
+    font-size: 30px !important;
+    height: 30px;
+    padding-bottom: 5px;
+    text-align: center;
+    width: inherit;
+}
+
+/* START OF TWEETENGAGEMENT.CSS */
+
+.table > .table-row {
+	clear: both;
+	margin: 0px;
+}
+
+.table > .table-row > .table-cell {
+	clear: none;
+	float: left;
+	margin: 0;
+}
+
+div.renderTweet {
+	position: relative;
+}
+
+div.tweetEngagementSummaryView {
+	font-size: 15px;
+}
+
+div.tweetEngagementSummaryView p {
+	line-height: 1.1em;
+	margin: 0px;
+}
+
+div.tweetEngagementProfilePicture {
+	float: left;
+	text-align: right;
+}
+
+div.tweetEngagementProfilePicture,
+div.tweetEngagementRetweetIcon,
+div.tweetEngagementBelowProfilePicture {
+	width: 80px;
+	padding-left: 5px;
+	text-align: right;
+}
+
+div.tweetEngagementBelowProfilePicture {
+	text-align: center;
+}
+
+div.tweetEngagementBelowProfilePicture a {
+	color: black;
+}
+
+
+div.tweetEngagementContent,
+div.tweetEngagementRetweetInfo,
+div.tweetEngagementRetweetActionsCell {
+	width: 280px;
+}
+
+div.tweetEngagementContent {
+	padding: 0px;
+	margin: 0px;
+}
+
+div.tweetEngagementContent div {
+	clear: none;
+}
+
+div.renderTweet div.tweetEngagementSummaryView div.tweetEngagementRetweetInfo,
+div.renderTweet div.tweetEngagementSummaryView div.tweetEngagementContent,
+div.renderTweet div.tweetEngagementSummaryView div.tweetEngagementActionsCell {
+	padding-left: 10px;
+}
+
+div.tweetEngagementRetweet {
+	font-size: 0.75em;
+	height: 1em;
+}
+
+ul.tweetEngagementActions {
+	padding-left: 0px;
+	display: inline;
+}
+
+ul.tweetEngagementActions li {
+	display: block;
+	float: left;
+	width: 1.5em;
+}
+
+a.black, a.green, a.orange, a.gray {
+	color: lightgray;
+}
+
+div.tweetEngagement:hover a.black {
+	color: black;
+}
+
+div.tweetEngagement:hover a.green {
+	color: green;
+}
+
+div.tweetEngagement:hover a.gray {
+	color: gray;
+}
+
+div.tweetEngagement:hover a.orange {
+	color: orange;
+}
+
+div.renderTweet:hover > div.tweetClearLink {
+	display: block;
+}
+
+div.renderTweet > div.tweetClearLink {
+	display: none;
+	position: absolute;
+	right: -1px;
+	top: -2px;
+	margin: 0px;
+	margin: 0px;
+}
+
+div.renderTweet > div.tweetClearLink a {
+	font-size: 25px;
+	line-height: 25px;
+	color: #2787c2;
+}
+
+div.tweetEngagement ol.tweetEngagementConversation {
+	margin: 0px;
+	padding: 0px;
+}
+
+div.tweetEngagement div.tweetEngagementConversation div.other {
+	background-color: #eeeeee;
+	border-radius: 8px;
+}
+
+div.tweetEngagementReply {
+	display: none;
+}
+
+div.tweetEngagementReply, div.tweetEngagementReply p {
+	clear: both;
+}
+
+div.tweetEngagementReply p {
+	text-align: right;
+	width: 100%;
+}
+
+div.tweetEngagementReply a {
+	text-decoration: none;
+}
+
+div.tweetEngagementReply textarea {
+	width: 100%;
+}
+
+
+/* from home.css */
+.mycenter {
+	display: inline-block;
+  	vertical-align: middle;
+  	line-height: normal;      
+}
+
+/* START OF HAND STUFF */
+
+.messages {
+	position: relative; 
+	vertical-align:top;
+	width: 385px;
+}
+
+#queue { /* holds entire queue column */
+	position: relative;
+}
+
+#queueMessages {
+	padding-left: 2px;
+}

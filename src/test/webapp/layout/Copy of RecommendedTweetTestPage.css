@@ -1,0 +1,646 @@
+/* START SIXBUILDER GENERAL */
+
+html {
+    height: 100%;
+}
+
+body {
+    margin: 0;
+    background: #FFFFFF;
+    font-family: Arial, Helvetica, sans-serif !important;
+    color: #626262;
+    height: 100%;
+    padding-top: 65px;
+    
+}
+
+form {
+    margin: 0;
+    padding: 0;
+}
+
+input {
+    padding: 5px;
+    background: #FEFEFE url( images/img13.gif ) repeat-x;
+    border: 1px solid #626262;
+    font: normal 1em Arial, Helvetica, sans-serif;
+}
+
+
+h1 {
+    letter-spacing: -1px;
+    font-size: 2.2em;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+h2 {
+    letter-spacing: -1px;
+    font-size: 2em;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+h3 {
+    font-size: 1em;
+    font-family: Arial, Helvetica, sans-serif;
+}
+/* 
+a:link {
+    color: #2787C2 !important;
+    text-decoration: none;
+}
+
+a:visited {
+    text-decoration: none;
+    color: #2787C2 !important;
+}
+
+a:hover {
+    text-decoration: underline;
+    color: #f68b28 !important;
+}
+
+a:active {
+    text-decoration: underline;
+    color: #f68b28 !important;
+} */
+
+/* menu */
+
+.container {
+	width:800px !important;	
+}
+
+.navContainer {
+	width:800px !important;	
+}
+
+.navbar {
+	color: #FFFFFF !important;
+	height: 38px;
+	background-color: #2787C2;
+	margin-left:auto;
+	margin-right:auto;
+	border-bottom: 1px solid #95C4E1;
+}
+
+.navbar .nav > li > a:link,
+.navbar .nav > li > span > a:link {
+	color: #FFFFFF !important;
+}
+
+.navbar .nav > li > a:visited,
+.navbar .nav > li > span > a:visited {
+	color: #FFFFFF !important;
+}
+
+.navbar .nav > li > a:hover,
+.navbar .nav > li > span > a:hover {
+	color: #f68b28 !important;
+	text-decoration: none;
+}
+
+.navbar .nav {
+
+}
+
+.navbar-fixed-top {
+	left: 0px !important;
+	top: 0px !important;
+}
+
+.divider-vertical {
+	background-color: #799EB6 !important;
+	border-right:1px solid #779DB4 !important;
+	position: relative;
+	top: 0px;
+	height: 36px !important;
+}
+
+#pageTitle {
+	top: 11px;
+	left: -25px;
+	font-size:24px;
+	position:relative;
+	text-transform: lowercase;	
+}
+
+#titleMessage {
+	color: #f68b28;
+}
+
+#logo {
+	font-size:24px;
+	position: relative;
+}
+
+.brand a:link {color:#FFFFFF;}      /* unvisited link */
+.brand a:visited {color:#FFFFFF;}  /* visited link */
+.brand a:hover { /* mouse over link */
+	color:#FFFFFF;
+	text-decoration:none;
+	}  
+.brand a:active {color:#FFFFFF;}
+
+#waitMessage {
+	font-size:24px;
+	position: relative;
+	top:-3px;
+}
+
+img#gears {
+	position:relative;
+	left:1px;
+	width: 25px;
+}
+
+#sixbmenu {
+	top: 1px;
+	float:right;
+}
+
+
+
+.t-error-icon {
+	display: none;
+}
+
+#userName {
+	
+}
+
+.brand {
+	width:125px;
+	position:relative;
+	left:10px;
+	display:inline-block !important;
+}
+
+.dropdown {
+	position: relative;
+	top: 10px;
+}
+
+.dropdown-menu {
+	min-width:100px !important;
+}
+
+
+.disabledMenu {
+	color: lightgrey;
+	padding: 0px 0px 3px 15px;
+	line-height: 18px;
+	top: 0px;
+}
+
+#imgSpan {
+	display:inline-block;
+	position:relative;
+	top: 2px;
+	left: -4px;
+	float:right;
+}
+
+#userimage {
+	height: 32px;
+	width: 32px;
+	padding:0px 0px 0px 0px;
+	border: 1px solid #2787C2;
+	border-radius:.5em;
+}
+
+#settings {
+	cursor:pointer;
+}
+
+#settingsAsterisk {
+	font-size: 20px;	
+}
+
+#settingsImage {
+	width: 15px;
+	background-image: url('images/settings.png');
+}
+
+#settingsImage:hover {
+	background-image:url('images/settingsHover.png') ;	
+}
+
+#settingslist {
+	top: 20px;
+	left: -7px;
+}
+
+/* Page */
+
+.credit {
+	margin-top:10px;
+	margin-bottom:10px;
+	text-align:center;
+}
+
+DIV.t-beaneditor
+{
+	border: 2px outset royalblue !important;
+}
+
+.t-beaneditor-row
+{
+	background: white;
+}
+
+fieldset.sixb {
+	width: 780px;
+	border:1px solid #2787c2;
+	border-radius:.5em;
+	padding:3px 10px 10px 10px;
+	font-family: Arial, Helvetica, sans-serif !important;
+	margin-left:auto;
+	margin-right:auto;
+}
+
+legend.sixb {
+	margin-left: 5px;
+	text-align:left;
+	font-size: 15px;
+	width:auto;
+	padding: 0px 4px;
+	border:1px solid #2787c2;
+	margin-bottom: 0px;
+	line-height: 20px;
+	border-radius:.25em;
+	font-family: Arial, Helvetica, sans-serif !important;
+	color:#f68b28;
+}
+
+#waitAnimation {
+	position:relative;
+	left:375px:
+}
+
+#formContainer {
+	margin-left:auto;
+	margin-right:auto;
+}
+
+.returnLink {
+	margin-left: auto;
+	margin-right: auto;
+	width: 800px;
+}
+
+.button-group {
+	text-align: center;
+}
+
+.formMessage {
+	text-align: center;
+}
+
+FORM {
+	z-index:0;   
+}
+
+DIV.t-beaneditor {
+   font-size: 14px;
+   font-family: Arial, Helvetica, sans-serif !important;
+   font-weight: normal;
+}
+
+DIV.t-beaneditor-row LABEL {
+	position:relative;
+	top:5px;
+}
+
+html > body div.t-error li {
+	margin-left: 20px !important;
+}
+
+/* fixing tapetry's error display */
+.myError {
+	border-color: red;
+	font-style: italic;
+	color: red;
+}
+
+/* fixing bootstraps button and label behavior */
+.label {
+	cursor: auto;
+	padding-top: 2px !important;
+}
+
+.badge {
+	cursor: default;
+	padding-top: 2px !important;
+}
+
+.badge {
+	cursor: default !important;
+}
+
+.label-important {
+    background-color: #F68B28 !important;
+}
+
+.label-info {
+	background-color: #2787c2 !important;
+}
+
+.disabled {
+	color: #999999;
+	display: block;
+	padding: 3px 15px;
+	clear: both;
+	font-weight: normal;
+	line-height: 18px;
+	white-space: nowrap;
+}
+
+#user {
+	line-height: 19px;
+}
+
+.error-container {
+	display: inline;
+	height: 100%;
+	width: 100%;
+}
+
+.alert-error {
+	position: absolute;
+	/* width: 400px ;
+	margin-left: auto ;
+	margin-right: auto ; */
+}
+
+input.error {
+	background-color: #f2dede;
+	border-color: #eed3d7;
+	color: #b94a48;
+}
+
+/* END SIXBUILDER GENERAL */
+
+/* START OF COMMON.CSS */
+
+#curateZone ul, #publishingZone ul, #actionZone ul, #queueZone ul,
+#curateZone ul > li, #publishingZone ul > li, #actionZone ul > li, #queueZone ul > li{
+	margin: 0;
+	padding: 0;
+	list-style-type: none;
+}
+
+#curateZone, #actionsZone {
+	margin-right: 50px;
+}
+
+#curateZone, #publishingZone, #actionZone, #queueZone {
+	display: table-cell;
+	width: 375px;
+	border: solid black 1px;
+}
+
+div.displayTable {
+	display: table;
+}
+
+.tweetEngagement {
+	border-bottom: solid black 1px;
+}
+
+p, ol, ul {
+    line-height: inherit;
+    clear: none;
+}
+
+div.tweetEngagement {
+	width: 375px;
+	margin: 0;
+	clear: both;
+	top: 0px;
+	left: 0px;
+	position: relative;
+}
+
+div.tweetEngagementSummaryView {
+	display: table;
+}
+
+p.tweetCharacterCount {
+	display: inline;
+	float: left;
+}
+
+.tweetCharacterCount {
+	color: green;
+}
+
+.tweetCharacterCountWarning {
+	color: yellow;
+}
+
+.tweetCharacterCountError {
+	color: red;
+}
+
+/* END OF COMMON.CSS */
+
+
+/* START OF RECOMMENDEDTWEET.CSS */
+
+div.recommendedTweet {
+	width: 375px;
+	margin: 0;
+	clear: both;
+	top: 0px;
+	left: 0px;
+	position: relative;
+}
+
+div.recommendedTweetSummaryView {
+	display: table;
+	vertical-align: bottom;
+}
+
+div.recommendedTweetSummaryView div.tweetPublishColumn {
+	width: 25px;
+	text-align: center;
+	/*background-color: yellow;*/
+}
+
+div.tweetPublishColumn {
+	vertical-align: top;
+}
+
+div.recommendedTweetSummaryView div.tweetPublishColumn input {
+	margin-bottom: 10px;
+}
+
+div.recommendedTweetSummaryView div.tweetSummaryColumn,
+div.recommendedTweetSummaryView div.tweetDetailColumn {
+	width: 95%;
+	padding: 0px;
+	margin-top: 0px;
+	/*background-color: blue;*/
+	vertical-align: top;
+}
+
+div.recommendedTweetSummaryView div.tweetSummaryColumn p {
+	padding: 5px;
+	margin: 0px;
+	line-height: auto;
+	font-size: 10px;
+}
+
+div.recommendedTweetSummaryView div.tweetSnapshotColumn {
+	width: 75px;
+	display: block;
+	line-height: auto;
+	/*background-color: green;*/
+}
+
+div.recommendedTweetSummaryView div.tweetPublishColumn,
+div.recommendedTweetSummaryView div.tweetSummaryColumn,
+div.recommendedTweetSummaryView div.tweetSnapshotColumn {
+	display: table-cell;
+	margin-left: 0;
+	margin-right: 0;
+}
+
+div.recommendedTweet:hover div.tweetDeleteLink {
+	display: block;
+}
+
+div.recommendedTweet div.tweetDeleteLink {
+	display: none;
+	position: absolute;
+	right: 0px;
+	top: 0px;
+	margin: 0px;
+	margin: 0px;
+	width: 25px;
+	height: 25px;
+}
+
+div.recommendedTweet div.tweetUrl p {
+	width: 250px;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	overflow: hidden;
+}
+
+div.recommendedTweet[data-mode=detail] div.tweetDetailColumn,
+div.recommendedTweet[data-mode=summary] div.tweetSummaryColumn {
+	display: table-cell;
+}
+
+div.recommendedTweet[data-mode=detail] div.tweetActionButtons {
+	display: block;
+}
+
+div.recommendedTweet[data-mode=summary] div.tweetDetailColumn,
+div.recommendedTweet[data-mode=summary] div.tweetActionButtons, 
+div.recommendedTweet[data-mode=detail] div.tweetSummaryColumn {
+	display: none;
+}
+
+div.recommendedTweet div.tweetDetailColumn div.tweetText textarea {
+	height: 6em;
+	min-height: 80px;
+	width: 95%;
+}
+
+div.recommendedTweet div.tweetEditSecondRow, div.recommendedTweet div.tweetUrlRow {
+	float: left;
+	width: 250px;
+	padding: 1px !important;
+}
+
+div.recommendedTweet div.tweetEditSecondRow {
+	line-height: 1em !important;
+}
+
+div.recommendedTweet div.tweetEditSecondRow ul li {
+	display: inline;
+	float: left;
+	list-style-type: none;
+	margin-right: 0.75em !important;
+	line-height: 1em !important;
+}
+
+div.recommendedTweet div.tweetUrlRow {
+	font-size: 10px;
+}
+
+div.recommendedTweet div.tweetUrlRow input.tweetUrl {
+	width: 180px;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	overflow: hidden;
+}
+
+div.recommendedTweet input.tweetShorten,
+div.recommendedTweet input.tweetSave,
+div.recommendedTweet input.tweetCancel {
+	width: auto;
+}
+
+div.recommendedTweet div.tweetActionButtons {
+	position: absolute:
+}
+
+div.recommendedTweet input.tweetSave,
+div.recommendedTweet input.tweetCancel {
+	margin-left: 0.5em;
+	font-size: 12px;
+}
+
+/* Icon from http://icondock.com/free/mini-pixel-icons */
+div.recommendedTweet .tweetAttachSnapshot {
+}
+
+/* twitter bird icon for "tweet" button */
+#tweet {
+	width: 16px;
+	height: 13px;
+	padding: 10px 0px 0px 0px;
+}
+
+/* END OF RECOMMENDEDTWEET.CSS */
+
+
+
+
+div.label {
+    font-size: 30px !important;
+    height: 30px;
+    padding-bottom: 5px;
+    text-align: center;
+    width: inherit;
+}
+
+/* from home.css */
+.mycenter {
+	display: inline-block;
+  	vertical-align: middle;
+  	line-height: normal;      
+}
+
+
+/* my hand stuff */
+
+.messages {
+	position: relative; 
+	vertical-align:top;
+}
+
+#queue { /* holds entire queue column */
+	position: relative;
+}
+
+#queueMessages {
+	
+}
+
+.tweetText {
+	width: 95%;
+}

@@ -7,12 +7,12 @@
 		<div t:type="twitterlib/RenderTweet" t:tweet="tweet" t:zoneId="zoneId"/>
 	</t:block>
 	<t:block id="conversation">
-		<ol class="tweetEngagementConversation" t:type="If" t:test="!conversationTweets.empty">
-			<li t:type="Loop" t:source="conversationTweets" t:value="conversationTweet" class="${cssClass}">
+		<div class="tweetEngagementConversation" t:type="If" t:test="!conversationTweets.empty">
+			<div t:type="Loop" t:source="conversationTweets" t:value="conversationTweet" class="${cssClass}">
 				<div t:type="twitterlib/RenderTweet" t:tweet="conversationTweet" 
 					t:parentConversationTweet="tweet" t:zoneId="zoneId" 
 					t:insideConversation="insideConversation" t:showConversation="showConversation"/>
-			</li>	
-		</ol>
+			</div>	
+		</div>
 	</t:block>
 </div>

@@ -1,11 +1,31 @@
 <html t:type="Layout" title="twitterlib Index"
-      t:sidebarTitle="Framework Version"
-      xmlns:t="http://tapestry.apache.org/schema/tapestry_5_3.xsd"
-      xmlns:p="tapestry:parameter">
-        <!-- Most of the page content, including <head>, <body>, etc. tags, comes from Layout.tml -->
+	t:sidebarTitle="Framework Version"
+	xmlns:t="http://tapestry.apache.org/schema/tapestry_5_3.xsd"
+	xmlns:p="tapestry:parameter">
+<!-- Most of the page content, including <head>, <body>, etc. tags, comes from Layout.tml -->
 
-    <h1>Twitter Library Component Demo</h1>
-
-	<div t:type="twitterlib/RecommendedTweetDisplay"/>
+<head>
+    <link rel="stylesheet" type="text/css" href="${context:/layout/RecommendedTweetTestPage.css}"/>
+     <link rel="stylesheet" type="text/css" href="${context:/layout/Queue.css}"/>
+</head>
+<br />
+<h1>Recommended Tweet</h1>
+<br />
+<br />
+<fieldset class="sixb">
+	<legend class="sixb">Content</legend>
+	<div t:type="twitterlib/RecommendedTweetDisplay"
+		queueType="queueType"
+		accountsRoot="accountsRoot" userId="userId"
+		/>
+</fieldset>
+<br />
+<br />
+<div class="message">
+	<div t:type="Alerts" />
+</div>
+<br />
+<br />
+<hr />
 
 </html>

@@ -1,0 +1,71 @@
+#curateZone ul, #publishingZone ul, #actionZone ul, #queueZone ul,
+#curateZone ul > li, #publishingZone ul > li, #actionZone ul > li, #queueZone ul > li{
+	margin: 0;
+	padding: 0;
+	list-style-type: none;
+}
+
+#curateZone, #actionsZone {
+	margin-right: 50px;
+}
+
+#curateZone, #publishingZone, #actionZone, #queueZone {
+	display: table-cell;
+	width: 375px;
+	border: solid black 1px;
+}
+
+div.displayTable {
+	display: table;
+}
+
+.tweetEngagement {
+	border-bottom: solid black 1px;
+}
+
+p, ol, ul {
+    line-height: inherit;
+    clear: none;
+}
+
+div.tweetEngagement {
+	width: 375px;
+	margin: 0;
+	clear: both;
+	top: 0px;
+	left: 0px;
+	position: relative;
+}
+
+div.tweetEngagementSummaryView {
+	display: table;
+}
+
+p.tweetCharacterCount {
+	display: inline;
+	float: left;
+}
+
+.tweetCharacterCount {
+	color: green;
+}
+
+.tweetCharacterCountWarning {
+	color: yellow;
+}
+
+.tweetCharacterCountError {
+	color: red;
+}
+
+/*.table > .table-row {
+	display: table-row;
+	margin: 0;
+	padding: 0;
+}
+
+.table > .table-row > .table-cell {
+	display: table-cell;
+	margin: 0;
+	padding: 0;
+}*/

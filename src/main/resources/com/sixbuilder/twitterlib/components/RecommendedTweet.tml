@@ -1,28 +1,27 @@
 <div xmlns:t="http://tapestry.apache.org/schema/tapestry_5_3.xsd" xmlns:p="tapestry:parameter" 
 	class="recommendedTweet" data-tweet-id="${tweet.tweetId}" id="${clientId}" data-mode="summary"
 	data-original-url="${tweet.url}" data-dirty="false" data-publish="${tweet.publish}">
-
-	<form autocomplete="off">
+	<form autocomplete="off" t:type="Form" t:id="form" t:context="tweet.tweetId" t:zone="^">
 
 		<div class="recommendedTweetSummaryView">
-	
-			<div class="tweetPublishColumn">
-				<t:if test="tweet.publish">
-					<input type="checkbox" class="publishTweet" id="publishTweet_${tweet.tweetId}" checked="checked"/>
-				</t:if>
-				<t:if test="!tweet.publish">
-					<input type="checkbox" class="publishTweet" id="publishTweet_${tweet.tweetId}"/>
-				</t:if>
-			</div>
 			
 			<div class="tweetSummaryColumn">
+				<t:if test="publish">
+					<div class="targetTime">will be published at: ${tweet.pubTargetDisplay}</div>
+				<p:else><div class="publishShim">&nbsp;</div></p:else>
+				</t:if>
 				<div class="tweetText">
-					<p>
+					<p class="displayTweet">
 						${tweet.summary}
 					</p>
 				</div>
+				<div class="summaryHashtags">
+					<span t:type="Loop" t:source="recommendedHashtags" t:value="var:hashtag" data-hashtag="${var:hashtag}">
+						${var:hashtag}&nbsp;
+					</span>
+				</div>
 				<div class="tweetUrl">
-					<p title="${tweet.url}">
+					<p class="displayUrl" title="${tweet.url}">
 						${tweet.url}
 					</p>
 				</div>
@@ -30,47 +29,46 @@
 	
 			<div class="tweetDetailColumn">
 				<div class="tweetText">
-					<textarea id="textarea_${tweet.tweetId}">${tweet.summary}</textarea>
+					<textarea class="editableTweet" id="textarea_${tweet.tweetId}" t:type="TextArea" t:id="summary">${tweet.summary}</textarea>
 				</div>
 				<div class="tweetEditSecondRow">
-					<p class="tweetCharacterCount">${tweet.summary.length()}</p>
-					<ul class="tweetSuggestedHashtags">
-						<li t:type="Loop" t:source="recommendedHashtags" t:value="var:hashtag" data-hashtag="${var:hashtag}">
-							<a href="#">${var:hashtag}</a>
-						</li>
-					</ul>
-					<p class="tweetAttachSnapshot">
-						<span class="tweetAttachSnapshot">
-							<img src="${asset:classpath:/com/sixbuilder/twitterlib/components/upload-page-red.gif}"/>
+					<div class="tweetSuggestedHashtags">
+						<span t:type="Loop" t:source="recommendedHashtags" t:value="var:hashtag" data-hashtag="${var:hashtag}">
+							<a href="#">${var:hashtag}</a>&nbsp;
 						</span>
-						<t:if test="tweet.attachSnapshot">
-							<input type="checkbox" class="tweetAttachSnapshotCheckbox" checked="checked"/>
-						</t:if>
-						<t:if test="!tweet.attachSnapshot">
-							<input type="checkbox" class="tweetAttachSnapshotCheckbox"/>
-						</t:if>
-					</p>
+					</div>
+					<span class="ccText">character count: </span><span class="tweetCharacterCount">${tweet.summary.length()}</span>
 				</div>
 				<div class="tweetUrlRow">
+					<input class="tweetShortenUrl btn btn-default" type="submit" value="&#xf0c1;"/>
 					<input class="tweetUrl" type="text" value="${tweet.url}"/>
-					<input class="tweetShortenUrl" type="submit" value="Shorten"/>
 				</div>
 			</div>
 				
 			<div class="tweetSnapshotColumn">
+			
 				<a href="${tweet.url}" target="_blank">
-					<img src="${tweet.snapshotUrl}"/>
+					<img class="urlSnapshot" src="${tweet.snapshotUrl}"/>
 				</a>
+				
+				<span class="tweetDeleteLink">
+					<a href="#" t:type="EventLink" t:event="delete" t:context="tweet.tweetId" t:zone="^">
+						<i t:type="twitterlib/FontAwesomeIcon" t:name="fa-times" />
+						<i t:type="twitterlib/FontAwesomeIcon" t:name="fa-times-circle" />	
+					</a>
+				</span>
+				
 				<div class="tweetActionButtons">
-					<input class="tweetSave" type="submit" value="Save"/>
-					<input class="tweetCancel" type="submit" value="Cancel"/>
+					<p class="tweetAttachSnapshot">
+						<span class="tweetAttachSnapshot">
+							<t:twitterLib.FontAwesomeIcon name="fa-paperclip" />
+						</span>&nbsp;
+						<input type="checkbox" t:type="Checkbox" t:id="attachSnapshot" class="tweetAttachSnapshotCheckbox"/>
+					</p>
+					<input class="tweetSave btn btn-primary" type="submit" value="Queue" t:type="Submit" t:id="queue"/>
+					<input class="tweetCancel btn btn-warning" type="submit" value="Meh" t:type="Submit" t:id="meh"/>
 				</div>
-			</div>
-	
-			<div class="tweetDeleteLink">
-				<a href="#" t:type="EventLink" t:event="delete" t:context="tweet.tweetId" t:zone="^">
-					<img src="${asset:classpath:com/sixbuilder/twitterlib/components/closeButton.png}" height="25" width="25"/>
-				</a>
+				
 			</div>
 		
 		</div>

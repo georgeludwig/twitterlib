@@ -1,7 +1,6 @@
 package com.sixbuilder.twitterlib;
 
 import com.sixbuilder.twitterlib.components.RecommendedTweet;
-import com.sixbuilder.twitterlib.helpers.TweetItem;
 
 /**
  * Class that holds constants related to the Recommended Tweets component.
@@ -32,10 +31,16 @@ final public class RecommendedTweetConstants {
 	public static final String SHORTEN_URL_EVENT = "shortenTweetUrl";
 	
 	/**
-	 * Name of the event triggered by {@link RecommendedTweet} when the user clicks on the Save button.
+	 * Name of the event triggered by {@link RecommendedTweet} when the user clicks on the Save (Queue) button.
 	 * The event context will be the tweet item. 
 	 */
 	public static final String SAVE_TWEET_EVENT = "saveTweet";
+	
+	/**
+	 * Name of the event triggered by {@link RecommendedTweet} when the user clicks on the Meh button.
+	 * The event context will be the tweet item. 
+	 */
+	public static final String MEH_TWEET_EVENT = "mehTweet";
 
 	/**
 	 * Name of the event triggered by {@link RecommendedTweet} when it needs to load a {@link TweetItem}

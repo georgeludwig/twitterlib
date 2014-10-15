@@ -24,7 +24,8 @@ import com.sixbuilder.twitterlib.helpers.Tweet;
  * 
  * @author Thiago H. de Paula Figueiredo (http://machina.com.br/thiago)
  */
-@Import(stylesheet={"common.css", "TweetEngagement.css"}, library={"TweetEngagement.js", "twitter-text-1.8.0.min.js"})
+//@Import(stylesheet={"common.css", "TweetEngagement.css"}, library={"TweetEngagement.js", "twitter-text-1.8.0.min.js"})
+@Import(library={"TweetEngagement.js", "twitter-text-1.8.0.min.js"})
 @Events({TweetEngagementConstants.CLEAR_TWEET_EVENT,
 		TweetEngagementConstants.DELETE_TWEET_EVENT,
 		TweetEngagementConstants.FAVORITE_TWEET_EVENT,

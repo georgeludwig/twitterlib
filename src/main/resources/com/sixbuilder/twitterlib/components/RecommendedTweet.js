@@ -14,19 +14,13 @@ function initializeRecommendedTweet(options) {
 	var summaryText = outerDiv.find('div.tweetText p');
 	var characterCount = outerDiv.find('.tweetCharacterCount');
 	var summaryView = outerDiv.find('div.tweetSummaryColumn');
-	var hashtags = outerDiv.find('ul.tweetSuggestedHashtags li');
+	var hashtags = outerDiv.find('div.tweetSuggestedHashtags span');
 	var attachSnapshotsCheckbox = outerDiv.find('input.tweetAttachSnapshotCheckbox');
 	
 	updateCharacterCount();
 	
 	// publish checkbox
-	T5.initializers.updateZoneOnEvent('click', publishCheckbox.attr('id'), '^', options.publishUrl);
-	
-	outerDiv.find('input.tweetCancel').click(function(event) {
-		modeSummary();
-		enablePublishCheckbox();
-		event.preventDefault();
-	});
+	//T5.initializers.updateZoneOnEvent('click', publishCheckbox.attr('id'), '^', options.publishUrl);
 	
 	outerDiv.find('input.tweetShortenUrl').click(function(event) {
 		$j.ajax(options.shortenUrlUrl).done(function(result) {
@@ -43,8 +37,14 @@ function initializeRecommendedTweet(options) {
 	});
 	
 	outerDiv.find('input.tweetSave').click(function(event) {
-		save();
-		event.preventDefault();
+		modeSummary();
+	});
+
+	outerDiv.find('input.tweetCancel').click(function(event) {
+		modeSummary();
+//		if (options.inQueue == false) {
+//			event.preventDefault();
+//		}
 	});
 	
 	// switch to detail view
@@ -52,7 +52,7 @@ function initializeRecommendedTweet(options) {
 		if (outerDiv.attr(MODE_ATTRIBUTE) === SUMMARY_MODE) {
 			// expand into detail mode
 			outerDiv.attr(MODE_ATTRIBUTE, DETAIL_MODE);
-			disablePublishCheckbox();
+		//	disablePublishCheckbox();
 		}
 		event.preventDefault();
 	});
@@ -71,18 +71,20 @@ function initializeRecommendedTweet(options) {
 		event.preventDefault();
 	});
 	
+	/*
 	function save() {
 		handleSummaryChange();
 		var data = { summary : textarea.val(), attachSnapshot : attachSnapshotsCheckbox[0].checked };
 		$j.ajax(options.saveUrl, { data : data }).done(function(result) {
 			// FIXME: what to do now? nothing? show some confirmation?
 			modeSummary();
-			enablePublishCheckbox();
+	//		enablePublishCheckbox();
 		});
 	}
+	*/
 	
 	function handleSummaryChange() {
-		publishCheckbox[0].disabled = true;
+	//	publishCheckbox[0].disabled = true;
 		summaryText.text(textarea.val());
 		updateCharacterCount();
 	}

@@ -3,4 +3,9 @@
 /.classpath
 /.settings
 /target
+<<<<<<< HEAD
 /.DS_Store
+=======
+/.DS_Store
+/.idea
+>>>>>>> george

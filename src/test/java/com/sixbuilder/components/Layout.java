@@ -6,10 +6,24 @@ import org.apache.tapestry5.ioc.annotations.*;
 import org.apache.tapestry5.BindingConstants;
 import org.apache.tapestry5.SymbolConstants;
 
+import com.trsvax.bootstrap.annotations.Exclude;
+
 /**
  * Layout component for pages of application twitterlib.
  */
-@Import(stylesheet = "context:layout/layout.css")
+
+
+@Import(stylesheet={
+        "classpath:/com/trsvax/bootstrap/assets/bootstrap/css/bootstrap.css",
+        "classpath:/com/trsvax/bootstrap/assets/bootstrap/css/bootstrap-responsive.css",
+        },
+library={
+        "classpath:/com/trsvax/bootstrap/assets/bootstrap/js/bootstrap.js"
+        }
+)
+@Exclude(stylesheet={"core"})  //If you do not want Tapestry CSS
+
+//@Import(stylesheet = "context:layout/layout.css")
 public class Layout
 {
     /**

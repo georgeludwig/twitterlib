@@ -10,27 +10,28 @@ import org.apache.tapestry5.annotations.Events;
 import org.apache.tapestry5.annotations.Import;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
-import org.apache.tapestry5.annotations.RequestParameter;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.json.JSONObject;
 import org.apache.tapestry5.services.javascript.JavaScriptSupport;
 
+import com.sixbuilder.datatypes.twitter.TweetItem;
 import com.sixbuilder.twitterlib.RecommendedTweetConstants;
 import com.sixbuilder.twitterlib.helpers.HolderComponentEventCallback;
-import com.sixbuilder.twitterlib.helpers.TweetItem;
 
 /**
  * Component that renders a tweet to be curated or published, plus triggers some events.
  * 
  * @author Thiago H. de Paula Figueiredo (http://machina.com.br/thiago)
  */
-@Import(stylesheet={"common.css", "RecommendedTweet.css"}, library={"RecommendedTweet.js", "twitter-text-1.8.0.min.js"})
+//@Import(stylesheet={"common.css", "RecommendedTweet.css"}, library={"RecommendedTweet.js", "twitter-text-1.8.0.min.js"})
+@Import(library={"RecommendedTweet.js", "twitter-text-1.8.0.min.js"})
 @Events({
 	RecommendedTweetConstants.PUBLISH_TWEET_EVENT, 
 	RecommendedTweetConstants.DELETE_TWEET_EVENT,
 	RecommendedTweetConstants.SHORTEN_URL_EVENT, 
 	RecommendedTweetConstants.SAVE_TWEET_EVENT,
-	RecommendedTweetConstants.LOAD_TWEET_EVENT})
+	RecommendedTweetConstants.LOAD_TWEET_EVENT,
+	RecommendedTweetConstants.MEH_TWEET_EVENT})
 public class RecommendedTweet implements ClientElement {
 
 	@Parameter(required = true, allowNull = false)
@@ -43,7 +44,15 @@ public class RecommendedTweet implements ClientElement {
 	@Inject
 	private JavaScriptSupport javaScriptSupport;
 	
+	@Property
+	private String summary;
+	
+	@Property
+	private boolean attachSnapshot;
+	
 	private String clientId;
+	
+	private boolean wasMehButtonClicked;
 	
 	@SuppressWarnings("unchecked")
 	public List<String> getRecommendedHashtags() {
@@ -51,7 +60,7 @@ public class RecommendedTweet implements ClientElement {
 		List<String> hashtags;
 		if (hashtagsAsSingleString != null) {
 			hashtags = new ArrayList<String>();
-			final String[] strings = hashtagsAsSingleString.split("[\\d]+");
+			final String[] strings = hashtagsAsSingleString.split("[\\s]+");
 			for (String string : strings) {
 				string = string.trim();
 				if (string.length() > 0) {
@@ -66,12 +75,13 @@ public class RecommendedTweet implements ClientElement {
 	}
 	
 	void setupRender() {
+		summary = tweet.getSummary();
+		attachSnapshot = tweet.isAttachSnapshot();
 		clientId = javaScriptSupport.allocateClientId(resources);
 		JSONObject options = new JSONObject();
 		options.put("id", clientId);
 		options.put("publishUrl", resources.createEventLink("publish", tweet.getTweetId()).toAbsoluteURI());
 		options.put("shortenUrlUrl", resources.createEventLink("shortenUrl", tweet.getTweetId()).toAbsoluteURI());
-		options.put("saveUrl", resources.createEventLink("save", tweet.getTweetId()).toAbsoluteURI());
 		javaScriptSupport.addScript(String.format("initializeRecommendedTweet(%s);", options)); 
 	}
 	/**
@@ -88,27 +98,38 @@ public class RecommendedTweet implements ClientElement {
 	public Object onDelete(String id) {
 		return triggerEvent(RecommendedTweetConstants.DELETE_TWEET_EVENT, id);
 	}
-
-	/**
-	 * Handles the save event.
-	 */
-	public Object onSave(
-			String id, 
-			@RequestParameter("summary") String summary,
-			@RequestParameter("attachSnapshot") boolean attachSnapshot) {
-		final TweetItem item = findById(id);
-		item.setSummary(summary);
-		item.setAttachSnapshot(attachSnapshot);
-		return triggerEvent(RecommendedTweetConstants.SAVE_TWEET_EVENT, item);
+	
+	void onSelectedFromMeh() {
+		wasMehButtonClicked = true;
+	}
+	
+	void onSelectedFromQueue() {
+		wasMehButtonClicked = false;
 	}
 
 	/**
-	 * Handles the publish event
+	 * Handles the queue and meh buttons
 	 */
-	public Object onPublish(String id) {
+	public Object onSuccess(String id) {
 		final TweetItem item = findById(id);
-		item.setPublish(!item.isPublish());
+		item.setSummary(summary);
+		item.setAttachSnapshot(attachSnapshot);
+		if (wasMehButtonClicked) {
+			return meh(item);
+		} else {
+			return queue(item);
+		}
+	}
+	
+	private Object queue(TweetItem item) {
+		item.setPublish(true);
+		// 
 		return triggerEvent(RecommendedTweetConstants.PUBLISH_TWEET_EVENT, item);
+	}
+	
+	private Object meh(TweetItem item) {	
+		item.setPublish(false);
+		return triggerEvent(RecommendedTweetConstants.MEH_TWEET_EVENT, item);
 	}
 	
 	/**
@@ -133,6 +154,10 @@ public class RecommendedTweet implements ClientElement {
 		final HolderComponentEventCallback<Object> callback = new HolderComponentEventCallback<Object>();
 		resources.triggerEvent(RecommendedTweetConstants.LOAD_TWEET_EVENT, new Object[]{id}, callback);
 		return (TweetItem) callback.getResult();
+	}
+	
+	public boolean isPublish() {
+		return tweet.isPublish();
 	}
 	
 }

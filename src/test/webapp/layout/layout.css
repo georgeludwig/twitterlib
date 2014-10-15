@@ -371,3 +371,27 @@ div.footer .legal a {
 * {
 	box-sizing: border-box; 
 }
+
+fieldset.sixb {
+	width: 780px;
+	border:1px solid #2787c2;
+	border-radius:.5em;
+	padding:3px 10px 10px 10px;
+	font-family: Arial, Helvetica, sans-serif !important;
+	margin-left:auto;
+	margin-right:auto;
+}
+
+legend.sixb {
+	margin-left: 5px;
+	text-align:left;
+	font-size: 15px;
+	width:auto;
+	padding: 0px 4px;
+	border:1px solid #2787c2;
+	margin-bottom: 0px;
+	line-height: 20px;
+	border-radius:.25em;
+	font-family: Arial, Helvetica, sans-serif !important;
+	color:#f68b28;
+}

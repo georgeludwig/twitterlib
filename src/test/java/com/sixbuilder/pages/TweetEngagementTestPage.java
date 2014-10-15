@@ -10,7 +10,7 @@ import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.ajax.AjaxResponseRenderer;
 
-import com.sixbuilder.services.TweetDAO;
+import com.sixbuilder.twitterlib.services.TweetDAO;
 import com.sixbuilder.twitterlib.TweetEngagementConstants;
 import com.sixbuilder.twitterlib.components.TweetEngagement;
 import com.sixbuilder.twitterlib.helpers.Tweet;

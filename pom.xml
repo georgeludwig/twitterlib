@@ -1,74 +1,95 @@
-<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0">
-    <modelVersion>4.0.0</modelVersion>
-    <groupId>com.sixbuilder</groupId>
-    <artifactId>twitterlib</artifactId>
-    <version>1.0-SNAPSHOT</version>
-    <packaging>jar</packaging>
-    <name>twitterlib Tapestry 5 Application</name>
-        <dependencies>
-        <dependency>
-            <groupId>org.apache.tapestry</groupId>
-            <artifactId>tapestry-core</artifactId>
-            <version>${tapestry-release-version}</version>
-        </dependency>
 
-        <dependency>
-            <groupId>org.apache.tapestry</groupId>
-            <artifactId>tapestry-yuicompressor</artifactId>
-            <version>${tapestry-release-version}</version>
-        </dependency>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.sixbuilder</groupId>
+	<artifactId>twitterlib</artifactId>
+	<version>1.0.4-SNAPSHOT</version>
+	<packaging>jar</packaging>
+	<name>twitterlib Tapestry 5 Application</name>
 
-        <!-- Uncomment this to add support for file uploads:
+	<scm>
+		<connection>scm:git:https://github.com/georgeludwig/twitterlib</connection>
+		<developerConnection>scm:git:https://github.com/georgeludwig/twitterlib</developerConnection>
+		<url>https://github.com/georgeludwig/twitterlib</url>
+	</scm>
 
-         <dependency>
-            <groupId>org.apache.tapestry</groupId>
-            <artifactId>tapestry-upload</artifactId>
-            <version>${tapestry-release-version}</version>
-        </dependency>
+	<dependencies>
+		<dependency>
+			<groupId>org.apache.tapestry</groupId>
+			<artifactId>tapestry-core</artifactId>
+			<version>${tapestry-release-version}</version>
+		</dependency>
 
-        -->
+		<dependency>
+			<groupId>org.apache.tapestry</groupId>
+			<artifactId>tapestry-yuicompressor</artifactId>
+			<version>${tapestry-release-version}</version>
+		</dependency>
 
-        <!-- A dependency on either JUnit or TestNG is required, or the surefire plugin (which runs the tests)
-will fail, preventing Maven from packaging the WAR. Tapestry includes a large number
-of testing facilities designed for use with TestNG (http://testng.org/), so it's recommended. -->
-        <dependency>
-            <groupId>org.testng</groupId>
-            <artifactId>testng</artifactId>
-            <version>${testng-release-version}</version>
-            <scope>test</scope>
-        </dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.0</version>
+			<scope>test</scope>
+		</dependency>
 
-        <dependency>
-            <groupId>org.easymock</groupId>
-            <artifactId>easymock</artifactId>
-            <version>${easymock-release-version}</version>
-            <scope>test</scope>
-        </dependency>
+		<dependency>
+			<groupId>org.testng</groupId>
+			<artifactId>testng</artifactId>
+			<version>${testng-release-version}</version>
+			<scope>test</scope>
+		</dependency>
 
-        <dependency>
-            <groupId>org.apache.tapestry</groupId>
-            <artifactId>tapestry-test</artifactId>
-            <version>${tapestry-release-version}</version>
-            <scope>test</scope>
-        </dependency>
+		<dependency>
+			<groupId>org.easymock</groupId>
+			<artifactId>easymock</artifactId>
+			<version>${easymock-release-version}</version>
+			<scope>test</scope>
+		</dependency>
 
-        <!-- Provided by the servlet container, but sometimes referenced in the application
-       code. -->
-        <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>servlet-api</artifactId>
-            <version>${servlet-api-release-version}</version>
-            <scope>provided</scope>
-        </dependency>
+		<dependency>
+			<groupId>org.apache.tapestry</groupId>
+			<artifactId>tapestry-test</artifactId>
+			<version>${tapestry-release-version}</version>
+			<scope>test</scope>
+		</dependency>
 
-        <!-- Provide dependency to the Tapestry javadoc taglet which replaces the Maven component report -->
-        <dependency>
-            <groupId>org.apache.tapestry</groupId>
-            <artifactId>tapestry-javadoc</artifactId>
-            <version>${tapestry-release-version}</version>
-            <scope>provided</scope>
-        </dependency>
+		<!-- Provided by the servlet container, but sometimes referenced in the 
+			application code. -->
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>servlet-api</artifactId>
+			<version>${servlet-api-release-version}</version>
+			<scope>provided</scope>
+		</dependency>
+
+		<!-- Provide dependency to the Tapestry javadoc taglet which replaces the 
+			Maven component report -->
+		<dependency>
+			<groupId>org.apache.tapestry</groupId>
+			<artifactId>tapestry-javadoc</artifactId>
+			<version>${tapestry-release-version}</version>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>com.sixbuilder</groupId>
+			<artifactId>sixbuilder</artifactId>
+			<version>2.0.115</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.sixbuilder</groupId>
+			<artifactId>actionqueue</artifactId>
+			<version>1.0.4</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.georgeludwigtech</groupId>
+			<artifactId>UrlSnapshotServiceClient</artifactId>
+			<version>1.0.1</version>
+		</dependency>
 
 		<dependency>
 			<groupId>com.trsvax</groupId>
@@ -77,35 +98,77 @@ of testing facilities designed for use with TestNG (http://testng.org/), so it's
 			<type>jar</type>
 			<scope>compile</scope>
 		</dependency>
-		
-    </dependencies>
-    <build>
-        <finalName>twitterlib</finalName>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>2.3.2</version>
-                <configuration>
-                    <source>1.5</source>
-                    <target>1.5</target>
-                    <optimize>true</optimize>
-                </configuration>
-            </plugin>
 
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <version>2.7.2</version>
-                <configuration>
-                    <systemPropertyVariables>
-                        <tapestry.execution-mode>Qa</tapestry.execution-mode>
-                    </systemPropertyVariables>
-                </configuration>
-            </plugin>
+		<!-- <dependency> <groupId>com.fasterxml.jackson.core</groupId> <artifactId>jackson-databind</artifactId> 
+			<version>2.3.3</version> </dependency> -->
 
-            <!-- Run the application using "mvn jetty:run" -->
-            <!-- Run the application using "mvn jetty:run" -->
+		<dependency>
+			<groupId>com.google.code.gson</groupId>
+			<artifactId>gson</artifactId>
+			<version>2.2.4</version>
+			<scope>compile</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.ektorp</groupId>
+			<artifactId>org.ektorp</artifactId>
+			<version>1.3.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>joda-time</groupId>
+			<artifactId>joda-time</artifactId>
+			<version>2.3</version>
+		</dependency>
+
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>2.7.2</version>
+				<configuration>
+					<systemPropertyVariables>
+						<tapestry.execution-mode>Qa</tapestry.execution-mode>
+					</systemPropertyVariables>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>2.0.2</version>
+				<configuration>
+					<source>1.6</source>
+					<target>1.6</target>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+				<executions>
+					<execution>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<configuration>
+					<archive>
+						<manifestEntries>
+							<Tapestry-Module-Classes>com.sixbuilder.twitterlib.services.TwitterLibModule</Tapestry-Module-Classes>
+						</manifestEntries>
+						<manifest>
+							<addClasspath>true</addClasspath>
+						</manifest>
+					</archive>
+				</configuration>
+			</plugin>
 			<plugin>
 				<groupId>org.mortbay.jetty</groupId>
 				<artifactId>maven-jetty-plugin</artifactId>
@@ -131,36 +194,40 @@ of testing facilities designed for use with TestNG (http://testng.org/), so it's
 					</systemProperties>
 				</configuration>
 			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-jar-plugin</artifactId>
-				<configuration>
-					<archive>
-						<manifestEntries>
-							<Tapestry-Module-Classes>com.sixbuilder.twitterlib.services.TwitterLibModule</Tapestry-Module-Classes>
-						</manifestEntries>
-					</archive>
-				</configuration>
-			</plugin>			
-        </plugins>
-    </build>
+		</plugins>
+	</build>
 
-    <reporting/>
+	<reporting />
 
-    <repositories>
+	<repositories>
 
-        <!-- This repository is only needed when the Tapestry version is a preview release, rather
-             than a final release. -->
-        <repository>
-            <id>apache-staging</id>
-            <url>https://repository.apache.org/content/groups/staging/</url>
-        </repository>
-    </repositories>
+		<!-- This repository is only needed when the Tapestry version is a preview 
+			release, rather than a final release. <repository> <id>apache-staging</id> 
+			</repository> -->
+		<repository>
+			<id>tapestry5-jquery-repo</id>
+			<url>http://nexus.devlab722.net/nexus/content/repositories/releases</url>
+		</repository>
+	</repositories>
 
-    <properties>
-        <tapestry-release-version>5.3.7</tapestry-release-version>
-        <servlet-api-release-version>2.5</servlet-api-release-version>
-        <testng-release-version>5.14.10</testng-release-version>
-        <easymock-release-version>3.0</easymock-release-version>
-    </properties>
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<tapestry-release-version>5.3.7</tapestry-release-version>
+		<servlet-api-release-version>2.5</servlet-api-release-version>
+		<testng-release-version>5.14.10</testng-release-version>
+		<easymock-release-version>3.0</easymock-release-version>
+	</properties>
+
+	<distributionManagement>
+		<repository>
+			<id>devtools.georgeludwigtech.com</id>
+			<name>devtools.georgeludwigtech.com-releases</name>
+			<url>http://devtools.georgeludwigtech.com:8081/artifactory/libs-releases-local</url>
+		</repository>
+		<snapshotRepository>
+			<id>devtools.georgeludwigtech.com</id>
+			<name>devtools.georgeludwigtech.com-snapshots</name>
+			<url>http://devtools.georgeludwigtech.com:8081/artifactory/libs-snapshots-local</url>
+		</snapshotRepository>
+	</distributionManagement>
 </project>
