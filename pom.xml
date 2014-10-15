@@ -128,8 +128,8 @@
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>2.3.2</version>
 				<configuration>
-					<source>1.5</source>
-					<target>1.5</target>
+					<source>1.7</source>
+					<target>1.7</target>
 					<optimize>true</optimize>
 				</configuration>
 			</plugin>
@@ -145,7 +145,6 @@
 				</configuration>
 			</plugin>
 
-			<!-- Run the application using "mvn jetty:run" -->
 			<!-- Run the application using "mvn jetty:run" -->
 			<plugin>
 				<groupId>org.mortbay.jetty</groupId>
