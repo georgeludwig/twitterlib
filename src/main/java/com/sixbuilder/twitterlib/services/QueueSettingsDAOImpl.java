@@ -7,20 +7,21 @@ import org.ektorp.http.StdHttpClient;
 import org.ektorp.impl.StdCouchDbConnector;
 import org.ektorp.impl.StdCouchDbInstance;
 
-import com.sixbuilder.AbstractTestSixBuilder;
 import com.sixbuilder.actionqueue.QueueType;
 import com.sixbuilder.twitterlib.helpers.QueueSettingsRepository;
-import com.sixbuilder.twitterlib.services.QueueSettings;
-import com.sixbuilder.twitterlib.services.QueueSettingsDAO;
 
 public class QueueSettingsDAOImpl implements QueueSettingsDAO {
 	
+	private final String DB_ACCOUNT=System.getProperty("dbAccountName");
+	private final String DB_PASSWORD=System.getProperty("dbPassword");
+	
+	
 	public QueueSettingsDAOImpl() {
 		HttpClient httpClient = new StdHttpClient.Builder()
-		.host(AbstractTestSixBuilder.DBACCOUNT + ".cloudant.com").port(443)
+		.host(DB_ACCOUNT + ".cloudant.com").port(443)
 		.socketTimeout(120000)
 		.connectionTimeout(120000)
-		.username(AbstractTestSixBuilder.DBACCOUNT).password(AbstractTestSixBuilder.DBPWD)
+		.username(DB_ACCOUNT).password(DB_PASSWORD)
 		.enableSSL(true).relaxedSSLSettings(true).build();
 		CouchDbInstance dbInstance = new StdCouchDbInstance(httpClient);
 		CouchDbConnector db = new StdCouchDbConnector(QueueSettingsRepository.DBNAME, dbInstance);

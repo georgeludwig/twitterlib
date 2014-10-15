@@ -72,11 +72,7 @@ var Spinner = React.createClass({displayName: 'Spinner',
 });
 
 var timezones = ["US/Hawaii", "US/Alaska", "US/Pacific", "US/Mountain",
-  "US/Central", "US/Eastern", "GMT+1 ", "GMT+2 ", "GMT+3",
-  "GMT+4", "GMT+5", "GMT+6", "GMT+7", "GMT+8", "GMT+9",
-  "GMT+10", "GMT+11", "GMT+12", "GMT", "GMT-1", "GMT-2",
-  "GMT-3", "GMT-4", "GMT-5", "GMT-6", "GMT-7", "GMT-8",
-  "GMT-9", "GMT-10", "GMT-11", "GMT-12"];
+  "US/Central", "US/Eastern"];
 
 var QueueSettings = React.createClass({displayName: 'QueueSettings',
 
@@ -181,10 +177,10 @@ var QueueSettings = React.createClass({displayName: 'QueueSettings',
             React.DOM.label( {className:"radio queue-start"}, 
               React.DOM.input( {type:"radio", onChange:this.setASAP, name:"asap",
               checked:!state.asap}),
-              Spinner( {min:1, max:12, disabled:state.asap,
+              Spinner( {min:0, max:12, disabled:state.asap,
               value:state.start.hour,
               valueChanged:this.startHourChanged, ref:"start-hour"}),
-              Spinner( {min:1, max:59, disabled:state.asap,
+              Spinner( {min:0, max:59, disabled:state.asap,
               value:state.start.min,
               valueChanged:this.startMinChanged, ref:"start-min"}),
               React.DOM.div( {className:"form-control"}, 

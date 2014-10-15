@@ -20,7 +20,6 @@ import org.apache.tapestry5.services.ajax.AjaxResponseRenderer;
 import com.georgeludwigtech.common.setmanager.SetItemImpl;
 import com.georgeludwigtech.common.setmanager.SetManager;
 import com.georgeludwigtech.concurrent.threadpool.ThreadPoolSession;
-import com.sixbuilder.AbstractTestSixBuilder;
 import com.sixbuilder.actionqueue.QueueItem;
 import com.sixbuilder.actionqueue.QueueItemRepository;
 import com.sixbuilder.actionqueue.QueueItemStatus;
@@ -107,7 +106,7 @@ public class RecommendedTweetDisplay {
 	@OnEvent(RecommendedTweetConstants.DELETE_TWEET_EVENT)
 	public void delete(TweetItem tweetItem) throws Exception {
 		// find any QueueItems for this id, and delete them as well
-		List<QueueItem> itemList=queueItemDAO.getPending(queueType,AbstractTestSixBuilder.PRIMARY_TEST_USER_NAME);
+		List<QueueItem> itemList=queueItemDAO.getPending(queueType,userId);
 		for(QueueItem item:itemList) {
 			if(item.getTweetId().equals(tweetItem.getTweetId()))
 				queueItemDAO.delete(item);
