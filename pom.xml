@@ -8,6 +8,17 @@
 	<version>1.0-SNAPSHOT</version>
 	<packaging>jar</packaging>
 	<name>twitterlib Tapestry 5 Application</name>
+	
+	<scm>
+		<connection>scm:git:https://github.com/georgeludwig/twitterlib</connection>
+		<developerConnection>scm:git:https://github.com/georgeludwig/twitterlib</developerConnection>
+		<url>https://github.com/georgeludwig/twitterlib</url>
+	</scm>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
+	
 	<dependencies>
 		<dependency>
 			<groupId>org.apache.tapestry</groupId>
