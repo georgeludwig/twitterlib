@@ -1,12 +1,13 @@
 
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.sixbuilder</groupId>
 	<artifactId>twitterlib</artifactId>
 	<version>1.0.3-SNAPSHOT</version>
 	<packaging>jar</packaging>
 	<name>twitterlib Tapestry 5 Application</name>
-	
+
 	<scm>
 		<connection>scm:git:https://github.com/georgeludwig/twitterlib</connection>
 		<developerConnection>scm:git:https://github.com/georgeludwig/twitterlib</developerConnection>
@@ -77,13 +78,13 @@
 			<artifactId>sixbuilder</artifactId>
 			<version>2.0.115</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>com.sixbuilder</groupId>
 			<artifactId>actionqueue</artifactId>
 			<version>1.0.4</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>com.georgeludwigtech</groupId>
 			<artifactId>UrlSnapshotServiceClient</artifactId>
@@ -97,20 +98,17 @@
 			<type>jar</type>
 			<scope>compile</scope>
 		</dependency>
-	
-	 <!-- 	<dependency>
-			<groupId>com.fasterxml.jackson.core</groupId>
-			<artifactId>jackson-databind</artifactId>
-			<version>2.3.3</version>
-		</dependency> -->
-	
+
+		<!-- <dependency> <groupId>com.fasterxml.jackson.core</groupId> <artifactId>jackson-databind</artifactId> 
+			<version>2.3.3</version> </dependency> -->
+
 		<dependency>
 			<groupId>com.google.code.gson</groupId>
 			<artifactId>gson</artifactId>
 			<version>2.2.4</version>
 			<scope>compile</scope>
-		</dependency> 
-	
+		</dependency>
+
 		<dependency>
 			<groupId>org.ektorp</groupId>
 			<artifactId>org.ektorp</artifactId>
@@ -124,10 +122,19 @@
 		</dependency>
 
 	</dependencies>
-	
+
 	<build>
-		<finalName>twitterlib</finalName>
 		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>2.7.2</version>
+				<configuration>
+					<systemPropertyVariables>
+						<tapestry.execution-mode>Qa</tapestry.execution-mode>
+					</systemPropertyVariables>
+				</configuration>
+			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
@@ -135,7 +142,6 @@
 				<configuration>
 					<source>1.6</source>
 					<target>1.6</target>
-					<optimize>true</optimize>
 				</configuration>
 			</plugin>
 			<plugin>
@@ -151,16 +157,18 @@
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-surefire-plugin</artifactId>
-				<version>2.7.2</version>
+				<artifactId>maven-jar-plugin</artifactId>
 				<configuration>
-					<systemPropertyVariables>
-						<tapestry.execution-mode>Qa</tapestry.execution-mode>
-					</systemPropertyVariables>
+					<archive>
+						<manifestEntries>
+							<Tapestry-Module-Classes>com.sixbuilder.twitterlib.services.TwitterLibModule</Tapestry-Module-Classes>
+						</manifestEntries>
+						<manifest>
+							<addClasspath>true</addClasspath>
+						</manifest>
+					</archive>
 				</configuration>
 			</plugin>
-
-			<!-- Run the application using "mvn jetty:run" -->
 			<plugin>
 				<groupId>org.mortbay.jetty</groupId>
 				<artifactId>maven-jetty-plugin</artifactId>
@@ -186,21 +194,6 @@
 					</systemProperties>
 				</configuration>
 			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-jar-plugin</artifactId>
-				<configuration>
-					<archive>
-						<manifestEntries>
-							<Tapestry-Module-Classes>com.sixbuilder.twitterlib.services.TwitterLibModule</Tapestry-Module-Classes>
-						</manifestEntries>
-						<manifest>
-							<addClasspath>true</addClasspath>
-						</manifest>
-					</archive>
-				</configuration>
-			</plugin>
-		</plugins>
 	</build>
 
 	<reporting />
@@ -223,4 +216,17 @@
 		<testng-release-version>5.14.10</testng-release-version>
 		<easymock-release-version>3.0</easymock-release-version>
 	</properties>
+
+	<distributionManagement>
+		<repository>
+			<id>devtools.georgeludwigtech.com</id>
+			<name>devtools.georgeludwigtech.com-releases</name>
+			<url>http://devtools.georgeludwigtech.com:8081/artifactory/libs-releases-local</url>
+		</repository>
+		<snapshotRepository>
+			<id>devtools.georgeludwigtech.com</id>
+			<name>devtools.georgeludwigtech.com-snapshots</name>
+			<url>http://devtools.georgeludwigtech.com:8081/artifactory/libs-snapshots-local</url>
+		</snapshotRepository>
+	</distributionManagement>
 </project>
