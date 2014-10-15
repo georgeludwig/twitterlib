@@ -194,6 +194,7 @@
 					</systemProperties>
 				</configuration>
 			</plugin>
+		</plugins>
 	</build>
 
 	<reporting />
