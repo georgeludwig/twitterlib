@@ -9,6 +9,7 @@ import org.got5.tapestry5.jquery.JQuerySymbolConstants;
 import com.sixbuilder.twitterlib.services.QueueItemDAO;
 import com.sixbuilder.twitterlib.services.QueueSettingsDAO;
 import com.sixbuilder.twitterlib.services.TweetDAO;
+import com.sixbuilder.twitterlib.services.TweetDAOImpl;
 import com.sixbuilder.twitterlib.services.TweetItemDAO;
 import com.sixbuilder.twitterlib.services.TweetItemDAOImpl;
 import com.sixbuilder.twitterlib.services.TwitterLibModule;

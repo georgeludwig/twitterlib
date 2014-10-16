@@ -1,4 +1,4 @@
-package com.sixbuilder.services;
+package com.sixbuilder.twitterlib.services;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -7,7 +7,6 @@ import java.util.List;
 import com.sixbuilder.twitterlib.helpers.Action;
 import com.sixbuilder.twitterlib.helpers.ActionState;
 import com.sixbuilder.twitterlib.helpers.Tweet;
-import com.sixbuilder.twitterlib.services.TweetDAO;
 
 /**
  * {@link TweetDAO} implementation
