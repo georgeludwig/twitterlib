@@ -7,7 +7,9 @@ import org.apache.tapestry5.ioc.annotations.SubModule;
 import org.got5.tapestry5.jquery.JQuerySymbolConstants;
 
 import com.sixbuilder.twitterlib.services.QueueItemDAO;
+import com.sixbuilder.twitterlib.services.QueueItemDAOImpl;
 import com.sixbuilder.twitterlib.services.QueueSettingsDAO;
+import com.sixbuilder.twitterlib.services.QueueSettingsDAOImpl;
 import com.sixbuilder.twitterlib.services.TweetDAO;
 import com.sixbuilder.twitterlib.services.TweetDAOImpl;
 import com.sixbuilder.twitterlib.services.TweetItemDAO;

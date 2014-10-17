@@ -36,7 +36,7 @@ public class QueueSettings extends CouchDbDocument {
 		endHour=12;
 		endMinute=30;
 		endMeridiem=Meridiem.PM;
-		timeZoneId="US/Hawaii";
+		timeZoneId="US/Pacific";
 		asap=true;
 		random=true;
 		pause=false;
