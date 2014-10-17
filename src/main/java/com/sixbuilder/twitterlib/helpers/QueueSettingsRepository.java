@@ -18,7 +18,7 @@ import com.sixbuilder.twitterlib.services.QueueSettings;
 })
 public class QueueSettingsRepository extends CouchDbRepositorySupport<QueueSettings> {
 	
-	public static final String DBNAME="queueSettingsDb";
+	public static final String DBNAME="actionqueuesettings";
 
 	public static final String ALL="all";
 	public static final String CURATIONBYUSER="curationByUser";
