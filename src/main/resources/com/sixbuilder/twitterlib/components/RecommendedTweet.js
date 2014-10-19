@@ -14,6 +14,7 @@ function initializeRecommendedTweet(options) {
 	var summaryText = outerDiv.find('div.tweetText p');
 	var characterCount = outerDiv.find('.tweetCharacterCount');
 	var summaryView = outerDiv.find('div.tweetSummaryColumn');
+	var detailView = outerDiv.find('div.tweetDetailColumn');
 	var hashtags = outerDiv.find('div.tweetSuggestedHashtags span');
 	var attachSnapshotsCheckbox = outerDiv.find('input.tweetAttachSnapshotCheckbox');
 	
@@ -57,6 +58,10 @@ function initializeRecommendedTweet(options) {
 		event.preventDefault();
 	});
 	
+	attachSnapshotsCheckbox.click(function(event) {
+		updateCharacterCount();
+	});
+	
 	// character count
 	textarea.keyup(handleSummaryChange);
 	
@@ -91,6 +96,9 @@ function initializeRecommendedTweet(options) {
 	
 	function updateCharacterCount() {
 		var count = twttr.txt.getTweetLength(textarea.val());
+		if( attachSnapshotsCheckbox[0].checked) {
+			count=count+23;
+		}
 		characterCount.text(count);
 		if (count < 137) {
 			characterCount.removeClass(TWEET_COUNT_WARNING);

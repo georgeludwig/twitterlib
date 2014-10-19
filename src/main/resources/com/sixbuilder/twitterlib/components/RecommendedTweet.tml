@@ -57,13 +57,23 @@
 						<i t:type="twitterlib/FontAwesomeIcon" t:name="fa-times-circle" />	
 					</a>
 				</span>
-				
+
 				<div class="tweetActionButtons">
 					<p class="tweetAttachSnapshot">
-						<span class="tweetAttachSnapshot">
-							<t:twitterLib.FontAwesomeIcon name="fa-paperclip" />
-						</span>&nbsp;
-						<input type="checkbox" t:type="Checkbox" t:id="attachSnapshot" class="tweetAttachSnapshotCheckbox"/>
+						<t:if test="tweet.snapshotUrl">
+							<span class="tweetAttachSnapshot">	
+								<a href="${tweet.snapshotUrl}" target="_blank">
+									<t:twitterLib.FontAwesomeIcon name="fa-eye" />
+								</a>
+							</span>&nbsp;
+							<input type="checkbox" t:type="Checkbox" t:id="attachSnapshot" class="tweetAttachSnapshotCheckbox" onclick="updateCharacterCount()" />
+						<p:else>
+							<span class="tweetAttachSnapshot">	
+								<t:twitterLib.FontAwesomeIcon name="fa-eye" />
+							</span>&nbsp;
+							<input type="checkbox" class="tweetAttachSnapshotCheckbox" disabled="true" />
+						</p:else>
+						</t:if>
 					</p>
 					<input class="tweetSave btn btn-primary" type="submit" value="Queue" t:type="Submit" t:id="queue"/>
 					<input class="tweetCancel btn btn-warning" type="submit" value="Meh" t:type="Submit" t:id="meh"/>

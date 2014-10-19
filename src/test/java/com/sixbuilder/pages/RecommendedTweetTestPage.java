@@ -2,6 +2,7 @@ package com.sixbuilder.pages;
 
 import java.io.File;
 import java.io.InputStream;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -84,7 +85,12 @@ public class RecommendedTweetTestPage {
 				req.setWidth(1280);
 				req.setHeight(1024);
 				UrlSnapshotServiceResponse resp = UrlSnapshotServiceClient.snap(req);
-				ti.setSnapshotUrl(resp.getImageUrl());
+				try {
+					URI uri=new URI(resp.getImageUrl());
+					ti.setSnapshotUrl(resp.getImageUrl());
+				} catch(Exception e) {
+					ti.setSnapshotUrl("false");
+				}
 			}
 			ti.setTweetId(String.valueOf(ctr));
 			ctr++;
