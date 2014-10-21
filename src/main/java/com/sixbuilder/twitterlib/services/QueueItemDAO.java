@@ -14,6 +14,8 @@ public interface QueueItemDAO {
 
 	public List<QueueItem> getPending(QueueType queueType, String userId);
 	
+	public List<QueueItem> getComplete(QueueType queueType, String userId);
+	
 	public void add(QueueItem queueItem);
 	
 	public void delete(List<QueueItem>queueItemList);
@@ -23,5 +25,7 @@ public interface QueueItemDAO {
 	public void delete(QueueItem queueItem);
 	
 	public QueueItemRepository getRepo();
+	
+	public long getLastCompleteDate(QueueType queueType,String userId);
 	
 }

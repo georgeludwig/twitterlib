@@ -65,5 +65,14 @@ public class QueueItemDAOImpl implements QueueItemDAO {
 	public QueueItemRepository getRepo() {
 		return repo;
 	}
+	
+	public long getLastCompleteDate(QueueType queueType,String userId) {
+		return repo.getLastCompleteDate(queueType,userId);
+	}
+
+	@Override
+	public List<QueueItem> getComplete(QueueType queueType, String userId) {
+		return repo.getComplete(queueType, userId);
+	}
 
 }
