@@ -81,6 +81,9 @@
 							</a>
 						</div>
 					<p:else>
+						<div class="goToUrl">
+							[<a href="${tweet.url}" target="_blank">open URL</a>]
+						</div>
 						<!--  <span class="tweetAttachSnapshot"> <t:twitterLib.FontAwesomeIcon name="fa-eye" />
 						</span>&nbsp;
 						<input type="checkbox" class="tweetAttachSnapshotCheckbox" disabled="true" /> -->
