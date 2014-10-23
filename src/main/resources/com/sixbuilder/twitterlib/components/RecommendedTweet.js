@@ -8,7 +8,7 @@ function initializeRecommendedTweet(options) {
 	var TWEET_COUNT_ERROR = 'tweetCharacterCountError'; 
 	
 	var outerDiv = $j('#' + options.id);
-	var publishCheckbox = outerDiv.find('input.publishTweet');
+//	var publishCheckbox = outerDiv.find('input.publishTweet');
 	var shortenUrlButton = outerDiv.find('input.tweetShortenUrl');
 	var textarea = outerDiv.find('div.tweetText textarea');
 	var summaryText = outerDiv.find('div.tweetText p');
@@ -91,6 +91,13 @@ function initializeRecommendedTweet(options) {
 	
 	function handleSummaryChange() {
 	//	publishCheckbox[0].disabled = true;
+		var count = twttr.txt.getTweetLength(textarea.val());
+		var btn=outerDiv.find('.tweetSave');
+		if(count>140) {
+			btn.attr("disabled", 'disabled');
+		} else {
+			btn.removeAttr('disabled');
+		}
 		summaryText.text(textarea.val());
 		updateCharacterCount();
 	}
@@ -125,14 +132,14 @@ function initializeRecommendedTweet(options) {
 		outerDiv.attr(MODE_ATTRIBUTE, DETAIL_MODE);
 	}
 	
-	function enablePublishCheckbox() {
-		if (outerDiv.attr('data-publish') != 'true') {
-			publishCheckbox[0].disabled = false;
-		}
-	}
-	
-	function disablePublishCheckbox() {
-		publishCheckbox[0].disabled = true;
-	}
+//	function enablePublishCheckbox() {
+//		if (outerDiv.attr('data-publish') != 'true') {
+//			publishCheckbox[0].disabled = false;
+//		}
+//	}
+//	
+//	function disablePublishCheckbox() {
+//		publishCheckbox[0].disabled = true;
+//	}
 	
 }

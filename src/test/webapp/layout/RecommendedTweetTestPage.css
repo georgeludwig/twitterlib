@@ -842,6 +842,10 @@ div.tweetUrlRow .tweetUrl {
 	left: 302px;
 }
 
+div.publishTweets .summarySnapshot {
+	top: -64px;
+}
+
 .buttonShim {
 	height: 7px;
 }
