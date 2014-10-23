@@ -57,6 +57,7 @@ public class AppModule {
 		// locale names;
 		// the first locale name is the default when there's no reasonable
 		// match).
+		configuration.add(SymbolConstants.MINIFICATION_ENABLED, "false");
 		configuration.add(JQuerySymbolConstants.SUPPRESS_PROTOTYPE, "false");
 		configuration.add(JQuerySymbolConstants.JQUERY_ALIAS, "$j");
 		configuration.add(SymbolConstants.SUPPORTED_LOCALES, "en");

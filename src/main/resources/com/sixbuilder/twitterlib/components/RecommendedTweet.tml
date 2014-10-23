@@ -3,84 +3,94 @@
 	data-original-url="${tweet.url}" data-dirty="false" data-publish="${tweet.publish}">
 	<form autocomplete="off" t:type="Form" t:id="form" t:context="tweet.tweetId" t:zone="^">
 
-		<div class="recommendedTweetSummaryView">
-			
-			<div class="tweetSummaryColumn">
-				<t:if test="publish">
-					<div class="targetTime">will be published at: ${tweet.pubTargetDisplay}</div>
-				<p:else><div class="publishShim">&nbsp;</div></p:else>
-				</t:if>
-				<div class="tweetText">
-					<p class="displayTweet">
-						${tweet.summary}
-					</p>
-				</div>
-				<div class="summaryHashtags">
-					<span t:type="Loop" t:source="recommendedHashtags" t:value="var:hashtag" data-hashtag="${var:hashtag}">
-						${var:hashtag}&nbsp;
-					</span>
-				</div>
-				<div class="tweetUrl">
-					<p class="displayUrl" title="${tweet.url}">
-						${tweet.url}
-					</p>
-				</div>
-			</div>
-	
-			<div class="tweetDetailColumn">
-				<div class="tweetText">
-					<textarea class="editableTweet" id="textarea_${tweet.tweetId}" t:type="TextArea" t:id="summary">${tweet.summary}</textarea>
-				</div>
-				<div class="tweetEditSecondRow">
-					<div class="tweetSuggestedHashtags">
+		<div class="summaryContainer">
+			<div class="recommendedTweetSummaryView">
+				<div class="tweetSummaryColumn">
+					<t:if test="publish">
+						<div class="targetTime">will be published at: ${tweet.pubTargetDisplay}</div>
+					<p:else><div class="publishShim">&nbsp;</div></p:else>
+					</t:if>
+					<div class="tweetText">
+						<p class="displayTweet">
+							${tweet.summary}
+						</p>
+					</div>
+					<div class="summaryHashtags">
 						<span t:type="Loop" t:source="recommendedHashtags" t:value="var:hashtag" data-hashtag="${var:hashtag}">
-							<a href="#">${var:hashtag}</a>&nbsp;
+							${var:hashtag}&nbsp;
 						</span>
 					</div>
-					<span class="ccText">character count: </span><span class="tweetCharacterCount">${tweet.summary.length()}</span>
-				</div>
-				<div class="tweetUrlRow">
-					<input class="tweetShortenUrl btn btn-default" type="submit" value="&#xf0c1;"/>
-					<input class="tweetUrl" type="text" value="${tweet.url}"/>
+					<div class="tweetUrl">
+						<p class="displayUrl" title="${tweet.url}">
+							${tweet.url}
+						</p>
+					</div>
 				</div>
 			</div>
-				
-			<div class="tweetSnapshotColumn">
-			
-				<a href="${tweet.url}" target="_blank">
-					<img class="urlSnapshot" src="${tweet.snapshotUrl}"/>
-				</a>
-				
-				<span class="tweetDeleteLink">
-					<a href="#" t:type="EventLink" t:event="delete" t:context="tweet.tweetId" t:zone="^">
-						<i t:type="twitterlib/FontAwesomeIcon" t:name="fa-times" />
-						<i t:type="twitterlib/FontAwesomeIcon" t:name="fa-times-circle" />	
+			<div class="summarySnapshot">
+				<t:if test="tweet.snapshotUrl">
+					<a href="${tweet.url}" target="_blank">
+						<img class="urlSnapshot" src="${tweet.snapshotUrl}"/>
 					</a>
-				</span>
-
-				<div class="tweetActionButtons">
-					<p class="tweetAttachSnapshot">
-						<t:if test="tweet.snapshotUrl">
-							<span class="tweetAttachSnapshot">	
-								<a href="${tweet.snapshotUrl}" target="_blank">
-									<t:twitterLib.FontAwesomeIcon name="fa-eye" />
-								</a>
-							</span>&nbsp;
-							<input type="checkbox" t:type="Checkbox" t:id="attachSnapshot" class="tweetAttachSnapshotCheckbox" onclick="updateCharacterCount()" />
-						<p:else>
-							<span class="tweetAttachSnapshot">	
-								<t:twitterLib.FontAwesomeIcon name="fa-eye" />
-							</span>&nbsp;
-							<input type="checkbox" class="tweetAttachSnapshotCheckbox" disabled="true" />
-						</p:else>
-						</t:if>
-					</p>
-					<input class="tweetSave btn btn-primary" type="submit" value="Queue" t:type="Submit" t:id="queue"/>
-					<input class="tweetCancel btn btn-warning" type="submit" value="Meh" t:type="Submit" t:id="meh"/>
-				</div>
-				
+				<p:else><img class="urlSnapshot" src="${asset:broken.png}" alt="broken image"/></p:else>
+				</t:if>
 			</div>
-		
+			<span class="tweetDeleteLink"> <a href="#"
+				t:type="EventLink" t:event="delete" t:context="tweet.tweetId"
+				t:zone="^"> <i t:type="twitterlib/FontAwesomeIcon"
+					t:name="fa-times" /> <i t:type="twitterlib/FontAwesomeIcon"
+					t:name="fa-times-circle" />
+				</a>
+			</span>
+		</div>
+	
+		<div class="tweetDetailColumn">
+			<div class="tweetText">
+				<textarea class="editableTweet" id="textarea_${tweet.tweetId}"
+					t:type="TextArea" t:id="summary">${tweet.summary}</textarea>
+			</div>
+			<div class="tweetEditSecondRow">
+				<div class="tweetSuggestedHashtags">
+					<span t:type="Loop" t:source="recommendedHashtags"
+						t:value="var:hashtag" data-hashtag="${var:hashtag}"> <a
+						href="#">${var:hashtag}</a>&nbsp;
+					</span>
+				</div>
+				<!-- <span class="ccText">character count: </span> -->
+				<span class="tweetCharacterCount">${tweet.summary.length()}</span>
+			</div>
+			<div class="tweetUrlRow">
+				<input class="tweetShortenUrl btn btn-default" type="submit"
+					value="&#xf0c1;" /> <input class="tweetUrl" type="text"
+					value="${tweet.url}" />
+			</div>
+			<div class="tweetActionButtons">
+				<div class="tweetAttachSnapshot">
+					<t:if test="tweet.snapshotUrl">
+						<span class="tweetAttachSnapshot"> <a
+							href="${tweet.snapshotUrl}" target="_blank"> <t:twitterLib.FontAwesomeIcon
+									name="fa-eye" />
+						</a>
+						</span>&nbsp;attach image
+						<input type="checkbox" t:type="Checkbox" t:id="attachSnapshot"
+							class="tweetAttachSnapshotCheckbox"
+							onclick="updateCharacterCount()" />
+						<div class="tweetSnapshotColumn">
+							<a href="${tweet.url}" target="_blank"> <img class="urlDetailSnapshot"
+								src="${tweet.snapshotUrl}" />
+							</a>
+						</div>
+					<p:else>
+						<!--  <span class="tweetAttachSnapshot"> <t:twitterLib.FontAwesomeIcon name="fa-eye" />
+						</span>&nbsp;
+						<input type="checkbox" class="tweetAttachSnapshotCheckbox" disabled="true" /> -->
+					</p:else>
+					</t:if>
+				</div>
+				<input class="tweetCancel btn btn-warning" type="submit" value="Meh" t:type="Submit" t:id="meh" />
+				<input class="tweetSave btn btn-primary" type="submit" value="Queue" t:type="Submit" t:id="queue" />
+			</div>
+			<div class="buttonShim"/>
 		</div>
 		
 	</form>

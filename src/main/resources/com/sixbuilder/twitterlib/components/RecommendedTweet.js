@@ -14,11 +14,10 @@ function initializeRecommendedTweet(options) {
 	var summaryText = outerDiv.find('div.tweetText p');
 	var characterCount = outerDiv.find('.tweetCharacterCount');
 	var summaryView = outerDiv.find('div.tweetSummaryColumn');
+	var summaryContainer = outerDiv.find('div.summaryContainer');
 	var detailView = outerDiv.find('div.tweetDetailColumn');
 	var hashtags = outerDiv.find('div.tweetSuggestedHashtags span');
 	var attachSnapshotsCheckbox = outerDiv.find('input.tweetAttachSnapshotCheckbox');
-	
-	updateCharacterCount();
 	
 	// publish checkbox
 	//T5.initializers.updateZoneOnEvent('click', publishCheckbox.attr('id'), '^', options.publishUrl);
@@ -53,6 +52,8 @@ function initializeRecommendedTweet(options) {
 		if (outerDiv.attr(MODE_ATTRIBUTE) === SUMMARY_MODE) {
 			// expand into detail mode
 			outerDiv.attr(MODE_ATTRIBUTE, DETAIL_MODE);
+			updateCharacterCount();
+			summaryContainer.hide();
 		//	disablePublishCheckbox();
 		}
 		event.preventDefault();
@@ -96,7 +97,7 @@ function initializeRecommendedTweet(options) {
 	
 	function updateCharacterCount() {
 		var count = twttr.txt.getTweetLength(textarea.val());
-		if( attachSnapshotsCheckbox[0].checked) {
+		if( attachSnapshotsCheckbox[0] && attachSnapshotsCheckbox[0].checked) {
 			count=count+23;
 		}
 		characterCount.text(count);
@@ -115,10 +116,12 @@ function initializeRecommendedTweet(options) {
 	}
 	
 	function modeSummary() {
+		summaryContainer.show();
 		outerDiv.attr(MODE_ATTRIBUTE, SUMMARY_MODE);
 	}
 	
 	function modeDetail() {
+		summaryContainer.hide();
 		outerDiv.attr(MODE_ATTRIBUTE, DETAIL_MODE);
 	}
 	
