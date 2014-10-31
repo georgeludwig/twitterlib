@@ -1,5 +1,5 @@
 function initializeRecommendedTweet(options) {
-
+	
 	var SUMMARY_MODE = 'summary';
 	var DETAIL_MODE = 'detail';
 	var MODE_ATTRIBUTE = 'data-mode';
@@ -10,6 +10,7 @@ function initializeRecommendedTweet(options) {
 	var outerDiv = $j('#' + options.id);
 //	var publishCheckbox = outerDiv.find('input.publishTweet');
 	var shortenUrlButton = outerDiv.find('input.tweetShortenUrl');
+	var shortenUrlText = outerDiv.find('input.tweetUrl');
 	var textarea = outerDiv.find('div.tweetText textarea');
 	var summaryText = outerDiv.find('div.tweetText p');
 	var characterCount = outerDiv.find('.tweetCharacterCount');
@@ -22,8 +23,14 @@ function initializeRecommendedTweet(options) {
 	// publish checkbox
 	//T5.initializers.updateZoneOnEvent('click', publishCheckbox.attr('id'), '^', options.publishUrl);
 	
-	outerDiv.find('input.tweetShortenUrl').click(function(event) {
-		$j.ajax(options.shortenUrlUrl).done(function(result) {
+	//outerDiv.find('input.tweetShortenUrl').click(function(event) {
+	shortenUrlButton.click(function(event) {
+		var eventLink=options.shortenUrlUrl;
+	//	var val=shortenUrlText[0].value;
+		//val=encodeURIComponent(val);
+	//	val=Base64.encode(val);
+	//	eventLink=eventLink.replace("6BUILDERTOKEN",val);
+		$j.ajax(eventLink).done(function(result) {
 			var shortenedUrl = result.url;
 			var newSummary = textarea.val().replace(outerDiv.attr('data-original-url'), shortenedUrl);
 			if (newSummary.indexOf(shortenedUrl) < 0) {
@@ -133,6 +140,12 @@ function initializeRecommendedTweet(options) {
 		outerDiv.attr(MODE_ATTRIBUTE, DETAIL_MODE);
 	}
 	
+	function string2Bin(str) {
+	    return str.split("").map( function( val ) { 
+	        return val.charCodeAt( 0 ); 
+	    } );
+	}
+	
 //	function enablePublishCheckbox() {
 //		if (outerDiv.attr('data-publish') != 'true') {
 //			publishCheckbox[0].disabled = false;
@@ -142,5 +155,199 @@ function initializeRecommendedTweet(options) {
 //	function disablePublishCheckbox() {
 //		publishCheckbox[0].disabled = true;
 //	}
+	
+	function StringBuffer()
+	{ 
+	    this.buffer = []; 
+	} 
+
+	StringBuffer.prototype.append = function append(string)
+	{ 
+	    this.buffer.push(string); 
+	    return this; 
+	}; 
+
+	StringBuffer.prototype.toString = function toString()
+	{ 
+	    return this.buffer.join(""); 
+	}; 
+
+	var Base64 =
+	{
+	    codex : "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=",
+
+	    encode : function (input)
+	    {
+	        var output = new StringBuffer();
+
+	        var enumerator = new Utf8EncodeEnumerator(input);
+	        while (enumerator.moveNext())
+	        {
+	            var chr1 = enumerator.current;
+
+	            enumerator.moveNext();
+	            var chr2 = enumerator.current;
+
+	            enumerator.moveNext();
+	            var chr3 = enumerator.current;
+
+	            var enc1 = chr1 >> 2;
+	            var enc2 = ((chr1 & 3) << 4) | (chr2 >> 4);
+	            var enc3 = ((chr2 & 15) << 2) | (chr3 >> 6);
+	            var enc4 = chr3 & 63;
+
+	            if (isNaN(chr2))
+	            {
+	                enc3 = enc4 = 64;
+	            }
+	            else if (isNaN(chr3))
+	            {
+	                enc4 = 64;
+	            }
+
+	            output.append(this.codex.charAt(enc1) + this.codex.charAt(enc2) + this.codex.charAt(enc3) + this.codex.charAt(enc4));
+	        }
+
+	        return output.toString();
+	    },
+
+	    decode : function (input)
+	    {
+	        var output = new StringBuffer();
+
+	        var enumerator = new Base64DecodeEnumerator(input);
+	        while (enumerator.moveNext())
+	        {
+	            var charCode = enumerator.current;
+
+	            if (charCode < 128)
+	                output.append(String.fromCharCode(charCode));
+	            else if ((charCode > 191) && (charCode < 224))
+	            {
+	                enumerator.moveNext();
+	                var charCode2 = enumerator.current;
+
+	                output.append(String.fromCharCode(((charCode & 31) << 6) | (charCode2 & 63)));
+	            }
+	            else
+	            {
+	                enumerator.moveNext();
+	                var charCode2 = enumerator.current;
+
+	                enumerator.moveNext();
+	                var charCode3 = enumerator.current;
+
+	                output.append(String.fromCharCode(((charCode & 15) << 12) | ((charCode2 & 63) << 6) | (charCode3 & 63)));
+	            }
+	        }
+
+	        return output.toString();
+	    }
+	}
+
+
+	function Utf8EncodeEnumerator(input)
+	{
+	    this._input = input;
+	    this._index = -1;
+	    this._buffer = [];
+	}
+
+	Utf8EncodeEnumerator.prototype =
+	{
+	    current: Number.NaN,
+
+	    moveNext: function()
+	    {
+	        if (this._buffer.length > 0)
+	        {
+	            this.current = this._buffer.shift();
+	            return true;
+	        }
+	        else if (this._index >= (this._input.length - 1))
+	        {
+	            this.current = Number.NaN;
+	            return false;
+	        }
+	        else
+	        {
+	            var charCode = this._input.charCodeAt(++this._index);
+
+	            // "\r\n" -> "\n"
+	            //
+	            if ((charCode == 13) && (this._input.charCodeAt(this._index + 1) == 10))
+	            {
+	                charCode = 10;
+	                this._index += 2;
+	            }
+
+	            if (charCode < 128)
+	            {
+	                this.current = charCode;
+	            }
+	            else if ((charCode > 127) && (charCode < 2048))
+	            {
+	                this.current = (charCode >> 6) | 192;
+	                this._buffer.push((charCode & 63) | 128);
+	            }
+	            else
+	            {
+	                this.current = (charCode >> 12) | 224;
+	                this._buffer.push(((charCode >> 6) & 63) | 128);
+	                this._buffer.push((charCode & 63) | 128);
+	            }
+
+	            return true;
+	        }
+	    }
+	}
+
+	function Base64DecodeEnumerator(input)
+	{
+	    this._input = input;
+	    this._index = -1;
+	    this._buffer = [];
+	}
+
+	Base64DecodeEnumerator.prototype =
+	{
+	    current: 64,
+
+	    moveNext: function()
+	    {
+	        if (this._buffer.length > 0)
+	        {
+	            this.current = this._buffer.shift();
+	            return true;
+	        }
+	        else if (this._index >= (this._input.length - 1))
+	        {
+	            this.current = 64;
+	            return false;
+	        }
+	        else
+	        {
+	            var enc1 = Base64.codex.indexOf(this._input.charAt(++this._index));
+	            var enc2 = Base64.codex.indexOf(this._input.charAt(++this._index));
+	            var enc3 = Base64.codex.indexOf(this._input.charAt(++this._index));
+	            var enc4 = Base64.codex.indexOf(this._input.charAt(++this._index));
+
+	            var chr1 = (enc1 << 2) | (enc2 >> 4);
+	            var chr2 = ((enc2 & 15) << 4) | (enc3 >> 2);
+	            var chr3 = ((enc3 & 3) << 6) | enc4;
+
+	            this.current = chr1;
+
+	            if (enc3 != 64)
+	                this._buffer.push(chr2);
+
+	            if (enc4 != 64)
+	                this._buffer.push(chr3);
+
+	            return true;
+	        }
+	    }
+	};
+
 	
 }

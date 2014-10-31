@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.apache.tapestry5.ClientElement;
 import org.apache.tapestry5.ComponentResources;
+import org.apache.tapestry5.Link;
 import org.apache.tapestry5.annotations.Events;
 import org.apache.tapestry5.annotations.Import;
 import org.apache.tapestry5.annotations.Parameter;
@@ -14,6 +15,7 @@ import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.json.JSONObject;
 import org.apache.tapestry5.services.javascript.JavaScriptSupport;
 
+import com.georgeludwigtech.common.util.CompressionUtil;
 import com.sixbuilder.datatypes.twitter.TweetItem;
 import com.sixbuilder.twitterlib.RecommendedTweetConstants;
 import com.sixbuilder.twitterlib.helpers.HolderComponentEventCallback;
@@ -24,7 +26,7 @@ import com.sixbuilder.twitterlib.helpers.HolderComponentEventCallback;
  * @author Thiago H. de Paula Figueiredo (http://machina.com.br/thiago)
  */
 //@Import(stylesheet={"common.css", "RecommendedTweet.css"}, library={"RecommendedTweet.js", "twitter-text-1.8.0.min.js"})
-@Import(library={"RecommendedTweet.js", "twitter-text-1.8.0.min.js"})
+@Import(library={"jqB64.js", "RecommendedTweet.js", "twitter-text-1.8.0.min.js"})
 @Events({
 	RecommendedTweetConstants.PUBLISH_TWEET_EVENT, 
 	RecommendedTweetConstants.DELETE_TWEET_EVENT,
@@ -82,6 +84,10 @@ public class RecommendedTweet implements ClientElement {
 		options.put("id", clientId);
 		options.put("publishUrl", resources.createEventLink("publish", tweet.getTweetId()).toAbsoluteURI());
 		options.put("shortenUrlUrl", resources.createEventLink("shortenUrl", tweet.getTweetId()).toAbsoluteURI());
+		//Link linky=resources.createEventLink("shortenUrl", "6BUILDERTOKEN");
+		//String l=linky.toAbsoluteURI();
+		//options.put("shortenUrlUrl", l);
+		//String dud="initializeRecommendedTweet(%s);";
 		javaScriptSupport.addScript(String.format("initializeRecommendedTweet(%s);", options)); 
 	}
 	/**
@@ -136,6 +142,13 @@ public class RecommendedTweet implements ClientElement {
 	 * Handles the shorten URL event.
 	 */
 	public JSONObject onShortenUrl(String id) {
+//		boolean dud=true;
+//		String s=null;
+//		try {
+//			s=(String) CompressionUtil.inflateObjectFromB64(id);
+//		} catch(Exception e) {
+//			e.printStackTrace();
+//		}
 		TweetItem tweetItem = (TweetItem) triggerEvent(RecommendedTweetConstants.SHORTEN_URL_EVENT, id);
 		return new JSONObject("url", tweetItem.getShortenedUrl());
 	}
