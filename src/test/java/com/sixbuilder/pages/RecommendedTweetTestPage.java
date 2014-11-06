@@ -86,8 +86,14 @@ public class RecommendedTweetTestPage {
 				req.setHeight(1024);
 				UrlSnapshotServiceResponse resp = UrlSnapshotServiceClient.snap(req);
 				try {
-					URI uri=new URI(resp.getImageUrl());
-					ti.setSnapshotUrl(resp.getImageUrl());
+					URI uri=new URI(resp.getSnapshotUrl());
+					ti.setSnapshotUrl(resp.getSnapshotUrl());
+					if(resp.getImageUrlList()!=null)
+						ti.setImgOneUrl(resp.getImageUrlList().get(0));
+					if(resp.getImageUrlList()!=null)
+						ti.setImgOneUrl(resp.getImageUrlList().get(1));
+					if(resp.getImageUrlList()!=null)
+						ti.setImgOneUrl(resp.getImageUrlList().get(2));
 				} catch(Exception e) {
 					ti.setSnapshotUrl("false");
 				}
