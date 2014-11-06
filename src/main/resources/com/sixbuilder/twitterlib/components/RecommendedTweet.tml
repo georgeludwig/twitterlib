@@ -60,6 +60,9 @@
 				<span class="tweetCharacterCount">${tweet.summary.length()}</span>
 			</div>
 			<div class="tweetUrlRow">
+				<span class="goToUrl">
+					<a href="${tweet.url}" target="_blank"><t:twitterLib.FontAwesomeIcon name="fa-eye" /></a>
+				</span>
 				<input class="tweetShortenUrl btn btn-default" type="submit"
 					value="&#xf0c1;" /> <input class="tweetUrl" type="text"
 					value="${tweet.url}" />
@@ -67,14 +70,6 @@
 			<div class="tweetActionButtons">
 				<div class="tweetAttachSnapshot">
 					<t:if test="tweet.snapshotUrl">
-						<span class="tweetAttachSnapshot">
-							<t:twitterLib.FontAwesomeIcon name="fa-toggle-left" />
-							<t:twitterLib.FontAwesomeIcon name="fa-toggle-right" />&nbsp;
-							<a href="${tweet.url}" target="_blank"><t:twitterLib.FontAwesomeIcon name="fa-eye" /></a>
-						</span>&nbsp;attach
-						<input type="checkbox" t:type="Checkbox" t:id="attachSnapshot"
-							class="tweetAttachSnapshotCheckbox"
-							onclick="updateCharacterCount()" />
 						<div class="tweetSnapshotColumn">
 							<a href="${tweet.snapshotUrl}" target="_blank"> <img class="urlDetailSnapshot"
 								src="${tweet.snapshotUrl}" />
@@ -89,14 +84,13 @@
 								src="${tweet.imgThreeUrl}" />
 							</a>
 						</div>
-					<p:else>
-						<div class="goToUrl">
-							<a href="${tweet.url}" target="_blank"><t:twitterLib.FontAwesomeIcon name="fa-eye" /></a>
-						</div>
-						<!--  <span class="tweetAttachSnapshot"> <t:twitterLib.FontAwesomeIcon name="fa-eye" />
-						</span>&nbsp;
-						<input type="checkbox" class="tweetAttachSnapshotCheckbox" disabled="true" /> -->
-					</p:else>
+						<span class="tweetAttachSnapshot">
+							<t:twitterLib.FontAwesomeIcon name="fa-toggle-left" />
+							<t:twitterLib.FontAwesomeIcon name="fa-toggle-right" />&nbsp;
+						</span>&nbsp;attach
+						<input type="checkbox" t:type="Checkbox" t:id="attachSnapshot"
+							class="tweetAttachSnapshotCheckbox"
+							onclick="updateCharacterCount()" />
 					</t:if>
 				</div>
 				<input class="tweetCancel btn btn-warning" type="submit" value="Meh" t:type="Submit" t:id="meh" />

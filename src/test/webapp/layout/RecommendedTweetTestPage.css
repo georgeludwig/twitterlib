@@ -595,7 +595,7 @@ div.recommendedTweet div.tweetUrlRow {
 }
 
 div.recommendedTweet div.tweetUrlRow input.tweetUrl {
-	width: 341px !important;
+	width: 314px !important;
 	text-overflow: ellipsis;
 	white-space: nowrap;
 	overflow: hidden;
@@ -852,4 +852,21 @@ div.publishTweets .summarySnapshot {
 
 i {
 	cursor: pointer;
+}
+
+.goToUrl {
+	font-size: 2em;
+	top: 6px;
+	position: relative;
+	padding-left: 2px;
+	padding-right: 5px;
+}
+
+.tweetAttachSnapshotCheckbox {
+	position: relative;
+	top: -1px;
+}
+
+.fa-toggle-left, .fa-toggle-right {
+	font-size: 1.2em;
 }

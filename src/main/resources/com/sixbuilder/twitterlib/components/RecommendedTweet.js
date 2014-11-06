@@ -78,10 +78,9 @@ function initializeRecommendedTweet(options) {
 	//outerDiv.find('input.tweetShortenUrl').click(function(event) {
 	shortenUrlButton.click(function(event) {
 		var eventLink=options.shortenUrlUrl;
-	//	var val=shortenUrlText[0].value;
-		//val=encodeURIComponent(val);
-	//	val=Base64.encode(val);
-	//	eventLink=eventLink.replace("6BUILDERTOKEN",val);
+		var val=shortenUrlText[0].value;
+		val=toBinaryString(val);
+		eventLink=eventLink.replace("6BUILDERTOKEN",val);
 		$j.ajax(eventLink).done(function(result) {
 			var shortenedUrl = result.url;
 			var newSummary = textarea.val().replace(outerDiv.attr('data-original-url'), shortenedUrl);
@@ -207,6 +206,26 @@ function initializeRecommendedTweet(options) {
 //	function disablePublishCheckbox() {
 //		publishCheckbox[0].disabled = true;
 //	}
+	
+	function toBinaryString(inputString) {
+	    var ret="";
+	    // get the input string as series of integers
+	    for(var i=0;i<inputString.length;i++) {
+	        var charCode=inputString.charCodeAt(i);     
+	        // for each integer, convert to binary string
+	        var stringValue=charCode.toString(2);
+	        // pad to 16 bits
+	        if(stringValue.length<16) {
+	        	var ll=16-stringValue.length;
+	        	for(var ii=0;ii<ll;ii++) {
+	        		stringValue="0"+stringValue;
+	        	}
+	        }
+	        // concatenate
+	        ret=ret+stringValue;
+	    }
+	    return ret;
+	}
 	
 	function StringBuffer()
 	{ 

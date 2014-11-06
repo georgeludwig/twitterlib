@@ -196,9 +196,8 @@ public class RecommendedTweetTestPage {
 	}
 
 	@OnEvent(RecommendedTweetConstants.SHORTEN_URL_EVENT)
-	public TweetItem shortenUrl(TweetItem tweetItem) throws Exception {
-		tweetItem.setShortenedUrl(shortenUrlUsingBitly(tweetItem.getUrl()));
-		return tweetItem;
+	public String shortenUrl(TweetItem tweetItem) throws Exception {
+		return shortenUrlUsingBitly(tweetItem.getUrl());
 	}
 
 	@OnEvent(RecommendedTweetConstants.LOAD_TWEET_EVENT)
@@ -207,7 +206,7 @@ public class RecommendedTweetTestPage {
 	}
 
 	private String shortenUrlUsingBitly(String url) {
-		return "http://bitly/tweet";
+		return "bitly://"+url;
 	}
 
 	public File getAccountsRoot() throws Exception {

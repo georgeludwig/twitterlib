@@ -83,7 +83,8 @@ public class RecommendedTweet implements ClientElement {
 		JSONObject options = new JSONObject();
 		options.put("id", clientId);
 		options.put("publishUrl", resources.createEventLink("publish", tweet.getTweetId()).toAbsoluteURI());
-		options.put("shortenUrlUrl", resources.createEventLink("shortenUrl", tweet.getTweetId()).toAbsoluteURI());
+		options.put("shortenUrlUrl", resources.createEventLink("shortenUrl", "6BUILDERTOKEN").toAbsoluteURI());
+		//options.put("shortenUrlUrl", resources.createEventLink("shortenUrl", tweet.getTweetId()).toAbsoluteURI());
 		//Link linky=resources.createEventLink("shortenUrl", "6BUILDERTOKEN");
 		//String l=linky.toAbsoluteURI();
 		//options.put("shortenUrlUrl", l);
@@ -149,8 +150,24 @@ public class RecommendedTweet implements ClientElement {
 //		} catch(Exception e) {
 //			e.printStackTrace();
 //		}
-		TweetItem tweetItem = (TweetItem) triggerEvent(RecommendedTweetConstants.SHORTEN_URL_EVENT, id);
-		return new JSONObject("url", tweetItem.getShortenedUrl());
+		StringBuilder b = new StringBuilder();
+		for(int i=0;i<id.length();i=i+16) {
+			// get next char string
+			String s=id.substring(i,i+16);
+			char c=(char)Integer.parseInt(s, 2);
+			b.append(c);
+		}
+		String url=b.toString();
+		TweetItem dud;
+		try {
+			dud = new TweetItem();
+			dud.setUrl(url);
+			String shortUrl = (String) triggerEvent(RecommendedTweetConstants.SHORTEN_URL_EVENT, dud);
+			return new JSONObject("url", shortUrl);
+		} catch (Exception e) {
+			return new JSONObject("url", url);
+		}
+		
 	}
 	
 	private Object triggerEvent(final String event, final String id) {
