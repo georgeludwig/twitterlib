@@ -19,6 +19,58 @@ function initializeRecommendedTweet(options) {
 	var detailView = outerDiv.find('div.tweetDetailColumn');
 	var hashtags = outerDiv.find('div.tweetSuggestedHashtags span');
 	var attachSnapshotsCheckbox = outerDiv.find('input.tweetAttachSnapshotCheckbox');
+	var imgSnapshotUrl= outerDiv.find('img.urlDetailSnapshot');
+	var imgOneUrl =  outerDiv.find('img.imgOneUrl');
+	var imgTwoUrl =  outerDiv.find('img.imgTwoUrl');
+	var imgThreeUrl =  outerDiv.find('img.imgThreeUrl');
+	var imgIndex=0;
+	var viewImg =  outerDiv.find('i.fa-eye');
+	var toggleImgLeft = outerDiv.find('i.fa-toggle-left');
+	var toggleImgRight = outerDiv.find('i.fa-toggle-right');
+	
+	imgOneUrl.hide();
+	imgTwoUrl.hide();
+	imgThreeUrl.hide();
+	
+	toggleImgLeft.click(function(event) {
+		if ($(imgSnapshotUrl).is(":visible")) {
+			imgSnapshotUrl.hide();
+			imgThreeUrl.show();
+			imgIndex=3;
+		} else if ($(imgOneUrl).is(":visible")) {
+			imgSnapshotUrl.show();
+			imgOneUrl.hide();
+			imgIndex=0;
+		} else if ($(imgTwoUrl).is(":visible")) {
+			imgOneUrl.show();
+			imgTwoUrl.hide();
+			imgIndex=1;
+		} else if ($(imgThreeUrl).is(":visible")) {
+			imgTwoUrl.show();
+			imgThreeUrl.hide();
+			imgIndex=2;
+		}
+	});
+	
+	toggleImgRight.click(function(event) {
+		if ($(imgSnapshotUrl).is(":visible")) {
+			imgSnapshotUrl.hide();
+			imgOneUrl.show();
+			imgIndex=1;
+		} else if ($(imgOneUrl).is(":visible")) {
+			imgTwoUrl.show();
+			imgOneUrl.hide();
+			imgIndex=2;
+		} else if ($(imgTwoUrl).is(":visible")) {
+			imgThreeUrl.show();
+			imgTwoUrl.hide();
+			imgIndex=3;
+		} else if ($(imgThreeUrl).is(":visible")) {
+			imgSnapshotUrl.show();
+			imgThreeUrl.hide();
+			imgIndex=0;
+		}
+	});
 	
 	// publish checkbox
 	//T5.initializers.updateZoneOnEvent('click', publishCheckbox.attr('id'), '^', options.publishUrl);

@@ -67,22 +67,31 @@
 			<div class="tweetActionButtons">
 				<div class="tweetAttachSnapshot">
 					<t:if test="tweet.snapshotUrl">
-						<span class="tweetAttachSnapshot"> <a
-							href="${tweet.snapshotUrl}" target="_blank"> <t:twitterLib.FontAwesomeIcon
-									name="fa-eye" />
-						</a>
-						</span>&nbsp;attach image
+						<span class="tweetAttachSnapshot">
+							<t:twitterLib.FontAwesomeIcon name="fa-toggle-left" />
+							<t:twitterLib.FontAwesomeIcon name="fa-toggle-right" />&nbsp;
+							<a href="${tweet.url}" target="_blank"><t:twitterLib.FontAwesomeIcon name="fa-eye" /></a>
+						</span>&nbsp;attach
 						<input type="checkbox" t:type="Checkbox" t:id="attachSnapshot"
 							class="tweetAttachSnapshotCheckbox"
 							onclick="updateCharacterCount()" />
 						<div class="tweetSnapshotColumn">
-							<a href="${tweet.url}" target="_blank"> <img class="urlDetailSnapshot"
+							<a href="${tweet.snapshotUrl}" target="_blank"> <img class="urlDetailSnapshot"
 								src="${tweet.snapshotUrl}" />
+							</a>
+							<a href="${tweet.imgOneUrl}" target="_blank"> <img class="imgOneUrl"
+								src="${tweet.imgOneUrl}" />
+							</a>
+							<a href="${tweet.imgTwoUrl}" target="_blank"> <img class="imgTwoUrl"
+								src="${tweet.imgTwoUrl}" />
+							</a>
+							<a href="${tweet.imgThreeUrl}" target="_blank"> <img class="imgThreeUrl"
+								src="${tweet.imgThreeUrl}" />
 							</a>
 						</div>
 					<p:else>
 						<div class="goToUrl">
-							[<a href="${tweet.url}" target="_blank">open URL</a>]
+							<a href="${tweet.url}" target="_blank"><t:twitterLib.FontAwesomeIcon name="fa-eye" /></a>
 						</div>
 						<!--  <span class="tweetAttachSnapshot"> <t:twitterLib.FontAwesomeIcon name="fa-eye" />
 						</span>&nbsp;
