@@ -45,6 +45,9 @@
 		</div>
 	
 		<div class="tweetDetailColumn">
+			<t:if test="publish">
+				<div class="targetTime">will be published at: ${tweet.pubTargetDisplay}</div>
+			</t:if>
 			<div class="tweetText">
 				<textarea class="editableTweet" id="textarea_${tweet.tweetId}"
 					t:type="TextArea" t:id="summary">${tweet.summary}</textarea>
@@ -67,23 +70,23 @@
 					value="&#xf0c1;" /> <input class="tweetUrl" type="text"
 					value="${tweet.url}" />
 			</div>
-			<div class="tweetActionButtons">
-				<div class="tweetAttachSnapshot">
-					<t:if test="tweet.snapshotUrl">
-						<div class="tweetSnapshotColumn">
-							<a href="${tweet.snapshotUrl}" target="_blank"> <img class="urlDetailSnapshot"
-								src="${tweet.snapshotUrl}" />
-							</a>
-							<a href="${tweet.imgOneUrl}" target="_blank"> <img class="imgOneUrl"
-								src="${tweet.imgOneUrl}" />
-							</a>
-							<a href="${tweet.imgTwoUrl}" target="_blank"> <img class="imgTwoUrl"
-								src="${tweet.imgTwoUrl}" />
-							</a>
-							<a href="${tweet.imgThreeUrl}" target="_blank"> <img class="imgThreeUrl"
-								src="${tweet.imgThreeUrl}" />
-							</a>
-						</div>
+			<div class="tweetAttachSnapshot">
+				<t:if test="tweet.snapshotUrl">
+					<div class="tweetSnapshotColumn">
+						<a href="${tweet.snapshotUrl}" target="_blank"> <img class="urlDetailSnapshot"
+							src="${tweet.snapshotUrl}" />
+						</a>
+						<a href="${tweet.imgOneUrl}" target="_blank"> <img class="imgOneUrl"
+							src="${tweet.imgOneUrl}" />
+						</a>
+						<a href="${tweet.imgTwoUrl}" target="_blank"> <img class="imgTwoUrl"
+							src="${tweet.imgTwoUrl}" />
+						</a>
+						<a href="${tweet.imgThreeUrl}" target="_blank"> <img class="imgThreeUrl"
+							src="${tweet.imgThreeUrl}" />
+						</a>
+					</div>
+					<div class="tweetActionButtons">
 						<span class="tweetAttachSnapshot">
 							<t:twitterLib.FontAwesomeIcon name="fa-toggle-left" />
 							<t:twitterLib.FontAwesomeIcon name="fa-toggle-right" />&nbsp;
@@ -91,8 +94,8 @@
 						<input type="checkbox" t:type="Checkbox" t:id="attachSnapshot"
 							class="tweetAttachSnapshotCheckbox"
 							onclick="updateCharacterCount()" />
-					</t:if>
-				</div>
+					</div>
+				</t:if>
 				<textarea class="imgIdx" id="imgIdx_${tweet.tweetId}" t:type="TextArea" t:id="imgIdx" style="display: none;" >${tweet.imgIdx}</textarea>
 				<!--  <input class="imgIdx" type="number" value="${tweet.imgIdx}" style="display: none;" />  -->
 				<input class="tweetCancel btn btn-warning" type="submit" value="Meh" t:type="Submit" t:id="meh" />

@@ -569,6 +569,7 @@ div.recommendedTweet[data-mode=summary] div.tweetDetailColumn,div.recommendedTwe
 
 div.recommendedTweet div.tweetDetailColumn div.tweetText textarea {
 	height: 6em;
+	margin-top: 7px;
 }
 
 div.recommendedTweet div.tweetEditSecondRow,div.recommendedTweet div.tweetUrlRow {
@@ -679,7 +680,7 @@ div.recommendedTweet .tweetAttachSnapshot {
 	width: 377px;
 	position: relative;
 	left: 2px;
-	top: 2px;
+	top: -5px;
 	resize: vertical;
 	padding: 0px;
 	border-radius: 5px;
@@ -724,7 +725,7 @@ div.recommendedTweet .tweetAttachSnapshot {
 
 .tweetCharacterCount {
 	position: relative;
-	top: -19px;
+	top: -28px;
 	left: 350px;
 }
 
@@ -734,7 +735,7 @@ div.recommendedTweet .tweetAttachSnapshot {
 	width: 280px;
 	margin-bottom: 0px;
 	width: 300px !important;
-	top: 0px;
+	top: -3px;
 }
 
 .tweetShortenUrl {
@@ -816,10 +817,17 @@ div.tweetUrlRow .tweetUrl {
 
 .targetTime {
 	position: relative;
-	top:3px;
-	left:5px;
+	top: -11px;
+	left: 12px;
 	color: #3a87ad;
 	padding-bottom: 2px;
+	padding-left: 9px;
+	padding-right: 9px;
+	background-color: white;
+	z-index: 999;
+	width: 200px;
+	border: 1px solid #f68b28;
+	border-radius: .25em;
 }
 
 .publishShim {
