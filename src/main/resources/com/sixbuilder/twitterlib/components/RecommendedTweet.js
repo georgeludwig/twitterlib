@@ -20,62 +20,64 @@ function initializeRecommendedTweet(options) {
 	var hashtags = outerDiv.find('div.tweetSuggestedHashtags span');
 	var attachSnapshotsCheckbox = outerDiv.find('input.tweetAttachSnapshotCheckbox');
 	var imgSnapshotUrl= outerDiv.find('img.urlDetailSnapshot');
-	var imgOneUrl =  outerDiv.find('img.imgOneUrl');
-	var imgTwoUrl =  outerDiv.find('img.imgTwoUrl');
-	var imgThreeUrl =  outerDiv.find('img.imgThreeUrl');
-	var imgIndex=0;
-	var viewImg =  outerDiv.find('i.fa-eye');
+	var imgOneUrl = outerDiv.find('img.imgOneUrl');
+	var imgTwoUrl = outerDiv.find('img.imgTwoUrl');
+	var imgThreeUrl = outerDiv.find('img.imgThreeUrl');
+	var imgIdx = outerDiv.find('textarea.imgIdx').text();
+	var viewImg = outerDiv.find('i.fa-eye');
 	var toggleImgLeft = outerDiv.find('i.fa-toggle-left');
 	var toggleImgRight = outerDiv.find('i.fa-toggle-right');
 	
-	imgOneUrl.hide();
-	imgTwoUrl.hide();
-	imgThreeUrl.hide();
+	selectImage();
 	
 	toggleImgLeft.click(function(event) {
-		if ($(imgSnapshotUrl).is(":visible")) {
-			imgSnapshotUrl.hide();
-			imgThreeUrl.show();
-			imgIndex=3;
-		} else if ($(imgOneUrl).is(":visible")) {
-			imgSnapshotUrl.show();
-			imgOneUrl.hide();
-			imgIndex=0;
-		} else if ($(imgTwoUrl).is(":visible")) {
-			imgOneUrl.show();
-			imgTwoUrl.hide();
-			imgIndex=1;
-		} else if ($(imgThreeUrl).is(":visible")) {
-			imgTwoUrl.show();
-			imgThreeUrl.hide();
-			imgIndex=2;
+		imgIdx--;
+		if(imgIdx<0) {
+			imgIdx=3;
 		}
+		selectImage();
 	});
 	
 	toggleImgRight.click(function(event) {
-		if ($(imgSnapshotUrl).is(":visible")) {
+		imgIdx++;
+		if(imgIdx>3) {
+			imgIdx=0;
+		}
+		selectImage();
+	});
+	
+	function selectImage() {
+		var el=outerDiv.find('textarea.imgIdx');
+		el.text(imgIdx);
+		if(imgIdx==0) {
+			imgSnapshotUrl.show();
+			imgOneUrl.hide();
+			imgTwoUrl.hide();
+			imgThreeUrl.hide();
+		}
+		if(imgIdx==1) {
 			imgSnapshotUrl.hide();
 			imgOneUrl.show();
-			imgIndex=1;
-		} else if ($(imgOneUrl).is(":visible")) {
-			imgTwoUrl.show();
-			imgOneUrl.hide();
-			imgIndex=2;
-		} else if ($(imgTwoUrl).is(":visible")) {
-			imgThreeUrl.show();
 			imgTwoUrl.hide();
-			imgIndex=3;
-		} else if ($(imgThreeUrl).is(":visible")) {
-			imgSnapshotUrl.show();
 			imgThreeUrl.hide();
-			imgIndex=0;
 		}
-	});
+		if(imgIdx==2) {
+			imgSnapshotUrl.hide();
+			imgOneUrl.hide();
+			imgTwoUrl.show();
+			imgThreeUrl.hide();
+		}
+		if(imgIdx==3) {
+			imgSnapshotUrl.hide();
+			imgOneUrl.hide();
+			imgTwoUrl.hide();
+			imgThreeUrl.show();
+		}
+	}
 	
 	// publish checkbox
 	//T5.initializers.updateZoneOnEvent('click', publishCheckbox.attr('id'), '^', options.publishUrl);
 	
-	//outerDiv.find('input.tweetShortenUrl').click(function(event) {
 	shortenUrlButton.click(function(event) {
 		var eventLink=options.shortenUrlUrl;
 		var val=shortenUrlText[0].value;
@@ -148,7 +150,6 @@ function initializeRecommendedTweet(options) {
 	*/
 	
 	function handleSummaryChange() {
-	//	publishCheckbox[0].disabled = true;
 		var count = twttr.txt.getTweetLength(textarea.val());
 		summaryText.text(textarea.val());
 		updateCharacterCount();
@@ -197,16 +198,6 @@ function initializeRecommendedTweet(options) {
 	    } );
 	}
 	
-//	function enablePublishCheckbox() {
-//		if (outerDiv.attr('data-publish') != 'true') {
-//			publishCheckbox[0].disabled = false;
-//		}
-//	}
-//	
-//	function disablePublishCheckbox() {
-//		publishCheckbox[0].disabled = true;
-//	}
-	
 	function toBinaryString(inputString) {
 	    var ret="";
 	    // get the input string as series of integers
@@ -226,199 +217,5 @@ function initializeRecommendedTweet(options) {
 	    }
 	    return ret;
 	}
-	
-	function StringBuffer()
-	{ 
-	    this.buffer = []; 
-	} 
-
-	StringBuffer.prototype.append = function append(string)
-	{ 
-	    this.buffer.push(string); 
-	    return this; 
-	}; 
-
-	StringBuffer.prototype.toString = function toString()
-	{ 
-	    return this.buffer.join(""); 
-	}; 
-
-	var Base64 =
-	{
-	    codex : "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=",
-
-	    encode : function (input)
-	    {
-	        var output = new StringBuffer();
-
-	        var enumerator = new Utf8EncodeEnumerator(input);
-	        while (enumerator.moveNext())
-	        {
-	            var chr1 = enumerator.current;
-
-	            enumerator.moveNext();
-	            var chr2 = enumerator.current;
-
-	            enumerator.moveNext();
-	            var chr3 = enumerator.current;
-
-	            var enc1 = chr1 >> 2;
-	            var enc2 = ((chr1 & 3) << 4) | (chr2 >> 4);
-	            var enc3 = ((chr2 & 15) << 2) | (chr3 >> 6);
-	            var enc4 = chr3 & 63;
-
-	            if (isNaN(chr2))
-	            {
-	                enc3 = enc4 = 64;
-	            }
-	            else if (isNaN(chr3))
-	            {
-	                enc4 = 64;
-	            }
-
-	            output.append(this.codex.charAt(enc1) + this.codex.charAt(enc2) + this.codex.charAt(enc3) + this.codex.charAt(enc4));
-	        }
-
-	        return output.toString();
-	    },
-
-	    decode : function (input)
-	    {
-	        var output = new StringBuffer();
-
-	        var enumerator = new Base64DecodeEnumerator(input);
-	        while (enumerator.moveNext())
-	        {
-	            var charCode = enumerator.current;
-
-	            if (charCode < 128)
-	                output.append(String.fromCharCode(charCode));
-	            else if ((charCode > 191) && (charCode < 224))
-	            {
-	                enumerator.moveNext();
-	                var charCode2 = enumerator.current;
-
-	                output.append(String.fromCharCode(((charCode & 31) << 6) | (charCode2 & 63)));
-	            }
-	            else
-	            {
-	                enumerator.moveNext();
-	                var charCode2 = enumerator.current;
-
-	                enumerator.moveNext();
-	                var charCode3 = enumerator.current;
-
-	                output.append(String.fromCharCode(((charCode & 15) << 12) | ((charCode2 & 63) << 6) | (charCode3 & 63)));
-	            }
-	        }
-
-	        return output.toString();
-	    }
-	}
-
-
-	function Utf8EncodeEnumerator(input)
-	{
-	    this._input = input;
-	    this._index = -1;
-	    this._buffer = [];
-	}
-
-	Utf8EncodeEnumerator.prototype =
-	{
-	    current: Number.NaN,
-
-	    moveNext: function()
-	    {
-	        if (this._buffer.length > 0)
-	        {
-	            this.current = this._buffer.shift();
-	            return true;
-	        }
-	        else if (this._index >= (this._input.length - 1))
-	        {
-	            this.current = Number.NaN;
-	            return false;
-	        }
-	        else
-	        {
-	            var charCode = this._input.charCodeAt(++this._index);
-
-	            // "\r\n" -> "\n"
-	            //
-	            if ((charCode == 13) && (this._input.charCodeAt(this._index + 1) == 10))
-	            {
-	                charCode = 10;
-	                this._index += 2;
-	            }
-
-	            if (charCode < 128)
-	            {
-	                this.current = charCode;
-	            }
-	            else if ((charCode > 127) && (charCode < 2048))
-	            {
-	                this.current = (charCode >> 6) | 192;
-	                this._buffer.push((charCode & 63) | 128);
-	            }
-	            else
-	            {
-	                this.current = (charCode >> 12) | 224;
-	                this._buffer.push(((charCode >> 6) & 63) | 128);
-	                this._buffer.push((charCode & 63) | 128);
-	            }
-
-	            return true;
-	        }
-	    }
-	}
-
-	function Base64DecodeEnumerator(input)
-	{
-	    this._input = input;
-	    this._index = -1;
-	    this._buffer = [];
-	}
-
-	Base64DecodeEnumerator.prototype =
-	{
-	    current: 64,
-
-	    moveNext: function()
-	    {
-	        if (this._buffer.length > 0)
-	        {
-	            this.current = this._buffer.shift();
-	            return true;
-	        }
-	        else if (this._index >= (this._input.length - 1))
-	        {
-	            this.current = 64;
-	            return false;
-	        }
-	        else
-	        {
-	            var enc1 = Base64.codex.indexOf(this._input.charAt(++this._index));
-	            var enc2 = Base64.codex.indexOf(this._input.charAt(++this._index));
-	            var enc3 = Base64.codex.indexOf(this._input.charAt(++this._index));
-	            var enc4 = Base64.codex.indexOf(this._input.charAt(++this._index));
-
-	            var chr1 = (enc1 << 2) | (enc2 >> 4);
-	            var chr2 = ((enc2 & 15) << 4) | (enc3 >> 2);
-	            var chr3 = ((enc3 & 3) << 6) | enc4;
-
-	            this.current = chr1;
-
-	            if (enc3 != 64)
-	                this._buffer.push(chr2);
-
-	            if (enc4 != 64)
-	                this._buffer.push(chr3);
-
-	            return true;
-	        }
-	    }
-	};
-
 	
 }

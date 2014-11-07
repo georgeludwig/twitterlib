@@ -6,7 +6,6 @@ import java.util.List;
 
 import org.apache.tapestry5.ClientElement;
 import org.apache.tapestry5.ComponentResources;
-import org.apache.tapestry5.Link;
 import org.apache.tapestry5.annotations.Events;
 import org.apache.tapestry5.annotations.Import;
 import org.apache.tapestry5.annotations.Parameter;
@@ -15,10 +14,10 @@ import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.json.JSONObject;
 import org.apache.tapestry5.services.javascript.JavaScriptSupport;
 
-import com.georgeludwigtech.common.util.CompressionUtil;
 import com.sixbuilder.datatypes.twitter.TweetItem;
 import com.sixbuilder.twitterlib.RecommendedTweetConstants;
 import com.sixbuilder.twitterlib.helpers.HolderComponentEventCallback;
+import com.sixbuilder.twitterlib.services.TweetItemDAO;
 
 /**
  * Component that renders a tweet to be curated or published, plus triggers some events.
@@ -41,6 +40,9 @@ public class RecommendedTweet implements ClientElement {
 	private TweetItem tweet;
 	
 	@Inject
+	TweetItemDAO tweetItemDAO;
+	
+	@Inject
 	private ComponentResources resources;
 	
 	@Inject
@@ -51,6 +53,9 @@ public class RecommendedTweet implements ClientElement {
 	
 	@Property
 	private boolean attachSnapshot;
+	
+	@Property
+	private int imgIdx;
 	
 	private String clientId;
 	
@@ -78,17 +83,15 @@ public class RecommendedTweet implements ClientElement {
 	
 	void setupRender() {
 		summary = tweet.getSummary();
+		imgIdx=tweet.getImgIdx();
 		attachSnapshot = tweet.isAttachSnapshot();
 		clientId = javaScriptSupport.allocateClientId(resources);
 		JSONObject options = new JSONObject();
 		options.put("id", clientId);
 		options.put("publishUrl", resources.createEventLink("publish", tweet.getTweetId()).toAbsoluteURI());
 		options.put("shortenUrlUrl", resources.createEventLink("shortenUrl", "6BUILDERTOKEN").toAbsoluteURI());
-		//options.put("shortenUrlUrl", resources.createEventLink("shortenUrl", tweet.getTweetId()).toAbsoluteURI());
-		//Link linky=resources.createEventLink("shortenUrl", "6BUILDERTOKEN");
-		//String l=linky.toAbsoluteURI();
-		//options.put("shortenUrlUrl", l);
-		//String dud="initializeRecommendedTweet(%s);";
+		Object[] parm= { "6BUILDERTOKEN",tweet.getTweetId()};
+		options.put("selectImage", resources.createEventLink("selectImage",parm).toAbsoluteURI());
 		javaScriptSupport.addScript(String.format("initializeRecommendedTweet(%s);", options)); 
 	}
 	/**
@@ -121,6 +124,7 @@ public class RecommendedTweet implements ClientElement {
 		final TweetItem item = findById(id);
 		item.setSummary(summary);
 		item.setAttachSnapshot(attachSnapshot);
+		item.setImgIdx(imgIdx);
 		if (wasMehButtonClicked) {
 			return meh(item);
 		} else {
@@ -140,16 +144,22 @@ public class RecommendedTweet implements ClientElement {
 	}
 	
 	/**
+	 * handles select image event
+	 * @param id
+	 * @return
+	 */
+	public JSONObject onSelectImage(int imgIdx, String tweetId) {
+//		TweetItem ti=tweetItemDAO.findById(tweetId);
+//		tweet.setImgIdx(imgIdx);
+//		return new JSONObject("imgIdx", String.valueOf(imgIdx));
+		return null;
+	}
+	
+	/**
 	 * Handles the shorten URL event.
 	 */
 	public JSONObject onShortenUrl(String id) {
-//		boolean dud=true;
-//		String s=null;
-//		try {
-//			s=(String) CompressionUtil.inflateObjectFromB64(id);
-//		} catch(Exception e) {
-//			e.printStackTrace();
-//		}
+		// decode id from binary string
 		StringBuilder b = new StringBuilder();
 		for(int i=0;i<id.length();i=i+16) {
 			// get next char string
@@ -167,7 +177,6 @@ public class RecommendedTweet implements ClientElement {
 		} catch (Exception e) {
 			return new JSONObject("url", url);
 		}
-		
 	}
 	
 	private Object triggerEvent(final String event, final String id) {

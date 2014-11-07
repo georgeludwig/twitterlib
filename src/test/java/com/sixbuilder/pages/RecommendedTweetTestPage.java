@@ -26,9 +26,11 @@ import com.georgeludwigtech.urlsnapshotserviceclient.UrlSnapshotServiceResponse;
 import com.sixbuilder.AbstractTestSixBuilder;
 import com.sixbuilder.actionqueue.QueueItem;
 import com.sixbuilder.actionqueue.QueueType;
+import com.sixbuilder.datatypes.account.User;
 import com.sixbuilder.datatypes.persistence.PendingTweetFileUtil;
 import com.sixbuilder.datatypes.persistence.PersistenceUtil;
 import com.sixbuilder.datatypes.twitter.TweetItem;
+import com.sixbuilder.jobsequence.discovery.JobDiscoverContentOfMutualInterest;
 import com.sixbuilder.twitterlib.RecommendedTweetConstants;
 import com.sixbuilder.twitterlib.components.RecommendedTweet;
 import com.sixbuilder.twitterlib.helpers.TweetItemComparatorByTargetDate;
@@ -76,33 +78,8 @@ public class RecommendedTweetTestPage {
 		FileUtil.copy(is, target);
 		// create snapshots, assing ids
 		PendingTweetFileUtil util=new PendingTweetFileUtil(AbstractTestSixBuilder.getTestUserPath()+PendingTweetFileUtil.FILENAME);	
-		int ctr=0;
-		for(TweetItem ti:util.getPendingTweetMap().values()) {
-			if(ctr<5) {
-				UrlSnapshotServiceRequest req=new UrlSnapshotServiceRequest();
-				req.setTargetUrl(ti.getUrl());
-				req.setServiceUrl("http://54.191.249.251:3001");
-				req.setWidth(1280);
-				req.setHeight(1024);
-				UrlSnapshotServiceResponse resp = UrlSnapshotServiceClient.snap(req);
-				try {
-					@SuppressWarnings("unused")
-					URI uri=new URI(resp.getSnapshotUrl());
-					ti.setSnapshotUrl(resp.getSnapshotUrl());
-					if(resp.getImageUrlList()!=null)
-						ti.setImgOneUrl(resp.getImageUrlList().get(0));
-					if(resp.getImageUrlList()!=null)
-						ti.setImgTwoUrl(resp.getImageUrlList().get(1));
-					if(resp.getImageUrlList()!=null)
-						ti.setImgThreeUrl(resp.getImageUrlList().get(2));
-				} catch(Exception e) {
-					e.printStackTrace();
-					ti.setSnapshotUrl("false");
-				}
-			}
-			ti.setTweetId(String.valueOf(ctr));
-			ctr++;
-		}
+		// get snapshots and bitly
+		JobDiscoverContentOfMutualInterest.createSnapshotsAndBitly(new User(), util,5);
 		util.serialize();
 		// create curation setitems
 		File testRootDir=new File(AbstractTestSixBuilder.getTestRoot());
@@ -212,5 +189,5 @@ public class RecommendedTweetTestPage {
 	public File getAccountsRoot() throws Exception {
 		return new File(AbstractTestSixBuilder.getTestRoot());
 	}
-	
+
 }
