@@ -25,7 +25,7 @@ import com.sixbuilder.twitterlib.services.TweetItemDAO;
  * @author Thiago H. de Paula Figueiredo (http://machina.com.br/thiago)
  */
 //@Import(stylesheet={"common.css", "RecommendedTweet.css"}, library={"RecommendedTweet.js", "twitter-text-1.8.0.min.js"})
-@Import(library={"jqB64.js", "RecommendedTweet.js", "twitter-text-1.8.0.min.js"})
+@Import(library={"RecommendedTweet.js", "twitter-text-1.8.0.min.js"})
 @Events({
 	RecommendedTweetConstants.PUBLISH_TWEET_EVENT, 
 	RecommendedTweetConstants.DELETE_TWEET_EVENT,
@@ -94,6 +94,7 @@ public class RecommendedTweet implements ClientElement {
 		options.put("selectImage", resources.createEventLink("selectImage",parm).toAbsoluteURI());
 		javaScriptSupport.addScript(String.format("initializeRecommendedTweet(%s);", options)); 
 	}
+	
 	/**
 	 * Returns the value of the clientId field.
 	 * @return a {@link String}.
@@ -144,18 +145,6 @@ public class RecommendedTweet implements ClientElement {
 	}
 	
 	/**
-	 * handles select image event
-	 * @param id
-	 * @return
-	 */
-	public JSONObject onSelectImage(int imgIdx, String tweetId) {
-//		TweetItem ti=tweetItemDAO.findById(tweetId);
-//		tweet.setImgIdx(imgIdx);
-//		return new JSONObject("imgIdx", String.valueOf(imgIdx));
-		return null;
-	}
-	
-	/**
 	 * Handles the shorten URL event.
 	 */
 	public JSONObject onShortenUrl(String id) {
@@ -197,6 +186,12 @@ public class RecommendedTweet implements ClientElement {
 	
 	public boolean isPublish() {
 		return tweet.isPublish();
+	}
+	
+	public String getDataMode() {
+		if(isPublish())
+			return "detail";
+		else return "summary";
 	}
 	
 }

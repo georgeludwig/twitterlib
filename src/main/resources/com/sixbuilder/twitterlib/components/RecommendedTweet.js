@@ -28,6 +28,8 @@ function initializeRecommendedTweet(options) {
 	var toggleImgLeft = outerDiv.find('i.fa-toggle-left');
 	var toggleImgRight = outerDiv.find('i.fa-toggle-right');
 	
+	acknowledgeDataMode() ;
+	
 	selectImage();
 	
 	toggleImgLeft.click(function(event) {
@@ -97,7 +99,7 @@ function initializeRecommendedTweet(options) {
 	});
 	
 	outerDiv.find('input.tweetSave').click(function(event) {
-		modeSummary();
+		modeDetail();
 	});
 
 	outerDiv.find('input.tweetCancel').click(function(event) {
@@ -113,11 +115,22 @@ function initializeRecommendedTweet(options) {
 			// expand into detail mode
 			outerDiv.attr(MODE_ATTRIBUTE, DETAIL_MODE);
 			updateCharacterCount();
-			summaryContainer.hide();
+			//summaryContainer.hide();
+			acknowledgeDataMode();
 		//	disablePublishCheckbox();
 		}
 		event.preventDefault();
 	});
+	
+	function acknowledgeDataMode() {
+		if (outerDiv.attr(MODE_ATTRIBUTE) === SUMMARY_MODE) {
+			summaryContainer.show();
+			detailView.hide();
+		} else {
+			summaryContainer.hide();
+			detailView.show();			
+		}
+	}
 	
 	attachSnapshotsCheckbox.click(function(event) {
 		updateCharacterCount();
