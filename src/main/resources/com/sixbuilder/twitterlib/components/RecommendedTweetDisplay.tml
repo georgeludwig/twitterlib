@@ -13,7 +13,7 @@
 					<div class="curateTweets" t:type="Zone" t:id="curateZone" id="curateZone" t:update="show">
 						<ul>
 							<li t:type="Loop" t:source="curating" t:value="tweet">
-								<div t:type="twitterlib/RecommendedTweet" tweet="tweet" />
+								<div t:type="twitterlib/RecommendedTweet" tweet="tweet" accountsRoot="accountsRoot" userId="userId" />
 							</li>
 						</ul>
 					</div>
@@ -32,7 +32,7 @@
 						t:mixins="twitterlib/ZonePeriodicUpdater" t:event="refreshPublishingZone" t:frequencySecs="30" t:maxUpdates="10000" >
 						<ul>
 							<li t:type="Loop" t:source="publishing" t:value="tweet">
-								<div t:type="twitterlib/RecommendedTweet" tweet="tweet" />
+								<div t:type="twitterlib/RecommendedTweet" tweet="tweet" accountsRoot="accountsRoot" userId="userId" />
 							</li>
 						</ul>
 					</div>

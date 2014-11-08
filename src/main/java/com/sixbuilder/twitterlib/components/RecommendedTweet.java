@@ -1,5 +1,9 @@
 package com.sixbuilder.twitterlib.components;
 
+import static com.rosaloves.bitlyj.Bitly.as;
+import static com.rosaloves.bitlyj.Bitly.shorten;
+
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -14,10 +18,13 @@ import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.json.JSONObject;
 import org.apache.tapestry5.services.javascript.JavaScriptSupport;
 
+import com.rosaloves.bitlyj.BitlyException;
+import com.rosaloves.bitlyj.Url;
+import com.sixbuilder.datatypes.account.AccountManager;
+import com.sixbuilder.datatypes.account.User;
 import com.sixbuilder.datatypes.twitter.TweetItem;
 import com.sixbuilder.twitterlib.RecommendedTweetConstants;
 import com.sixbuilder.twitterlib.helpers.HolderComponentEventCallback;
-import com.sixbuilder.twitterlib.services.TweetItemDAO;
 
 /**
  * Component that renders a tweet to be curated or published, plus triggers some events.
@@ -29,7 +36,6 @@ import com.sixbuilder.twitterlib.services.TweetItemDAO;
 @Events({
 	RecommendedTweetConstants.PUBLISH_TWEET_EVENT, 
 	RecommendedTweetConstants.DELETE_TWEET_EVENT,
-	RecommendedTweetConstants.SHORTEN_URL_EVENT, 
 	RecommendedTweetConstants.SAVE_TWEET_EVENT,
 	RecommendedTweetConstants.LOAD_TWEET_EVENT,
 	RecommendedTweetConstants.MEH_TWEET_EVENT})
@@ -39,8 +45,13 @@ public class RecommendedTweet implements ClientElement {
 	@Property
 	private TweetItem tweet;
 	
-	@Inject
-	TweetItemDAO tweetItemDAO;
+	@Parameter(required = true, allowNull = false)
+	@Property
+	private File accountsRoot;
+	
+	@Parameter(required = true, allowNull = false)
+	@Property
+	private String userId;
 	
 	@Inject
 	private ComponentResources resources;
@@ -157,14 +168,32 @@ public class RecommendedTweet implements ClientElement {
 			b.append(c);
 		}
 		String url=b.toString();
-		TweetItem dud;
 		try {
-			dud = new TweetItem();
-			dud.setUrl(url);
-			String shortUrl = (String) triggerEvent(RecommendedTweetConstants.SHORTEN_URL_EVENT, dud);
+			String accountPath=AccountManager.getAccountPath(accountsRoot.toString(), userId);
+			User user=new User(AccountManager.getUserFile(accountPath));
+			String shortUrl=shortenUrlUsingBitly(user,url);
 			return new JSONObject("url", shortUrl);
 		} catch (Exception e) {
 			return new JSONObject("url", url);
+		}
+	}
+	
+	private String shortenUrlUsingBitly(User user,String url) throws Exception {
+		// bitly encode url
+		String bitlyUserName = user.getBitlyUserName();
+		String bitlyApiKey = user.getBitlyApiKey();
+		if((bitlyUserName==null||bitlyUserName.trim().length()==0) ||
+				(bitlyApiKey==null||bitlyApiKey.trim().length()==0)) {
+			bitlyUserName=User.DEFAULT_BITLY_USERNAME;
+			bitlyApiKey=User.DEFAULT_BITLY_APIKEY;
+			System.out.println("encoding bitly using default bitly credentials");
+		}
+		try {
+			Url u = as(bitlyUserName, bitlyApiKey).call(shorten(url));
+			String shortUrl=u.getShortUrl();
+			return shortUrl;
+		} catch(BitlyException e) {
+			return url;
 		}
 	}
 	

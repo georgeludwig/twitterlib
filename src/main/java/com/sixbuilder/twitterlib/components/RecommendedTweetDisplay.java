@@ -44,7 +44,6 @@ import com.sixbuilder.twitterlib.services.TweetItemDAO;
 	RecommendedTweetConstants.PUBLISHING_TWEETS_EVENT,
 	RecommendedTweetConstants.PUBLISH_TWEET_EVENT, 
 	RecommendedTweetConstants.DELETE_TWEET_EVENT,
-	RecommendedTweetConstants.SHORTEN_URL_EVENT, 
 	RecommendedTweetConstants.LOAD_TWEET_EVENT,
 	RecommendedTweetConstants.MEH_TWEET_EVENT})
 public class RecommendedTweetDisplay {

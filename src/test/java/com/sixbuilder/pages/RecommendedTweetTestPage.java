@@ -2,7 +2,6 @@ package com.sixbuilder.pages;
 
 import java.io.File;
 import java.io.InputStream;
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -20,9 +19,6 @@ import com.georgeludwigtech.common.setmanager.SetItemImpl;
 import com.georgeludwigtech.common.setmanager.SetManager;
 import com.georgeludwigtech.common.util.FileUtil;
 import com.georgeludwigtech.common.util.SerializableRecordHelper;
-import com.georgeludwigtech.urlsnapshotserviceclient.UrlSnapshotServiceClient;
-import com.georgeludwigtech.urlsnapshotserviceclient.UrlSnapshotServiceRequest;
-import com.georgeludwigtech.urlsnapshotserviceclient.UrlSnapshotServiceResponse;
 import com.sixbuilder.AbstractTestSixBuilder;
 import com.sixbuilder.actionqueue.QueueItem;
 import com.sixbuilder.actionqueue.QueueType;
@@ -172,18 +168,9 @@ public class RecommendedTweetTestPage {
 				tweetItem.getTweetId()));
 	}
 
-	@OnEvent(RecommendedTweetConstants.SHORTEN_URL_EVENT)
-	public String shortenUrl(TweetItem tweetItem) throws Exception {
-		return shortenUrlUsingBitly(tweetItem.getUrl());
-	}
-
 	@OnEvent(RecommendedTweetConstants.LOAD_TWEET_EVENT)
 	public TweetItem load(String id) throws Exception {
 		return tweetItemDAO.findById(getAccountsRoot(),userId,id);
-	}
-
-	private String shortenUrlUsingBitly(String url) {
-		return "bitly://"+url;
 	}
 
 	public File getAccountsRoot() throws Exception {

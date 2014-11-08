@@ -96,21 +96,9 @@ public class TweetRecommender {
 		ajaxResponseRenderer.addRender(publishingZone);
 	}
 	
-	@OnEvent(RecommendedTweetConstants.SHORTEN_URL_EVENT)
-	public TweetItem shortenUrl(TweetItem tweetItem) throws Exception {
-		tweetItem.setShortenedUrl(shortenUrlUsingBitly(tweetItem.getUrl()));
-		tweetItemDAO.update(accountsRoot,userId,tweetItem);
-		return tweetItem;
-	}
-	
 	@OnEvent(RecommendedTweetConstants.SAVE_TWEET_EVENT)
 	public void save(TweetItem tweetItem) throws Exception {
 		tweetItemDAO.update(accountsRoot,userId,tweetItem);
 	}
 	
-	@OnEvent(RecommendedTweetConstants.SHORTEN_URL_EVENT)
-	
-	private String shortenUrlUsingBitly(String url) {
-		return "http://bitly/tweet";
-	}
 }

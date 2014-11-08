@@ -23,14 +23,6 @@ final public class RecommendedTweetConstants {
 	public static final String PUBLISH_TWEET_EVENT = "publishTweet";
 
 	/**
-	 * Name of the event triggered by {@link RecommendedTweet} when the user requests an URL
-	 * to be shortened. The event context will be the tweet item to have its URL shortened.
-	 * The event handler must return the tweet item with its "shortenedUrl" attribute
-	 * set, as it's its value which will be sent to the page.
-	 */
-	public static final String SHORTEN_URL_EVENT = "shortenTweetUrl";
-	
-	/**
 	 * Name of the event triggered by {@link RecommendedTweet} when the user clicks on the Save (Queue) button.
 	 * The event context will be the tweet item. 
 	 */

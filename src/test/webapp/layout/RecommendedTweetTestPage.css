@@ -74,6 +74,7 @@ body {
 form {
 	margin: 0;
 	padding: 0;
+	margin-bottom: 0px;
 }
 
 input {
@@ -825,7 +826,7 @@ div.tweetUrlRow .tweetUrl {
 	padding-right: 9px;
 	background-color: white;
 	z-index: 999;
-	width: 200px;
+	width: 175px;
 	border: 1px solid #f68b28;
 	border-radius: .25em;
 }
