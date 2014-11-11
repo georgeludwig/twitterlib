@@ -68,6 +68,9 @@ public class RecommendedTweet implements ClientElement {
 	@Property
 	private int imgIdx;
 	
+	@Property
+	private String isPublish;
+	
 	private String clientId;
 	
 	private boolean wasMehButtonClicked;
@@ -95,6 +98,7 @@ public class RecommendedTweet implements ClientElement {
 	void setupRender() {
 		summary = tweet.getSummary();
 		imgIdx=tweet.getImgIdx();
+		isPublish=(tweet.isPublish()) ? "true":"false";
 		attachSnapshot = tweet.isAttachSnapshot();
 		clientId = javaScriptSupport.allocateClientId(resources);
 		JSONObject options = new JSONObject();

@@ -97,6 +97,7 @@
 					</div>
 				</t:if>
 				<textarea class="imgIdx" id="imgIdx_${tweet.tweetId}" t:type="TextArea" t:id="imgIdx" style="display: none;" >${tweet.imgIdx}</textarea>
+				<textarea class="isPublish" id="isPublish_${tweet.tweetId}" t:type="TextArea" t:id="isPublish" style="display: none;" >${tweet.publish}</textarea>
 				<!--  <input class="imgIdx" type="number" value="${tweet.imgIdx}" style="display: none;" />  -->
 				<input class="tweetCancel btn btn-warning" type="submit" value="Meh" t:type="Submit" t:id="meh" />
 				<input class="tweetSave btn btn-primary" type="submit" value="Queue" t:type="Submit" t:id="queue" />

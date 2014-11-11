@@ -814,6 +814,7 @@ div.tweetUrlRow .tweetUrl {
 	padding: 0px;
 	border-radius: 5px;
 	margin: 2px;
+	display: none;
 }
 
 .targetTime {
