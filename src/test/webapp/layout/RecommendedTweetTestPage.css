@@ -615,6 +615,7 @@ input.tweetCancel, input.tweetSave {
 div.recommendedTweet div.tweetActionButtons {
 	position: absolute: 
 	width:  70px;
+	margin-top: 5px;
 }
 
 div.recommendedTweet input.tweetSave,div.recommendedTweet input.tweetCancel
@@ -625,7 +626,7 @@ div.recommendedTweet input.tweetSave,div.recommendedTweet input.tweetCancel
 
 /* Icon from http://icondock.com/free/mini-pixel-icons */
 div.recommendedTweet .tweetAttachSnapshot {
-	
+    font-size: 1.1em;
 }
 
 /* twitter bird icon for "tweet" button */

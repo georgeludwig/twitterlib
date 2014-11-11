@@ -28,10 +28,17 @@ function initializeRecommendedTweet(options) {
 	var viewImg = outerDiv.find('i.fa-eye');
 	var toggleImgLeft = outerDiv.find('i.fa-toggle-left');
 	var toggleImgRight = outerDiv.find('i.fa-toggle-right');
+	var btnSave=outerDiv.find('input.tweetSave');
 	
 	acknowledgeDataMode() ;
 	
 	selectImage();
+	
+	if(isPublish=="true") {
+		btnSave.attr("value","Update");
+	} else {
+		btnSave.attr("value","Queue");
+	}
 	
 	toggleImgLeft.click(function(event) {
 		imgIdx--;
@@ -39,6 +46,14 @@ function initializeRecommendedTweet(options) {
 			imgIdx=3;
 		}
 		selectImage();
+		// save
+		// save
+		var eventLink=options.saveImgIdx;
+		eventLink=eventLink.replace("6BUILDERTOKEN",imgIdx);
+		$j.ajax(eventLink).done(function(result) {
+			
+		});
+		event.preventDefault();
 	});
 	
 	toggleImgRight.click(function(event) {
@@ -47,6 +62,13 @@ function initializeRecommendedTweet(options) {
 			imgIdx=0;
 		}
 		selectImage();
+		// save
+		var eventLink=options.saveImgIdx;
+		eventLink=eventLink.replace("6BUILDERTOKEN",imgIdx);
+		$j.ajax(eventLink).done(function(result) {
+			
+		});
+		event.preventDefault();
 	});
 	
 	function selectImage() {
@@ -57,7 +79,7 @@ function initializeRecommendedTweet(options) {
 		var el=outerDiv.find('textarea.imgIdx');
 		el.text(imgIdx);
 		if(imgIdx==0) {
-			imgSnapshotUrl.fadeTo(500,opacity);
+			imgSnapshotUrl.fadeTo(1,opacity);
 			if(!imgSnapshotUrl.is(":visible")) {
 				imgSnapshotUrl.show();
 			}
@@ -67,7 +89,7 @@ function initializeRecommendedTweet(options) {
 		}
 		if(imgIdx==1) {
 			imgSnapshotUrl.hide();
-			imgOneUrl.fadeTo(500,opacity);
+			imgOneUrl.fadeTo(1,opacity);
 			if(!imgOneUrl.is(":visible")) {
 				imgOneUrl.show();
 			}
@@ -77,7 +99,7 @@ function initializeRecommendedTweet(options) {
 		if(imgIdx==2) {
 			imgSnapshotUrl.hide();
 			imgOneUrl.hide();
-			imgTwoUrl.fadeTo(500,opacity);
+			imgTwoUrl.fadeTo(1,opacity);
 			if(!imgTwoUrl.is(":visible")) {
 				imgTwoUrl.show();
 			}
@@ -87,7 +109,7 @@ function initializeRecommendedTweet(options) {
 			imgSnapshotUrl.hide();
 			imgOneUrl.hide();
 			imgTwoUrl.hide();
-			imgThree.fadeTo(500,opacity);
+			imgThreeUrl.fadeTo(1,opacity);
 			if(!imgThreeUrl.is(":visible")) {
 				imgThreeUrl.show();
 			}
@@ -105,12 +127,44 @@ function initializeRecommendedTweet(options) {
 		$j.ajax(eventLink).done(function(result) {
 			var shortenedUrl = result.url;
 			var newSummary = textarea.val().replace(outerDiv.attr('data-original-url'), shortenedUrl);
+			newSummary = newSummary.replace(/^(\[url=)?(https?:\/\/)?(www\.|\S+?\.)(\S+?\.)?\S+$\s*/mg, '');
 			if (newSummary.indexOf(shortenedUrl) < 0) {
 				newSummary = newSummary + ' ' + shortenedUrl;
 			}
 			textarea.val(newSummary);
 			summaryText.text(newSummary);
 			handleSummaryChange();
+			// now get the new images
+			var el=outerDiv.find("a.gtu");
+			el.attr("href",shortenedUrl);
+			var v=result.snapshotUrl;
+			if(v) {
+				el=outerDiv.find("a.urlSnapshotTarget");
+				el.attr("href",v);
+				el=outerDiv.find("img.urlDetailSnapshot");
+				el.attr("src",v).load();
+			}
+			v=result.imgOne;
+			if(v) {
+				el=outerDiv.find("a.imgOneSnapshotTarget");
+				el.attr("href",v);
+				el=outerDiv.find("img.imgOneUrl");
+				el.attr("src",v).load();
+			}
+			v=result.imgTwo;
+			if(v) {
+				el=outerDiv.find("a.imgTwoSnapshotTarget");
+				el.attr("href",v);
+				el=outerDiv.find("img.imgTwoUrl");
+				el.attr("src",v).load();
+			}
+			v=result.imgThree;
+			if(v) {
+				el=outerDiv.find("a.imgThreeSnapshotTarget");
+				el.attr("href",v);
+				el=outerDiv.find("img.imgThreeUrl");
+				el.attr("src",v).load();
+			}
 		});
 		event.preventDefault();
 	});
@@ -151,8 +205,15 @@ function initializeRecommendedTweet(options) {
 	
 	attachSnapshotsCheckbox.click(function(event) {
 		updateCharacterCount();
-		// update image opacity
-		
+		// save
+		var eventLink=options.saveAttachSnapshot;
+		var el=outerDiv.find('input.tweetAttachSnapshotCheckbox');
+		var val=el[0].checked;
+		eventLink=eventLink.replace("6BUILDERTOKEN",val);
+		$j.ajax(eventLink).done(function(result) {
+			
+		});
+		//event.preventDefault();
 	});
 	
 	// character count

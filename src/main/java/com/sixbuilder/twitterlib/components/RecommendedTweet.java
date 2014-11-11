@@ -4,6 +4,7 @@ import static com.rosaloves.bitlyj.Bitly.as;
 import static com.rosaloves.bitlyj.Bitly.shorten;
 
 import java.io.File;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -18,13 +19,21 @@ import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.json.JSONObject;
 import org.apache.tapestry5.services.javascript.JavaScriptSupport;
 
+import com.georgeludwigtech.common.setmanager.SetItem;
+import com.georgeludwigtech.common.setmanager.SetItemImpl;
+import com.georgeludwigtech.common.setmanager.SetManager;
+import com.georgeludwigtech.urlsnapshotserviceclient.UrlSnapshotServiceClient;
+import com.georgeludwigtech.urlsnapshotserviceclient.UrlSnapshotServiceRequest;
+import com.georgeludwigtech.urlsnapshotserviceclient.UrlSnapshotServiceResponse;
 import com.rosaloves.bitlyj.BitlyException;
 import com.rosaloves.bitlyj.Url;
 import com.sixbuilder.datatypes.account.AccountManager;
 import com.sixbuilder.datatypes.account.User;
+import com.sixbuilder.datatypes.persistence.PersistenceUtil;
 import com.sixbuilder.datatypes.twitter.TweetItem;
 import com.sixbuilder.twitterlib.RecommendedTweetConstants;
 import com.sixbuilder.twitterlib.helpers.HolderComponentEventCallback;
+import com.sixbuilder.twitterlib.services.TweetItemDAO;
 
 /**
  * Component that renders a tweet to be curated or published, plus triggers some events.
@@ -52,6 +61,9 @@ public class RecommendedTweet implements ClientElement {
 	@Parameter(required = true, allowNull = false)
 	@Property
 	private String userId;
+	
+	@Inject
+	TweetItemDAO tweetItemDAO;
 	
 	@Inject
 	private ComponentResources resources;
@@ -104,9 +116,11 @@ public class RecommendedTweet implements ClientElement {
 		JSONObject options = new JSONObject();
 		options.put("id", clientId);
 		options.put("publishUrl", resources.createEventLink("publish", tweet.getTweetId()).toAbsoluteURI());
-		options.put("shortenUrlUrl", resources.createEventLink("shortenUrl", "6BUILDERTOKEN").toAbsoluteURI());
 		Object[] parm= { "6BUILDERTOKEN",tweet.getTweetId()};
-		options.put("selectImage", resources.createEventLink("selectImage",parm).toAbsoluteURI());
+		//options.put("selectImage", resources.createEventLink("selectImage",parm).toAbsoluteURI());
+		options.put("shortenUrlUrl", resources.createEventLink("shortenUrl", parm).toAbsoluteURI());
+		options.put("saveAttachSnapshot", resources.createEventLink("saveAttachSnapshot", parm).toAbsoluteURI());
+		options.put("saveImgIdx", resources.createEventLink("saveImgIdx", parm).toAbsoluteURI());
 		javaScriptSupport.addScript(String.format("initializeRecommendedTweet(%s);", options)); 
 	}
 	
@@ -162,24 +176,109 @@ public class RecommendedTweet implements ClientElement {
 	/**
 	 * Handles the shorten URL event.
 	 */
-	public JSONObject onShortenUrl(String id) {
+	public JSONObject onShortenUrl(String value, String id) {
 		// decode id from binary string
 		StringBuilder b = new StringBuilder();
-		for(int i=0;i<id.length();i=i+16) {
+		for(int i=0;i<value.length();i=i+16) {
 			// get next char string
-			String s=id.substring(i,i+16);
+			String s=value.substring(i,i+16);
 			char c=(char)Integer.parseInt(s, 2);
 			b.append(c);
 		}
 		String url=b.toString();
 		try {
+			URL uri=new URL(url);
+		} catch(Exception e) {
+			return new JSONObject("url", "invalid URL");
+		}
+		// start thread for images
+		getNewSnapshotWorker worker=new getNewSnapshotWorker(url);
+		Thread t=new Thread(worker);
+		t.start();
+		try {
 			String accountPath=AccountManager.getAccountPath(accountsRoot.toString(), userId);
 			User user=new User(AccountManager.getUserFile(accountPath));
 			String shortUrl=shortenUrlUsingBitly(user,url);
-			return new JSONObject("url", shortUrl);
+			JSONObject ret=new JSONObject();
+			t.join();
+			TweetItem ti=tweetItemDAO.findById(accountsRoot, userId, id);
+			ti.setUrl(url);
+			String oldId=ti.getTweetId();
+			ti.setTweetId(String.valueOf(url.hashCode()));
+			ti.setShortenedUrl(shortUrl);
+			ret.append("url", shortUrl);
+			if(worker.resp.getSnapshotUrl()!=null) {
+				ret.append("snapshotUrl",worker.resp.getSnapshotUrl());
+				ti.setSnapshotUrl(worker.resp.getSnapshotUrl());
+			}
+			List<String>imgList=worker.resp.getImageUrlList();
+			if(imgList!=null) {
+				if(imgList.size()>0) {
+					ret.append("imgOne", imgList.get(0));
+					ti.setImgOneUrl(imgList.get(0));
+				}
+				if(imgList.size()>1) {
+					ret.append("imgTwo", imgList.get(1));
+					ti.setImgTwoUrl(imgList.get(1));
+				}
+				if(imgList.size()>2) {
+					ret.append("imgThree", imgList.get(2));
+					ti.setImgThreeUrl(imgList.get(2));
+				}
+			}
+			tweetItemDAO.update(accountsRoot, userId, ti);
+			if(ti.isPublish()) {
+				SetManager qm=PersistenceUtil.getQueuedSetManager(accountsRoot, userId);
+				qm.removeSetItem(oldId);
+				qm.addSetItem(new SetItemImpl(ti.getTweetId()));
+			} else {
+				SetManager cm=PersistenceUtil.getCurationSetManager(accountsRoot, userId);
+				cm.removeSetItem(oldId);
+				cm.addSetItem(new SetItemImpl(ti.getTweetId()));
+			}
+			return ret;
 		} catch (Exception e) {
-			return new JSONObject("url", url);
+			return new JSONObject("url", "invalid URL");
 		}
+	}
+	
+	class getNewSnapshotWorker implements Runnable {
+		
+		private String url;
+		public UrlSnapshotServiceResponse resp;
+		
+		getNewSnapshotWorker(String url) {
+			this.url=url;
+		}
+
+		@Override
+		public void run() {
+			try {
+				UrlSnapshotServiceRequest req=new UrlSnapshotServiceRequest();
+				req.setWidth(1280);
+				req.setHeight(1024);
+				req.setTargetUrl(url);
+				req.setServiceUrl("http://54.191.249.251:3001");
+				resp=UrlSnapshotServiceClient.snap(req);
+			} catch(Exception e) {
+				// 
+			}
+		}
+		
+	}
+	
+	public JSONObject onSaveImgIdx(String value, String id) throws Exception {
+		TweetItem ti=tweetItemDAO.findById(accountsRoot, userId, id);
+		ti.setImgIdx(Integer.parseInt(value));
+		tweetItemDAO.update(accountsRoot, userId, ti);
+		return null;
+	}
+	
+	public JSONObject onSaveAttachSnapshot(String value,String id) throws Exception {
+		TweetItem ti=tweetItemDAO.findById(accountsRoot, userId, id);
+		ti.setAttachSnapshot(Boolean.parseBoolean(value));
+		tweetItemDAO.update(accountsRoot, userId, ti);
+		return null;
 	}
 	
 	private String shortenUrlUsingBitly(User user,String url) throws Exception {

@@ -64,43 +64,42 @@
 			</div>
 			<div class="tweetUrlRow">
 				<span class="goToUrl">
-					<a href="${tweet.url}" target="_blank"><t:twitterLib.FontAwesomeIcon name="fa-eye" /></a>
+					<a class="gtu" href="${tweet.url}" target="_blank"><t:twitterLib.FontAwesomeIcon name="fa-eye" /></a>
 				</span>
 				<input class="tweetShortenUrl btn btn-default" type="submit"
 					value="&#xf0c1;" /> <input class="tweetUrl" type="text"
 					value="${tweet.url}" />
-			</div>
-			<div class="tweetAttachSnapshot">
-				<t:if test="tweet.snapshotUrl">
-					<div class="tweetSnapshotColumn">
-						<a href="${tweet.snapshotUrl}" target="_blank"> <img class="urlDetailSnapshot"
-							src="${tweet.snapshotUrl}" />
-						</a>
-						<a href="${tweet.imgOneUrl}" target="_blank"> <img class="imgOneUrl"
-							src="${tweet.imgOneUrl}" />
-						</a>
-						<a href="${tweet.imgTwoUrl}" target="_blank"> <img class="imgTwoUrl"
-							src="${tweet.imgTwoUrl}" />
-						</a>
-						<a href="${tweet.imgThreeUrl}" target="_blank"> <img class="imgThreeUrl"
-							src="${tweet.imgThreeUrl}" />
-						</a>
-					</div>
-					<div class="tweetActionButtons">
-						<span class="tweetAttachSnapshot">
-							<t:twitterLib.FontAwesomeIcon name="fa-toggle-left" />
-							<t:twitterLib.FontAwesomeIcon name="fa-toggle-right" />&nbsp;
-						</span>&nbsp;attach
-						<input type="checkbox" t:type="Checkbox" t:id="attachSnapshot"
-							class="tweetAttachSnapshotCheckbox"
-							onclick="updateCharacterCount()" />
-					</div>
-				</t:if>
 				<textarea class="imgIdx" id="imgIdx_${tweet.tweetId}" t:type="TextArea" t:id="imgIdx" style="display: none;" >${tweet.imgIdx}</textarea>
 				<textarea class="isPublish" id="isPublish_${tweet.tweetId}" t:type="TextArea" t:id="isPublish" style="display: none;" >${tweet.publish}</textarea>
 				<!--  <input class="imgIdx" type="number" value="${tweet.imgIdx}" style="display: none;" />  -->
 				<input class="tweetCancel btn btn-warning" type="submit" value="Meh" t:type="Submit" t:id="meh" />
 				<input class="tweetSave btn btn-primary" type="submit" value="Queue" t:type="Submit" t:id="queue" />
+			</div>
+			<div class="tweetAttachSnapshot">
+				<t:if test="tweet.snapshotUrl">
+				<div class="tweetActionButtons">
+					<span class="tweetAttachSnapshot">
+						<t:twitterLib.FontAwesomeIcon name="fa-toggle-left" />
+						<t:twitterLib.FontAwesomeIcon name="fa-toggle-right" />&nbsp;
+					</span>&nbsp;attach
+					<input type="checkbox" t:type="Checkbox" t:id="attachSnapshot"
+						class="tweetAttachSnapshotCheckbox" />
+					</div>
+					<div class="tweetSnapshotColumn">
+						<a class="urlSnapshotTarget" href="${tweet.snapshotUrl}" target="_blank"> <img class="urlDetailSnapshot"
+							src="${tweet.snapshotUrl}" />
+						</a>
+						<a class="imgOneSnapshotTarget" href="${tweet.imgOneUrl}" target="_blank"> <img class="imgOneUrl"
+							src="${tweet.imgOneUrl}" />
+						</a>
+						<a class="imgTwoSnapshotTarget" href="${tweet.imgTwoUrl}" target="_blank"> <img class="imgTwoUrl"
+							src="${tweet.imgTwoUrl}" />
+						</a>
+						<a class="imgThreeSnapshotTarget" href="${tweet.imgThreeUrl}" target="_blank"> <img class="imgThreeUrl"
+							src="${tweet.imgThreeUrl}" />
+						</a>
+					</div>
+				</t:if>
 			</div>
 			<div class="buttonShim"/>
 		</div>
