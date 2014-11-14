@@ -77,7 +77,7 @@ public abstract class TargetTimeCalculator {
 					for(int i=0;i<tempList.size();i++) {
 						QueueItem item=tempList.get(i);
 						int intervalInMinutes = random.nextInt((queueSettings.getRandomMax()-queueSettings.getRandomMin()) + 1)+queueSettings.getRandomMin();
-						long target=reference+(i*intervalInMinutes*Time.MIN_MILLIS);
+						long target=reference+((i+1)*intervalInMinutes*Time.MIN_MILLIS);
 						item.setTargetDate(target);
 						reference=target;
 					}
@@ -87,7 +87,7 @@ public abstract class TargetTimeCalculator {
 					// iterate through item list, setting new target dates
 					for(int i=0;i<tempList.size();i++) {
 						QueueItem item=tempList.get(i);
-						item.setTargetDate(start+(i*interval));
+						item.setTargetDate(start+((i+1)*interval));
 					}
 				}
 			}
