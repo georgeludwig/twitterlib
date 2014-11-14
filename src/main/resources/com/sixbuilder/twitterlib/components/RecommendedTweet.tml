@@ -63,15 +63,15 @@
 				<span class="tweetCharacterCount">${tweet.summary.length()}</span>
 			</div>
 			<div class="tweetUrlRow">
-				<span class="goToUrl">
-					<a class="gtu" href="${tweet.url}" target="_blank"><t:twitterLib.FontAwesomeIcon name="fa-eye" /></a>
-				</span>
 				<input class="tweetShortenUrl btn btn-default" type="submit"
 					value="&#xf0c1;" /> <input class="tweetUrl" type="text"
 					value="${tweet.url}" />
 				<textarea class="imgIdx" id="imgIdx_${tweet.tweetId}" t:type="TextArea" t:id="imgIdx" style="display: none;" >${tweet.imgIdx}</textarea>
 				<textarea class="isPublish" id="isPublish_${tweet.tweetId}" t:type="TextArea" t:id="isPublish" style="display: none;" >${tweet.publish}</textarea>
 				<!--  <input class="imgIdx" type="number" value="${tweet.imgIdx}" style="display: none;" />  -->
+				<div class="goToUrl">
+					<a class="gtu" href="${tweet.url}" target="_blank"><t:twitterLib.FontAwesomeIcon name="fa-eye" /></a>
+				</div>
 				<input class="tweetCancel btn btn-warning" type="submit" value="Meh" t:type="Submit" t:id="meh" />
 				<input class="tweetSave btn btn-primary" type="submit" value="Queue" t:type="Submit" t:id="queue" />
 			</div>

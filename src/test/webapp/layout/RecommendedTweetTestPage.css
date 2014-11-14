@@ -597,7 +597,7 @@ div.recommendedTweet div.tweetUrlRow {
 }
 
 div.recommendedTweet div.tweetUrlRow input.tweetUrl {
-	width: 314px !important;
+	width: 341px !important;
 	text-overflow: ellipsis;
 	white-space: nowrap;
 	overflow: hidden;
@@ -618,10 +618,11 @@ div.recommendedTweet div.tweetActionButtons {
 	margin-top: 5px;
 }
 
-div.recommendedTweet input.tweetSave,div.recommendedTweet input.tweetCancel
-	{
+div.recommendedTweet input.tweetSave,div.recommendedTweet input.tweetCancel {
 	margin-left: 0.5em;
 	font-size: 12px;
+	left: 237px;
+	top: 5px;
 }
 
 /* Icon from http://icondock.com/free/mini-pixel-icons */
@@ -737,7 +738,7 @@ div.recommendedTweet .tweetAttachSnapshot {
 	width: 280px;
 	margin-bottom: 0px;
 	width: 300px !important;
-	top: -3px;
+	top: -4px;
 }
 
 .tweetShortenUrl {
@@ -753,12 +754,12 @@ div.recommendedTweet .tweetAttachSnapshot {
 	position: relative;
 	top: 0px;
 	padding: 0px;
-	height: 20px;
+	height: 19px;
 	font-size: 13px;
 }
 
 div.tweetUrlRow .tweetUrl {
-	top: 6px;
+	top: 7px;
 	left: 1px;
 }
 
@@ -871,6 +872,9 @@ i {
 	position: relative;
 	padding-left: 2px;
 	padding-right: 5px;
+	display: inline;
+	top: 9px;
+	left: 240px;
 }
 
 .tweetAttachSnapshotCheckbox {
