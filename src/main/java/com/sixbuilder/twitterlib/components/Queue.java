@@ -158,7 +158,6 @@ public class Queue {
 				ti.setPubTargetDisplay(s);
 				tweetItemDAO.update(accountsRoot, userId, ti);
 			}
-			
 		}		
     }
     
