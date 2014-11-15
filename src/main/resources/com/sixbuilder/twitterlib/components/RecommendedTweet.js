@@ -10,8 +10,8 @@ function initializeRecommendedTweet(options) {
 	var outerDiv = $j('#' + options.id);
 //	var publishCheckbox = outerDiv.find('input.publishTweet');
 	var isPublish = outerDiv.find('textarea.isPublish').text();
-	var shortenUrlButton = outerDiv.find('input.tweetShortenUrl');
-	var shortenUrlText = outerDiv.find('input.tweetUrl');
+//	var shortenUrlButton = outerDiv.find('input.tweetShortenUrl');
+//	var shortenUrlText = outerDiv.find('input.tweetUrl');
 	var textarea = outerDiv.find('div.tweetText textarea');
 	var summaryText = outerDiv.find('div.tweetText p');
 	var characterCount = outerDiv.find('.tweetCharacterCount');
@@ -73,7 +73,7 @@ function initializeRecommendedTweet(options) {
 	
 	function selectImage() {
 		var opacity=1;
-		if(isPublish=="true"&&!attachSnapshotsCheckbox[0].checked) {
+		if(isPublish=="true"&&attachSnapshotsCheckbox[0]&&!attachSnapshotsCheckbox[0].checked) {
 			opacity=.2;
 		}
 		var el=outerDiv.find('textarea.imgIdx');
@@ -119,56 +119,6 @@ function initializeRecommendedTweet(options) {
 	// publish checkbox
 	//T5.initializers.updateZoneOnEvent('click', publishCheckbox.attr('id'), '^', options.publishUrl);
 	
-//	shortenUrlButton.click(function(event) {
-//		var eventLink=options.shortenUrlUrl;
-//		var val=shortenUrlText[0].value;
-//		val=toBinaryString(val);
-//		eventLink=eventLink.replace("6BUILDERTOKEN",val);
-//		$j.ajax(eventLink).done(function(result) {
-//			var shortenedUrl = result.url;
-//			var newSummary = textarea.val().replace(outerDiv.attr('data-original-url'), shortenedUrl);
-//			newSummary = newSummary.replace(/^(\[url=)?(https?:\/\/)?(www\.|\S+?\.)(\S+?\.)?\S+$\s*/mg, '');
-//			if (newSummary.indexOf(shortenedUrl) < 0) {
-//				newSummary = newSummary + ' ' + shortenedUrl;
-//			}
-//			textarea.val(newSummary);
-//			summaryText.text(newSummary);
-//			handleSummaryChange();
-//			// now get the new images
-//			var el=outerDiv.find("a.gtu");
-//			el.attr("href",shortenedUrl);
-//			var v=result.snapshotUrl;
-//			if(v) {
-//				el=outerDiv.find("a.urlSnapshotTarget");
-//				el.attr("href",v);
-//				el=outerDiv.find("img.urlDetailSnapshot");
-//				el.attr("src",v).load();
-//			}
-//			v=result.imgOne;
-//			if(v) {
-//				el=outerDiv.find("a.imgOneSnapshotTarget");
-//				el.attr("href",v);
-//				el=outerDiv.find("img.imgOneUrl");
-//				el.attr("src",v).load();
-//			}
-//			v=result.imgTwo;
-//			if(v) {
-//				el=outerDiv.find("a.imgTwoSnapshotTarget");
-//				el.attr("href",v);
-//				el=outerDiv.find("img.imgTwoUrl");
-//				el.attr("src",v).load();
-//			}
-//			v=result.imgThree;
-//			if(v) {
-//				el=outerDiv.find("a.imgThreeSnapshotTarget");
-//				el.attr("href",v);
-//				el=outerDiv.find("img.imgThreeUrl");
-//				el.attr("src",v).load();
-//			}
-//		});
-//		event.preventDefault();
-//	});
-//	
 	outerDiv.find('input.tweetSave').click(function(event) {
 		modeDetail();
 	});
@@ -189,6 +139,10 @@ function initializeRecommendedTweet(options) {
 			//summaryContainer.hide();
 			acknowledgeDataMode();
 		//	disablePublishCheckbox();
+			var eventLink=options.setDetailMode;
+			$j.ajax(eventLink).done(function(result) {
+				
+			});
 		}
 		event.preventDefault();
 	});

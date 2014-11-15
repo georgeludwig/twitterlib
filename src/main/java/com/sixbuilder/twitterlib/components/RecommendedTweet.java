@@ -123,10 +123,9 @@ public class RecommendedTweet implements ClientElement {
 		url=tweet.getUrl();
 		JSONObject options = new JSONObject();
 		options.put("id", clientId);
-		options.put("publishUrl", resources.createEventLink("publish", tweet.getTweetId()).toAbsoluteURI());
+		//options.put("publishUrl", resources.createEventLink("publish", tweet.getTweetId()).toAbsoluteURI());
+		options.put("setDetailMode", resources.createEventLink("setDetailMode", tweet.getTweetId()).toAbsoluteURI());
 		Object[] parm= { "6BUILDERTOKEN",tweet.getTweetId()};
-		//options.put("selectImage", resources.createEventLink("selectImage",parm).toAbsoluteURI());
-		options.put("shortenUrlUrl", resources.createEventLink("shortenUrl", parm).toAbsoluteURI());
 		options.put("saveAttachSnapshot", resources.createEventLink("saveAttachSnapshot", parm).toAbsoluteURI());
 		options.put("saveImgIdx", resources.createEventLink("saveImgIdx", parm).toAbsoluteURI());
 		javaScriptSupport.addScript(String.format("initializeRecommendedTweet(%s);", options)); 
@@ -184,12 +183,10 @@ public class RecommendedTweet implements ClientElement {
 	}
 	
 	private Object queue(TweetItem item) {
-		item.setPublish(true);
 		return triggerEvent(RecommendedTweetConstants.PUBLISH_TWEET_EVENT, item);
 	}
 	
 	private Object meh(TweetItem item) {	
-		item.setPublish(false);
 		return triggerEvent(RecommendedTweetConstants.MEH_TWEET_EVENT, item);
 	}
 	
@@ -305,24 +302,34 @@ public class RecommendedTweet implements ClientElement {
 		return null;
 	}
 	
-	private String shortenUrlUsingBitly(User user,String url) throws Exception {
-		// bitly encode url
-		String bitlyUserName = user.getBitlyUserName();
-		String bitlyApiKey = user.getBitlyApiKey();
-		if((bitlyUserName==null||bitlyUserName.trim().length()==0) ||
-				(bitlyApiKey==null||bitlyApiKey.trim().length()==0)) {
-			bitlyUserName=User.DEFAULT_BITLY_USERNAME;
-			bitlyApiKey=User.DEFAULT_BITLY_APIKEY;
-			System.out.println("encoding bitly using default bitly credentials");
-		}
+	public void onSetDetailMode(String tweetId) {
 		try {
-			Url u = as(bitlyUserName, bitlyApiKey).call(shorten(url));
-			String shortUrl=u.getShortUrl();
-			return shortUrl;
-		} catch(BitlyException e) {
-			return url;
+			TweetItem ti=tweetItemDAO.findById(accountsRoot, userId, tweetId);
+			ti.setDataMode(TweetItem.DATAMODE_DETAIL);
+			tweetItemDAO.update(accountsRoot, userId, ti);
+		} catch(Exception e) {
+			e.printStackTrace();
 		}
 	}
+	
+//	private String shortenUrlUsingBitly(User user,String url) throws Exception {
+//		// bitly encode url
+//		String bitlyUserName = user.getBitlyUserName();
+//		String bitlyApiKey = user.getBitlyApiKey();
+//		if((bitlyUserName==null||bitlyUserName.trim().length()==0) ||
+//				(bitlyApiKey==null||bitlyApiKey.trim().length()==0)) {
+//			bitlyUserName=User.DEFAULT_BITLY_USERNAME;
+//			bitlyApiKey=User.DEFAULT_BITLY_APIKEY;
+//			System.out.println("encoding bitly using default bitly credentials");
+//		}
+//		try {
+//			Url u = as(bitlyUserName, bitlyApiKey).call(shorten(url));
+//			String shortUrl=u.getShortUrl();
+//			return shortUrl;
+//		} catch(BitlyException e) {
+//			return url;
+//		}
+//	}
 	
 	private Object triggerEvent(final String event, final String id) {
 		return triggerEvent(event, findById(id));

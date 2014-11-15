@@ -135,7 +135,9 @@ public class RecommendedTweetDisplay {
 	
 	@OnEvent(RecommendedTweetConstants.PUBLISH_TWEET_EVENT)
 	public void publish(TweetItem tweetItem) throws Exception {
+		tweetItem.setDataMode(TweetItem.DATAMODE_DETAIL);
 		boolean isMoved=!tweetItem.isPublish();
+		tweetItem.setPublish(true);
 		// get queue settings for this user
 		getQueueSettingsRunnable qsr=new getQueueSettingsRunnable(queueType,userId,queueSettingsDAO.getRepo());
 		// get current contents of queue for user
@@ -179,7 +181,9 @@ public class RecommendedTweetDisplay {
 
 	@OnEvent(RecommendedTweetConstants.MEH_TWEET_EVENT)
 	public void meh(TweetItem tweetItem) throws Exception {
-		boolean isMoved=!tweetItem.isPublish();
+		tweetItem.setDataMode(TweetItem.DATAMODE_SUMMARY);
+		boolean isMoved=tweetItem.isPublish();
+		tweetItem.setPublish(false);
 		// remove corresponding QueueItem from queue, if it exists
 		List<QueueItem> itemList=queueItemDAO.getPending(queueType,userId);
 		for(QueueItem item:itemList) {
@@ -187,6 +191,7 @@ public class RecommendedTweetDisplay {
 				queueItemDAO.delete(item);
 		}
 		tweetItem.setPubTargetDisplay(null);
+		tweetItem.setDisplayOrder(50+tweetItem.getDisplayOrder());
 		tweetItemDAO.update(accountsRoot, userId, tweetItem);
 		// adjust set managers
 		SetManager cSm = getCurationSetManager(curationSetMgr);
@@ -203,6 +208,7 @@ public class RecommendedTweetDisplay {
 	@OnEvent(RecommendedTweetConstants.REVISE_TWEET_EVENT)
 	public void revise(TweetItem tweetItem) throws Exception {
 		String url=tweetItem.getUrl();
+		tweetItem.setDataMode(TweetItem.DATAMODE_DETAIL);
 		// start thread for images
 		getNewSnapshotWorker worker=new getNewSnapshotWorker(url);
 		Thread t=new Thread(worker);
@@ -216,6 +222,7 @@ public class RecommendedTweetDisplay {
 			String oldId=tweetItem.getTweetId();
 			tweetItem.setTweetId(String.valueOf(url.hashCode()));
 			tweetItem.setShortenedUrl(shortUrl);
+			tweetItem.setSummary(stripUrls(tweetItem.getSummary()).trim()+" "+shortUrl);
 			if(worker.resp.getSnapshotUrl()!=null) {
 				tweetItem.setSnapshotUrl(worker.resp.getSnapshotUrl());
 			}
@@ -245,6 +252,15 @@ public class RecommendedTweetDisplay {
 		if(tweetItem.isPublish())
 			ajaxResponseRenderer.addRender(publishingZone);
 		else ajaxResponseRenderer.addRender(curateZone);
+	}
+	
+	private String stripUrls(String input) {
+		String[] sa=input.split(" ");
+		for(int i=0;i<sa.length;i++) {
+			if(sa[i].startsWith("http://")||sa[i].startsWith("https://"))
+				input=input.replaceAll(sa[i], "");
+		}
+		return input;
 	}
 
 	private String shortenUrlUsingBitly(User user,String url) throws Exception {

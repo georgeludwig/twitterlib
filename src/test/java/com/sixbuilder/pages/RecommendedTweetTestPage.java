@@ -3,6 +3,7 @@ package com.sixbuilder.pages;
 import java.io.File;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
@@ -26,9 +27,11 @@ import com.sixbuilder.datatypes.account.User;
 import com.sixbuilder.datatypes.persistence.PendingTweetFileUtil;
 import com.sixbuilder.datatypes.persistence.PersistenceUtil;
 import com.sixbuilder.datatypes.twitter.TweetItem;
+import com.sixbuilder.datatypes.twitter.TweetItemComparatorPending;
 import com.sixbuilder.jobsequence.discovery.JobDiscoverContentOfMutualInterest;
 import com.sixbuilder.twitterlib.RecommendedTweetConstants;
 import com.sixbuilder.twitterlib.components.RecommendedTweet;
+import com.sixbuilder.twitterlib.helpers.TweetItemComparatorByDisplayOrder;
 import com.sixbuilder.twitterlib.helpers.TweetItemComparatorByTargetDate;
 import com.sixbuilder.twitterlib.services.QueueItemDAO;
 import com.sixbuilder.twitterlib.services.TweetItemDAO;
@@ -72,10 +75,16 @@ public class RecommendedTweetTestPage {
 		InputStream is = classLoader.getResourceAsStream("pendingTweets.txt");
 		File target = new File(userPath+SerializableRecordHelper.FILE_SEPARATOR + "pendingTweets.txt");
 		FileUtil.copy(is, target);
-		// create snapshots, assing ids
 		PendingTweetFileUtil util=new PendingTweetFileUtil(AbstractTestSixBuilder.getTestUserPath()+PendingTweetFileUtil.FILENAME);	
-		// get snapshots and bitly
+		// create snapshots, assign ids
 		JobDiscoverContentOfMutualInterest.createSnapshotsAndBitly(new User(), util,5);
+		// sort tweet items by score, and assign display order
+		ArrayList<TweetItem>tial=new ArrayList<TweetItem>();
+		tial.addAll(util.getPendingTweetMap().values());
+		Collections.sort(tial,new TweetItemComparatorPending());
+		for(int i=0;i<tial.size();i++) {
+			tial.get(i).setDisplayOrder(50-i);
+		}
 		util.serialize();
 		// create curation setitems
 		File testRootDir=new File(AbstractTestSixBuilder.getTestRoot());
@@ -117,6 +126,7 @@ public class RecommendedTweetTestPage {
 			if (c.contains(new SetItemImpl(ti.getTweetId())))
 				ret.add(ti);
 		}
+		Collections.sort(ret,new TweetItemComparatorByDisplayOrder());
 		return ret;
 	}
 
