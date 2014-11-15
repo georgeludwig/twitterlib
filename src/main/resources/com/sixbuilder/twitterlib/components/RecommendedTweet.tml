@@ -37,9 +37,7 @@
 			</div>
 			<span class="tweetDeleteLink"> <a href="#"
 				t:type="EventLink" t:event="delete" t:context="tweet.tweetId"
-				t:zone="^"> <i t:type="twitterlib/FontAwesomeIcon"
-					t:name="fa-times" /> <i t:type="twitterlib/FontAwesomeIcon"
-					t:name="fa-times-circle" />
+				t:zone="^"> <i t:type="twitterlib/FontAwesomeIcon" t:name="fa-times" /> <i t:type="twitterlib/FontAwesomeIcon" t:name="fa-times-circle" />
 				</a>
 			</span>
 		</div>
@@ -49,8 +47,7 @@
 				<div class="targetTime">will be published at: ${tweet.pubTargetDisplay}</div>
 			</t:if>
 			<div class="tweetText">
-				<textarea class="editableTweet" id="textarea_${tweet.tweetId}"
-					t:type="TextArea" t:id="summary">${tweet.summary}</textarea>
+				<textarea class="editableTweet" id="textarea_${tweet.tweetId}" t:type="TextArea" t:id="summary">${tweet.summary}</textarea>
 			</div>
 			<div class="tweetEditSecondRow">
 				<div class="tweetSuggestedHashtags">
@@ -63,9 +60,9 @@
 				<span class="tweetCharacterCount">${tweet.summary.length()}</span>
 			</div>
 			<div class="tweetUrlRow">
-				<input class="tweetShortenUrl btn btn-default" type="submit"
-					value="&#xf0c1;" /> <input class="tweetUrl" type="text"
-					value="${tweet.url}" />
+				<input class="tweetShortenUrl btn btn-default" type="submit" value="&#xf0c1;" t:type="Submit"  t:id="shorten"/>
+				<!--  <input class="tweetUrl" type="text" value="${tweet.url}" /> -->
+				<t:textfield t:id="url" class="tweetUrl" />
 				<textarea class="imgIdx" id="imgIdx_${tweet.tweetId}" t:type="TextArea" t:id="imgIdx" style="display: none;" >${tweet.imgIdx}</textarea>
 				<textarea class="isPublish" id="isPublish_${tweet.tweetId}" t:type="TextArea" t:id="isPublish" style="display: none;" >${tweet.publish}</textarea>
 				<!--  <input class="imgIdx" type="number" value="${tweet.imgIdx}" style="display: none;" />  -->

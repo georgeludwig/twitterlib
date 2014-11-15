@@ -22,6 +22,8 @@ final public class RecommendedTweetConstants {
 	 */
 	public static final String PUBLISH_TWEET_EVENT = "publishTweet";
 
+	public static final String REVISE_TWEET_EVENT = "reviseTweet";
+	
 	/**
 	 * Name of the event triggered by {@link RecommendedTweet} when the user clicks on the Save (Queue) button.
 	 * The event context will be the tweet item. 

@@ -1,5 +1,8 @@
 package com.sixbuilder.twitterlib.components;
 
+import static com.rosaloves.bitlyj.Bitly.as;
+import static com.rosaloves.bitlyj.Bitly.shorten;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,10 +23,17 @@ import org.apache.tapestry5.services.ajax.AjaxResponseRenderer;
 import com.georgeludwigtech.common.setmanager.SetItemImpl;
 import com.georgeludwigtech.common.setmanager.SetManager;
 import com.georgeludwigtech.concurrent.threadpool.ThreadPoolSession;
+import com.georgeludwigtech.urlsnapshotserviceclient.UrlSnapshotServiceClient;
+import com.georgeludwigtech.urlsnapshotserviceclient.UrlSnapshotServiceRequest;
+import com.georgeludwigtech.urlsnapshotserviceclient.UrlSnapshotServiceResponse;
+import com.rosaloves.bitlyj.BitlyException;
+import com.rosaloves.bitlyj.Url;
 import com.sixbuilder.actionqueue.QueueItem;
 import com.sixbuilder.actionqueue.QueueItemRepository;
 import com.sixbuilder.actionqueue.QueueItemStatus;
 import com.sixbuilder.actionqueue.QueueType;
+import com.sixbuilder.datatypes.account.AccountManager;
+import com.sixbuilder.datatypes.account.User;
 import com.sixbuilder.datatypes.persistence.PersistenceUtil;
 import com.sixbuilder.datatypes.twitter.TweetItem;
 import com.sixbuilder.twitterlib.RecommendedTweetConstants;
@@ -118,10 +128,14 @@ public class RecommendedTweetDisplay {
 		triggerEvent(RecommendedTweetConstants.DELETE_TWEET_EVENT, resources.getContainerResources());
 		ajaxResponseRenderer.addRender(curateZone);
 		ajaxResponseRenderer.addRender(publishingZone);
+		if(tweetItem.isPublish()) {
+			ajaxResponseRenderer.addRender(publishingZone);
+		} else ajaxResponseRenderer.addRender(curateZone);
 	}
 	
 	@OnEvent(RecommendedTweetConstants.PUBLISH_TWEET_EVENT)
 	public void publish(TweetItem tweetItem) throws Exception {
+		boolean isMoved=!tweetItem.isPublish();
 		// get queue settings for this user
 		getQueueSettingsRunnable qsr=new getQueueSettingsRunnable(queueType,userId,queueSettingsDAO.getRepo());
 		// get current contents of queue for user
@@ -157,12 +171,15 @@ public class RecommendedTweetDisplay {
 		cSm.removeSetItem(tweetItem.getTweetId());
 		qSm.addSetItem(new SetItemImpl(tweetItem.getTweetId()));
 		triggerEvent(RecommendedTweetConstants.PUBLISH_TWEET_EVENT, resources.getContainerResources());
-		ajaxResponseRenderer.addRender(curateZone);
-		ajaxResponseRenderer.addRender(publishingZone);
+		if(isMoved) {
+			ajaxResponseRenderer.addRender(curateZone);
+			ajaxResponseRenderer.addRender(publishingZone);
+		}
 	}
 
 	@OnEvent(RecommendedTweetConstants.MEH_TWEET_EVENT)
 	public void meh(TweetItem tweetItem) throws Exception {
+		boolean isMoved=!tweetItem.isPublish();
 		// remove corresponding QueueItem from queue, if it exists
 		List<QueueItem> itemList=queueItemDAO.getPending(queueType,userId);
 		for(QueueItem item:itemList) {
@@ -177,10 +194,103 @@ public class RecommendedTweetDisplay {
 		cSm.addSetItem(new SetItemImpl(tweetItem.getTweetId()));
 		qSm.removeSetItem(tweetItem.getTweetId());
 		triggerEvent(RecommendedTweetConstants.MEH_TWEET_EVENT, resources.getContainerResources());
-		ajaxResponseRenderer.addRender(curateZone);
-		ajaxResponseRenderer.addRender(publishingZone);
+		if(isMoved) {
+			ajaxResponseRenderer.addRender(curateZone);
+			ajaxResponseRenderer.addRender(publishingZone);
+		}
 	}
 
+	@OnEvent(RecommendedTweetConstants.REVISE_TWEET_EVENT)
+	public void revise(TweetItem tweetItem) throws Exception {
+		String url=tweetItem.getUrl();
+		// start thread for images
+		getNewSnapshotWorker worker=new getNewSnapshotWorker(url);
+		Thread t=new Thread(worker);
+		t.start();
+		try {
+			String accountPath=AccountManager.getAccountPath(accountsRoot.toString(), userId);
+			User user=new User(AccountManager.getUserFile(accountPath));
+			String shortUrl=shortenUrlUsingBitly(user,url);
+			t.join();
+			tweetItem.setUrl(url);
+			String oldId=tweetItem.getTweetId();
+			tweetItem.setTweetId(String.valueOf(url.hashCode()));
+			tweetItem.setShortenedUrl(shortUrl);
+			if(worker.resp.getSnapshotUrl()!=null) {
+				tweetItem.setSnapshotUrl(worker.resp.getSnapshotUrl());
+			}
+			List<String>imgList=worker.resp.getImageUrlList();
+			if(imgList!=null) {
+				if(imgList.size()>0)
+					tweetItem.setImgOneUrl(imgList.get(0));
+				if(imgList.size()>1)
+					tweetItem.setImgTwoUrl(imgList.get(1));
+				if(imgList.size()>2)
+					tweetItem.setImgThreeUrl(imgList.get(2));
+			}
+			tweetItemDAO.update(accountsRoot, userId, tweetItem);
+			if(tweetItem.isPublish()) {
+				SetManager qm=PersistenceUtil.getQueuedSetManager(accountsRoot, userId);
+				qm.removeSetItem(oldId);
+				qm.addSetItem(new SetItemImpl(tweetItem.getTweetId()));
+			} else {
+				SetManager cm=PersistenceUtil.getCurationSetManager(accountsRoot, userId);
+				cm.removeSetItem(oldId);
+				cm.addSetItem(new SetItemImpl(tweetItem.getTweetId()));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		triggerEvent(RecommendedTweetConstants.REVISE_TWEET_EVENT, resources.getContainerResources());
+		if(tweetItem.isPublish())
+			ajaxResponseRenderer.addRender(publishingZone);
+		else ajaxResponseRenderer.addRender(curateZone);
+	}
+
+	private String shortenUrlUsingBitly(User user,String url) throws Exception {
+		// bitly encode url
+		String bitlyUserName = user.getBitlyUserName();
+		String bitlyApiKey = user.getBitlyApiKey();
+		if((bitlyUserName==null||bitlyUserName.trim().length()==0) ||
+				(bitlyApiKey==null||bitlyApiKey.trim().length()==0)) {
+			bitlyUserName=User.DEFAULT_BITLY_USERNAME;
+			bitlyApiKey=User.DEFAULT_BITLY_APIKEY;
+			System.out.println("encoding bitly using default bitly credentials");
+		}
+		try {
+			Url u = as(bitlyUserName, bitlyApiKey).call(shorten(url));
+			String shortUrl=u.getShortUrl();
+			return shortUrl;
+		} catch(BitlyException e) {
+			return url;
+		}
+	}
+	
+	class getNewSnapshotWorker implements Runnable {
+	
+		private String url;
+		public UrlSnapshotServiceResponse resp;
+		
+		getNewSnapshotWorker(String url) {
+			this.url=url;
+		}
+	
+		@Override
+		public void run() {
+			try {
+				UrlSnapshotServiceRequest req=new UrlSnapshotServiceRequest();
+				req.setWidth(1280);
+				req.setHeight(1024);
+				req.setTargetUrl(url);
+				req.setServiceUrl("http://54.191.249.251:3001");
+				resp=UrlSnapshotServiceClient.snap(req);
+			} catch(Exception e) {
+				// 
+			}
+		}
+	
+	}
+	
 	// this is the event called by ajax poller to update publishing list, if publishing daemon has published something
 	Object onRefreshPublishingZone() {
 		return request.isXHR() ? publishingZone.getBody() : null;
