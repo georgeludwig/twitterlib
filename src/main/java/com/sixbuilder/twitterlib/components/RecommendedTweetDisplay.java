@@ -146,33 +146,41 @@ public class RecommendedTweetDisplay {
 		rl.add(qsr);
 		rl.add(qir);
 		ThreadPoolSession.execute(rl,Util.getUiThreadPool());
-		// create new queueItem
-		QueueItem actionQueueItem=new QueueItem();
-		actionQueueItem.setDateCreated(System.currentTimeMillis());
-		actionQueueItem.setTweetId(tweetItem.getTweetId());
-		actionQueueItem.setQueueType(queueType);
-		actionQueueItem.setStatus(QueueItemStatus.PENDING);
-		actionQueueItem.setUserId(userId);
-		// re-calc target times based on current queue settings
-		boolean changed=TargetTimeCalculator.calcTargetTime(qsr.queueSettings, actionQueueItem, qir.queueItems, System.currentTimeMillis(),false);
-		// serialize new queue item
-		queueItemDAO.add(actionQueueItem);
-		// set target date for tweet item
-		tweetItem.setPublish(true);
-		tweetItem.setTargetPublicationDate(actionQueueItem.getTargetDate());
-		tweetItem.setPubTargetDisplay(TargetTimeCalculator.getTimeDisplayString(qsr.queueSettings.getTimeZoneId(), actionQueueItem.getTargetDate()));
+		// only create new queue item if there isn't already on
+		boolean createNew=true;
+		for(QueueItem qi:qir.queueItems) {
+			if(qi.getTweetId().equals(tweetItem.getTweetId()))
+				createNew=false;
+		}
+		if(createNew) {
+			// create new queueItem
+			QueueItem actionQueueItem=new QueueItem();
+			actionQueueItem.setDateCreated(System.currentTimeMillis());
+			actionQueueItem.setTweetId(tweetItem.getTweetId());
+			actionQueueItem.setQueueType(queueType);
+			actionQueueItem.setStatus(QueueItemStatus.PENDING);
+			actionQueueItem.setUserId(userId);
+			// re-calc target times based on current queue settings
+			boolean changed=TargetTimeCalculator.calcTargetTime(qsr.queueSettings, actionQueueItem, qir.queueItems, System.currentTimeMillis(),false);
+			// serialize new queue item
+			queueItemDAO.add(actionQueueItem);
+			// set target date for tweet item
+			tweetItem.setPublish(true);
+			tweetItem.setTargetPublicationDate(actionQueueItem.getTargetDate());
+			tweetItem.setPubTargetDisplay(TargetTimeCalculator.getTimeDisplayString(qsr.queueSettings.getTimeZoneId(), actionQueueItem.getTargetDate()));
+			// re-serialize existing items if they were changed
+			if(changed&&qir.queueItems.size()>0) {
+				queueItemDAO.update(qir.queueItems);
+			}
+			// adjust set managers
+			SetManager cSm = getCurationSetManager(curationSetMgr);
+			SetManager qSm = getQueuedSetManager(queuedSetMgr);
+			cSm.removeSetItem(tweetItem.getTweetId());
+			qSm.addSetItem(new SetItemImpl(tweetItem.getTweetId()));
+			triggerEvent(RecommendedTweetConstants.PUBLISH_TWEET_EVENT, resources.getContainerResources());
+		}
 		// serialize tweet item, to save it's target date for proper sorting
 		tweetItemDAO.update(accountsRoot,userId,tweetItem);
-		// re-serialize existing items if they were changed
-		if(changed&&qir.queueItems.size()>0) {
-			queueItemDAO.update(qir.queueItems);
-		}
-		// adjust set managers
-		SetManager cSm = getCurationSetManager(curationSetMgr);
-		SetManager qSm = getQueuedSetManager(queuedSetMgr);
-		cSm.removeSetItem(tweetItem.getTweetId());
-		qSm.addSetItem(new SetItemImpl(tweetItem.getTweetId()));
-		triggerEvent(RecommendedTweetConstants.PUBLISH_TWEET_EVENT, resources.getContainerResources());
 		if(isMoved) {
 			ajaxResponseRenderer.addRender(curateZone);
 			ajaxResponseRenderer.addRender(publishingZone);
