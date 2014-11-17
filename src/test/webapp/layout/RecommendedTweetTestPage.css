@@ -518,9 +518,9 @@ div.recommendedTweetSummaryView div.tweetPublishColumn,div.recommendedTweetSumma
 	margin-right: 0;
 }
 
-div.recommendedTweet[data-mode=summary]:hover span.tweetDeleteLink {
+/* div.recommendedTweet[data-mode=summary]:hover span.tweetDeleteLink {
 	display: inline;
-}
+} */
 
 div.recommendedTweet span.tweetDeleteLink {
 	display: none;

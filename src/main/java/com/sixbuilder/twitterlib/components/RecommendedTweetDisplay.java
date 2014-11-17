@@ -14,6 +14,7 @@ import org.apache.tapestry5.annotations.Events;
 import org.apache.tapestry5.annotations.InjectComponent;
 import org.apache.tapestry5.annotations.OnEvent;
 import org.apache.tapestry5.annotations.Parameter;
+import org.apache.tapestry5.annotations.Persist;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.corelib.components.Zone;
 import org.apache.tapestry5.ioc.annotations.Inject;
@@ -187,6 +188,16 @@ public class RecommendedTweetDisplay {
 		}
 	}
 
+	@Persist
+	private Integer mehInc;
+	
+	private Integer getMehInc() {
+		if(mehInc==null)
+			mehInc=50;
+		mehInc+=50;
+		return mehInc;
+	}
+	
 	@OnEvent(RecommendedTweetConstants.MEH_TWEET_EVENT)
 	public void meh(TweetItem tweetItem) throws Exception {
 		tweetItem.setDataMode(TweetItem.DATAMODE_SUMMARY);
@@ -199,7 +210,7 @@ public class RecommendedTweetDisplay {
 				queueItemDAO.delete(item);
 		}
 		tweetItem.setPubTargetDisplay(null);
-		tweetItem.setDisplayOrder(50+tweetItem.getDisplayOrder());
+		tweetItem.setDisplayOrder(getMehInc()+tweetItem.getDisplayOrder());
 		tweetItemDAO.update(accountsRoot, userId, tweetItem);
 		// adjust set managers
 		SetManager cSm = getCurationSetManager(curationSetMgr);

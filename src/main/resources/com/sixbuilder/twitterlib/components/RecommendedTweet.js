@@ -29,6 +29,7 @@ function initializeRecommendedTweet(options) {
 	var viewImg = outerDiv.find('i.fa-eye');
 	var toggleImgLeft = outerDiv.find('i.fa-toggle-left');
 	var toggleImgRight = outerDiv.find('i.fa-toggle-right');
+	var btnMeh=outerDiv.find('input.tweetCancel');
 	var btnSave=outerDiv.find('input.tweetSave');
 	
 	acknowledgeDataMode() ;
@@ -36,9 +37,11 @@ function initializeRecommendedTweet(options) {
 	selectImage();
 	
 	if(isPublish=="true") {
-		btnSave.attr("value","Update");
+		btnSave.attr("value","Save");
+		btnMeh.attr("value","Clear");
 	} else {
 		btnSave.attr("value","Queue");
+		btnMeh.attr("value","Meh");
 	}
 	
 	toggleImgLeft.click(function(event) {
