@@ -8,6 +8,7 @@ function initializeRecommendedTweet(options) {
 	var TWEET_COUNT_ERROR = 'tweetCharacterCountError'; 
 	
 	var outerDiv = $j('#' + options.id);
+	var imgCount=options.imgCount;
 //	var publishCheckbox = outerDiv.find('input.publishTweet');
 	var isPublish = outerDiv.find('textarea.isPublish').text();
 //	var shortenUrlButton = outerDiv.find('input.tweetShortenUrl');
@@ -43,7 +44,7 @@ function initializeRecommendedTweet(options) {
 	toggleImgLeft.click(function(event) {
 		imgIdx--;
 		if(imgIdx<0) {
-			imgIdx=3;
+			imgIdx=imgCount;
 		}
 		selectImage();
 		// save
@@ -58,7 +59,7 @@ function initializeRecommendedTweet(options) {
 	
 	toggleImgRight.click(function(event) {
 		imgIdx++;
-		if(imgIdx>3) {
+		if(imgIdx>imgCount) {
 			imgIdx=0;
 		}
 		selectImage();

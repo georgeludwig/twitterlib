@@ -118,17 +118,29 @@ public class RecommendedTweet implements ClientElement {
 		summary = tweet.getSummary();
 		imgIdx=tweet.getImgIdx();
 		isPublish=(tweet.isPublish()) ? "true":"false";
-		attachSnapshot = tweet.isAttachSnapshot();
+		attachSnapshot = tweet.isAttachSnapshot(); 
 		clientId = javaScriptSupport.allocateClientId(resources);
 		url=tweet.getUrl();
 		JSONObject options = new JSONObject();
 		options.put("id", clientId);
+		options.put("imgCount", getImgCount());
 		//options.put("publishUrl", resources.createEventLink("publish", tweet.getTweetId()).toAbsoluteURI());
 		options.put("setDetailMode", resources.createEventLink("setDetailMode", tweet.getTweetId()).toAbsoluteURI());
 		Object[] parm= { "6BUILDERTOKEN",tweet.getTweetId()};
 		options.put("saveAttachSnapshot", resources.createEventLink("saveAttachSnapshot", parm).toAbsoluteURI());
 		options.put("saveImgIdx", resources.createEventLink("saveImgIdx", parm).toAbsoluteURI());
-		javaScriptSupport.addScript(String.format("initializeRecommendedTweet(%s);", options)); 
+		javaScriptSupport.addScript(String.format("initializeRecommendedTweet(%s);", options));
+	}
+	
+	private int getImgCount() {
+		int ret=0;
+		if(tweet.getImgOneUrl()!=null&&tweet.getImgOneUrl().length()>0)
+			ret=1;
+		if(tweet.getImgTwoUrl()!=null&&tweet.getImgTwoUrl().length()>0)
+			ret=2;
+		if(tweet.getImgThreeUrl()!=null&&tweet.getImgThreeUrl().length()>0)
+			ret=3;
+		return ret;
 	}
 	
 	/**

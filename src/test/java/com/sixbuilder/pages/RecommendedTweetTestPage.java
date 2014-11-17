@@ -76,22 +76,23 @@ public class RecommendedTweetTestPage {
 		File target = new File(userPath+SerializableRecordHelper.FILE_SEPARATOR + "pendingTweets.txt");
 		FileUtil.copy(is, target);
 		PendingTweetFileUtil util=new PendingTweetFileUtil(AbstractTestSixBuilder.getTestUserPath()+PendingTweetFileUtil.FILENAME);	
+		// sort tweet items by score, and assign display order
+		JobDiscoverContentOfMutualInterest.sortByScoreAssignDisplayOrder(util);
 		// create snapshots, assign ids
 		JobDiscoverContentOfMutualInterest.createSnapshotsAndBitly(new User(), util,5);
-		// sort tweet items by score, and assign display order
-		ArrayList<TweetItem>tial=new ArrayList<TweetItem>();
-		tial.addAll(util.getPendingTweetMap().values());
-		Collections.sort(tial,new TweetItemComparatorPending());
-		for(int i=0;i<tial.size();i++) {
-			tial.get(i).setDisplayOrder(50-i);
-		}
-		util.serialize();
 		// create curation setitems
 		File testRootDir=new File(AbstractTestSixBuilder.getTestRoot());
 		SetManager curationSetMgr = PersistenceUtil.getCurationSetManager(testRootDir,AbstractTestSixBuilder.PRIMARY_TEST_USER_NAME);
-		for (TweetItem ti : getTweetItems()) {
+		for (TweetItem ti : util.getPendingTweetMap().values()) {
 			curationSetMgr.addSetItem(new SetItemImpl(ti.getTweetId()));
+			if(ti.getImgOneUrl().equals(TweetItem.UNINIT_IMG_ONE_URL))
+				ti.setImgOneUrl("");
+			if(ti.getImgTwoUrl().equals(TweetItem.UNINIT_IMG_TWO_URL))
+				ti.setImgTwoUrl("");
+			if(ti.getImgThreeUrl().equals(TweetItem.UNINIT_IMG_THREE_URL))
+				ti.setImgThreeUrl("");
 		}
+		util.serialize();
 		// clear out any existing queue items
 		List<QueueItem>itemList=queueItemDAO.getAll();
 		queueItemDAO.delete(itemList);
