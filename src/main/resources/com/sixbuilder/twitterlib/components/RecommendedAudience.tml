@@ -1,0 +1,48 @@
+<div xmlns:t="http://tapestry.apache.org/schema/tapestry_5_3.xsd" xmlns:p="tapestry:parameter" class="recommendedAudience" >
+	<form autocomplete="off" t:type="Form" t:id="form" t:zone="recommendedAudienceZone">
+		<div class="profileContainer">
+			<div class="backgroundImg"><img src="${user.profileBannerUrl}"></img></div>
+			<div class="userImg">
+				<img src="${user.originalProfileImageUrl}" />
+			</div>
+			<div class="stats">
+				<table>
+					<thead>
+						<tr>
+							<th>Tweets</th>
+							<th>Following</th>
+							<th>Followers</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td><a href="https://twitter.com/${user.ScreenName}" target="_blank">${user.statusesCount}</a></td>
+							<td><a href="https://twitter.com/${user.ScreenName}/following" target="_blank">${user.friendsCount}</a></td>
+							<td><a href="https://twitter.com/${user.ScreenName}/followers" target="_blank">${user.followersCount}</a></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div class="name">
+				<div class="fullName">${user.name}</div>
+				<div class="screenName"><a href="https://twitter.com/${user.screenName}" target="_blank">&#64;${user.screenName}</a></div>
+			</div>
+			<div class="summary">
+				${user.description}
+			</div>
+			<div class="coords">
+				${user.location}
+				<t:if test="user.url">
+					&middot; <a href="${user.url}" target="_blank">${user.url}</a>
+				</t:if>
+			</div>
+			<div class="buttons">
+				<t:if test="previousUserId">
+					<input class="audiencePrevious btn btn-warning" type="submit" value="Undo" t:type="Submit" t:id="undo" />
+				</t:if>
+				<input class="audienceIgnore btn btn-warning" type="submit" value="Ignore" t:type="Submit" t:id="ignore" />
+				<input class="audienceFollow btn btn-primary" type="submit" value="Follow" t:type="Submit" t:id="follow" />
+			</div>
+		</div>
+	</form>
+</div>
