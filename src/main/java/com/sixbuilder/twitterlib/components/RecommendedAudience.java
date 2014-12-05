@@ -1,6 +1,7 @@
 package com.sixbuilder.twitterlib.components;
 
 import java.io.File;
+import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -122,4 +123,56 @@ public class RecommendedAudience {
 		return null;
 	}
 	
+	public String getProfileBannerUrl() throws Exception {
+		User u=getUser();
+		String s=u.getProfileBannerURL();
+		s=s.replace("web","");
+		s=s+"1500x500";
+		return s;
+	}
+	
+	public String getStatusesCount() throws Exception {
+		return format(getUser().getStatusesCount());
+	}
+	
+	public String getFollowersCount() throws Exception {
+		return format(getUser().getFollowersCount());
+	}
+	
+	public String getFriendsCount() throws Exception {
+		return format(getUser().getFriendsCount());
+	}
+	
+	private String format(int i) {
+		if(i<10000)
+			return formatDecimal(i);
+		if(i<1000000) {
+			double d=i;
+			d=d/1000;
+			String s=checkZ(formatK(d));
+			return s+"K";
+		}
+		double d=i;
+		d=d/1000000;
+		String s=checkZ(formatK(d));
+		return s+"M";
+	}
+	
+	private String checkZ(String s) {
+		if(s.endsWith(".0"))
+			s=s.replace(".0", "");
+		return s;
+	}
+	
+	private String formatDecimal(int i) {
+		DecimalFormat formatter = new DecimalFormat("#,###");
+		String ret=formatter.format(i);
+		return ret;
+	}
+	
+	private String formatK(double d) {
+		DecimalFormat formatter = new DecimalFormat("#,###.0");
+		String ret=formatter.format(d);
+		return ret;
+	}
 }
