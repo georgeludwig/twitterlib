@@ -29,11 +29,20 @@ public class RecommendedAudience {
 	
 	@Persist
 	@Property
-	Long currentUserId;
+	private String currentUserId;
 	
 	@Persist
-	@Property
-	Long previousUserId;
+	private String previousUserId;
+	
+
+	public String getPreviousUserId() {
+		String s=previousUserId;
+		return previousUserId;
+	}
+
+	public void setPreviousUserId(String previousUserId) {
+		this.previousUserId = previousUserId;
+	}
 
 	private User user;
 	/**
@@ -46,10 +55,8 @@ public class RecommendedAudience {
 			SetManager tasm=PersistenceUtil.getTargetAudienceSetManager(accountsRoot, userId);
 			Set<SetItem>set=tasm.getSet();
 			for(User u:getUserMap().values()) {
-				if(set.contains(new SetItemImpl(String.valueOf(u.getId())))&&user==null) {
-					if(currentUserId!=null)
-						previousUserId=currentUserId;
-					currentUserId=u.getId();
+				if(set.contains(new SetItemImpl(String.valueOf(u.getScreenName())))&&user==null) {
+					currentUserId=u.getScreenName();
 					user=u;
 				}
 			}
@@ -57,12 +64,12 @@ public class RecommendedAudience {
 		return user;
 	}
 	
-	public User getPreviouseUser() throws Exception {
-		User ret=getUserMap().get(previousUserId);
-		currentUserId=previousUserId;
-		previousUserId=null;
-		return ret;
-	}
+//	public User getPreviouseUser() throws Exception {
+//		User ret=getUserMap().get(previousUserId);
+//		currentUserId=previousUserId;
+//		setPreviousUserId(null);
+//		return ret;
+//	}
 
 	@Persist
 	private Map<Long,User>userMap;
@@ -101,7 +108,7 @@ public class RecommendedAudience {
 		follow=true;
 	}
 	
-	Object onSuccess() {
+	Object onSuccess() throws Exception {
 		if(undo)
 			return doUndo();
 		if(ignore)
@@ -111,15 +118,36 @@ public class RecommendedAudience {
 		return null;
 	}
 	
-	private Object doUndo() {
+	private Object doUndo() throws Exception {
+		SetItemImpl impl=new SetItemImpl(previousUserId);
+		SetManager ism=PersistenceUtil.getTargetAudienceIgnoreSetManager(accountsRoot, userId);
+		ism.removeSetItem(impl);
+		SetManager fsm=PersistenceUtil.getTargetAudienceFollowSetManager(accountsRoot, userId);
+		fsm.removeSetItem(impl);
+		SetManager sm=PersistenceUtil.getTargetAudienceSetManager(accountsRoot, userId);
+		sm.addSetItem(impl);
+		currentUserId=previousUserId;
+		setPreviousUserId(null);
 		return null;
 	}
 	
-	private Object doIgnore() {
+	private Object doIgnore() throws Exception {
+		SetItemImpl impl=new SetItemImpl(getUser().getScreenName());
+		SetManager ism=PersistenceUtil.getTargetAudienceIgnoreSetManager(accountsRoot, userId);
+		ism.addSetItem(impl);
+		SetManager sm=PersistenceUtil.getTargetAudienceSetManager(accountsRoot, userId);
+		sm.removeSetItem(impl);
+		setPreviousUserId(getUser().getScreenName());
 		return null;
 	}
 	
-	private Object doFollow() {
+	private Object doFollow() throws Exception {
+		SetItemImpl impl=new SetItemImpl(getUser().getScreenName());
+		SetManager fsm=PersistenceUtil.getTargetAudienceFollowSetManager(accountsRoot, userId);
+		fsm.addSetItem(impl);
+		SetManager sm=PersistenceUtil.getTargetAudienceSetManager(accountsRoot, userId);
+		sm.removeSetItem(impl);
+		setPreviousUserId(getUser().getScreenName());
 		return null;
 	}
 	

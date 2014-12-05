@@ -37,7 +37,7 @@ public class RecommendedAudienceTestPage {
 		List<User>userList=JobDiscoverNewUsers.readUsersFromJson(target);
 		SetManager sm=PersistenceUtil.getTargetAudienceSetManager(getAccountsRoot(),getUserId());
 		for(User u:userList) {
-			sm.addSetItem(new SetItemImpl(String.valueOf(u.getId())));
+			sm.addSetItem(new SetItemImpl(String.valueOf(u.getScreenName())));
 		}
 	}
 

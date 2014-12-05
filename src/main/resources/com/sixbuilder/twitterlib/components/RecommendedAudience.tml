@@ -2,7 +2,12 @@
 	<form autocomplete="off" t:type="Form" t:id="form" t:zone="recommendedAudienceZone">
 		<div class="profileContainer">
 			<div class="topHalf" style="height:250px;">
-				<div class="backgroundImg"><img src="${profileBannerUrl}" style="width:780px;" /></div>
+				<div class="backgroundImg">
+					<t:if test="user.profileBannerUrl">
+						<img src="${profileBannerUrl}" style="width:780px;" />
+					<p:else><img src="${asset:emptyBanner.png}" style="width:780px;" /></p:else>
+					</t:if>
+				</div>
 				<div class="userImg">
 					<img src="${user.originalProfileImageUrl}" style="height: 148px; width: 148px; border: 5px solid white; border-radius: 10px; position: relative; top: -90px; left: 20px;" />
 				</div>
