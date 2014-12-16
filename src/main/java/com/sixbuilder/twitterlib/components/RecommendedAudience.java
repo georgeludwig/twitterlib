@@ -7,9 +7,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.tapestry5.annotations.InjectComponent;
 import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Persist;
 import org.apache.tapestry5.annotations.Property;
+import org.apache.tapestry5.corelib.components.Zone;
+import org.apache.tapestry5.ioc.annotations.Inject;
+import org.apache.tapestry5.services.Request;
+import org.apache.tapestry5.services.ajax.AjaxResponseRenderer;
 
 import twitter4j.User;
 
@@ -27,6 +32,9 @@ public class RecommendedAudience {
 	@Parameter
 	String userId;
 	
+	@Parameter
+	Object returnPage;
+	
 	@Persist
 	@Property
 	private String currentUserId;
@@ -34,6 +42,15 @@ public class RecommendedAudience {
 	@Persist
 	private String previousUserId;
 	
+	@InjectComponent
+	private Zone recommendedAudienceZone;
+	
+	@Inject
+    private AjaxResponseRenderer ajaxResponseRenderer;
+	
+	@Inject
+	private Request request;
+
 
 	public String getPreviousUserId() {
 		String s=previousUserId;
@@ -108,17 +125,28 @@ public class RecommendedAudience {
 		follow=true;
 	}
 	
+	boolean okay;
+	void onSelectedFromOkay() {
+		okay=true;
+	}
+	
 	Object onSuccess() throws Exception {
 		if(undo)
-			return doUndo();
+			doUndo();
 		if(ignore)
-			return doIgnore();
+			doIgnore();
 		if(follow)
-			return doFollow();
+			doFollow();
+		if(okay) {
+			return doOkay();
+		}
+		if (request.isXHR()) {
+            ajaxResponseRenderer.addRender(recommendedAudienceZone);
+        }
 		return null;
 	}
 	
-	private Object doUndo() throws Exception {
+	private void doUndo() throws Exception {
 		SetItemImpl impl=new SetItemImpl(previousUserId);
 		SetManager ism=PersistenceUtil.getTargetAudienceIgnoreSetManager(accountsRoot, userId);
 		ism.removeSetItem(impl);
@@ -128,27 +156,28 @@ public class RecommendedAudience {
 		sm.addSetItem(impl);
 		currentUserId=previousUserId;
 		setPreviousUserId(null);
-		return null;
 	}
 	
-	private Object doIgnore() throws Exception {
+	private void doIgnore() throws Exception {
 		SetItemImpl impl=new SetItemImpl(getUser().getScreenName());
 		SetManager ism=PersistenceUtil.getTargetAudienceIgnoreSetManager(accountsRoot, userId);
 		ism.addSetItem(impl);
 		SetManager sm=PersistenceUtil.getTargetAudienceSetManager(accountsRoot, userId);
 		sm.removeSetItem(impl);
 		setPreviousUserId(getUser().getScreenName());
-		return null;
 	}
 	
-	private Object doFollow() throws Exception {
+	private void doFollow() throws Exception {
 		SetItemImpl impl=new SetItemImpl(getUser().getScreenName());
 		SetManager fsm=PersistenceUtil.getTargetAudienceFollowSetManager(accountsRoot, userId);
 		fsm.addSetItem(impl);
 		SetManager sm=PersistenceUtil.getTargetAudienceSetManager(accountsRoot, userId);
 		sm.removeSetItem(impl);
 		setPreviousUserId(getUser().getScreenName());
-		return null;
+	}
+	
+	private Object doOkay() {
+		return returnPage;
 	}
 	
 	public String getProfileBannerUrl() throws Exception {

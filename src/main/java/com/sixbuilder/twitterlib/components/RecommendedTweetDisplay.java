@@ -60,6 +60,7 @@ import com.sixbuilder.twitterlib.services.TweetItemDAO;
 public class RecommendedTweetDisplay {
 	
 	public static final String UPDATE_ALL_LISTS = "updateAllLists";
+	public static final String URLSNAPSHOTSERVICEURL="http://54.191.249.251:3001";
 	
 	private static final Object[] EMPTY_OBJECT_ARRAY = new Object[0];
 	
@@ -241,7 +242,7 @@ public class RecommendedTweetDisplay {
 			String oldId=tweetItem.getTweetId();
 			tweetItem.setTweetId(String.valueOf(url.hashCode()));
 			tweetItem.setShortenedUrl(shortUrl);
-			tweetItem.setSummary(stripUrls(tweetItem.getSummary()).trim()+" "+shortUrl);
+			tweetItem.setSummary(worker.resp.getUrlTitle().trim()+" "+shortUrl);
 			if(worker.resp.getSnapshotUrl()!=null) {
 				tweetItem.setSnapshotUrl(worker.resp.getSnapshotUrl());
 			}
@@ -317,7 +318,7 @@ public class RecommendedTweetDisplay {
 				req.setWidth(1280);
 				req.setHeight(1024);
 				req.setTargetUrl(url);
-				req.setServiceUrl("http://54.191.249.251:3001");
+				req.setServiceUrl(URLSNAPSHOTSERVICEURL);
 				resp=UrlSnapshotServiceClient.snap(req);
 			} catch(Exception e) {
 				// 

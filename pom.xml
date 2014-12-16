@@ -75,7 +75,7 @@
 		<dependency>
 			<groupId>com.sixbuilder</groupId>
 			<artifactId>sixbuilder</artifactId>
-			<version>3.0.17</version>
+			<version>3.0.24</version>
 		</dependency>
 
 		<dependency>
@@ -87,7 +87,7 @@
 		<dependency>
 			<groupId>com.georgeludwigtech</groupId>
 			<artifactId>UrlSnapshotServiceClient</artifactId>
-			<version>1.0.3</version>
+			<version>1.0.5</version>
 		</dependency>
 
 		<dependency>

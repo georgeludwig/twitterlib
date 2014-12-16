@@ -4,8 +4,10 @@ import java.io.File;
 import java.io.InputStream;
 import java.util.List;
 
+import org.apache.tapestry5.Link;
 import org.apache.tapestry5.annotations.Persist;
-import org.apache.tapestry5.annotations.Property;
+import org.apache.tapestry5.ioc.annotations.Inject;
+import org.apache.tapestry5.services.PageRenderLinkSource;
 
 import twitter4j.User;
 
@@ -62,5 +64,13 @@ public class RecommendedAudienceTestPage {
 
 	@Persist
 	private Boolean firstLoad;
+	
+	@Inject
+	private PageRenderLinkSource linkSource;
+	
+	public Object getReturnPage() {
+		Link link = linkSource.createPageRenderLink(RecommendedAudienceTestPage.class);
+		return link;
+	}
 	
 }
