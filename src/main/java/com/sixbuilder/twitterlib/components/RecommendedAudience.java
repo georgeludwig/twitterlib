@@ -2,6 +2,7 @@ package com.sixbuilder.twitterlib.components;
 
 import java.io.File;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -70,12 +71,11 @@ public class RecommendedAudience {
 			// get the list of users
 			// only use those that have not already been followed/ignored/processed
 			SetManager tasm=PersistenceUtil.getTargetAudienceSetManager(accountsRoot, userId);
-			Set<SetItem>set=tasm.getSet();
-			for(User u:getUserMap().values()) {
-				if(set.contains(new SetItemImpl(String.valueOf(u.getScreenName())))&&user==null) {
-					currentUserId=u.getScreenName();
-					user=u;
-				}
+			List<SetItem>siList=new ArrayList<SetItem>(tasm.getSet());
+			if(siList.size()>0) {
+				SetItem si=siList.get(0);
+				user=getUserMap().get(si.getName());
+				currentUserId=user.getScreenName();
 			}
 		}
 		return user;
@@ -89,16 +89,16 @@ public class RecommendedAudience {
 //	}
 
 	@Persist
-	private Map<Long,User>userMap;
+	private Map<String,User>userMap;
 	
-	private Map<Long,User>getUserMap() throws Exception {
+	private Map<String,User>getUserMap() throws Exception {
 		if(userMap==null) {
 			String s=PersistenceUtil.getAccountPath(accountsRoot,userId);
 			File f=new File(s+JobDiscoverNewUsers.TARGET_AUDIENCE_JSON_FILENAME);
 			List<User>userList=JobDiscoverNewUsers.readUsersFromJson(f);
-			Map<Long,User>m=new HashMap<Long,User>();
+			Map<String,User>m=new HashMap<String,User>();
 			for(User u:userList)
-				m.put(u.getId(), u);
+				m.put(u.getScreenName(), u);
 			userMap=m;
 		}
 		return userMap;
@@ -231,5 +231,9 @@ public class RecommendedAudience {
 		DecimalFormat formatter = new DecimalFormat("#,###.0");
 		String ret=formatter.format(d);
 		return ret;
+	}
+	
+	public String tweetString() {
+		return null;
 	}
 }
