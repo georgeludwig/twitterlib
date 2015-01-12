@@ -12,7 +12,7 @@
 <h1>Recommended Audience</h1>
 <br />
 <br />
-<fieldset class="sixb" style="height:500px;">
+<fieldset class="sixb" style="height:525px;">
 	<legend class="sixb">Recommended Audience</legend>
 	<div t:type="twitterlib/RecommendedAudience" accountsRoot="accountsRoot" userId="userId" returnPage="returnPage" />
 </fieldset>

@@ -2,7 +2,9 @@ package com.sixbuilder.twitterlib.components;
 
 import java.io.File;
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,6 +24,7 @@ import twitter4j.User;
 import com.georgeludwigtech.common.setmanager.SetItem;
 import com.georgeludwigtech.common.setmanager.SetItemImpl;
 import com.georgeludwigtech.common.setmanager.SetManager;
+import com.georgeludwigtech.common.util.Time;
 import com.sixbuilder.datatypes.persistence.PersistenceUtil;
 import com.sixbuilder.jobsequence.discovery.JobDiscoverNewUsers;
 
@@ -233,7 +236,57 @@ public class RecommendedAudience {
 		return ret;
 	}
 	
-	public String tweetString() {
-		return null;
+	public String getTweetString() {
+		String txt=null;
+		try {
+			// replace urls with hrefs
+			String tweetBody=getUser().getStatus().getText();
+			String[] tokens=tweetBody.split("\\s");
+			StringBuilder sb=new StringBuilder();
+			for(int i=0;i<tokens.length;i++) {
+				sb.append(" ");
+				if(tokens[i].toLowerCase().trim().startsWith("http")) {
+					String displayUrl=tokens[i];
+					if(displayUrl.startsWith("http://"))
+						displayUrl=displayUrl.substring(7);
+					if(displayUrl.startsWith("https://"))
+						displayUrl=displayUrl.substring(8);
+					sb.append("<a href=\""+tokens[i]+"\" target=\"_blank\">"+displayUrl+"</a>");
+				} else sb.append(tokens[i]);
+			}
+			txt=sb.toString();
+			txt=txt.trim();
+		} catch(Exception e) {}
+		return txt;
+	}
+	
+	public String getTimeSincePublication() throws Exception {
+		long timeSince=System.currentTimeMillis()-getUser().getStatus().getCreatedAt().getTime();
+		// seconds
+		if(timeSince<Time.MIN_MILLIS) {
+			int secs=(int)timeSince/1000;
+			String s=secs+"s";
+			return s;
+		}
+		// minutes
+		if(timeSince<Time.HOUR_MILLIS) {
+			int mins=(int)timeSince/(int)Time.MIN_MILLIS;
+			String s=mins+"m";
+			return s;
+		}
+		// hours
+		if(timeSince<Time.DAY_MILLIS) {
+			int hours=(int)timeSince/(int)Time.HOUR_MILLIS;
+			String s=hours+"h";
+			return s;
+		}
+		if(getUser().getStatus().getCreatedAt().getTime()>0) {
+			// date
+			SimpleDateFormat ssdf=new SimpleDateFormat("dd MMM");
+			Date d=new Date(getUser().getStatus().getCreatedAt().getTime());
+			String s=ssdf.format(d);
+			return s;
+		}
+		return "?";
 	}
 }

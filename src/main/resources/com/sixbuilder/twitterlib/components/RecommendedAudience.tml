@@ -56,6 +56,11 @@
 								&middot; <a href="${user.url}" target="_blank">${user.url}</a>
 							</t:if>
 						</div>
+						<t:if test="tweetString">
+							<div class="principalTweet" style="position:relative; left:23px; top:25px; width:730px;">
+								${TimeSincePublication}&nbsp;&#34;<t:outputraw t:value="tweetString" />&#34;
+							</div>
+						</t:if>
 					</div>
 				</div>
 			<p:else>
