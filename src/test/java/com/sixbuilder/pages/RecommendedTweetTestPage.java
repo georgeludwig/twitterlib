@@ -79,7 +79,7 @@ public class RecommendedTweetTestPage {
 		// sort tweet items by score, and assign display order
 		JobDiscoverContentOfMutualInterest.sortByScoreAssignDisplayOrder(util);
 		// create snapshots, assign ids
-		JobDiscoverContentOfMutualInterest.createSnapshotsAndBitly(new User(), util,5);
+		JobDiscoverContentOfMutualInterest.createSnapshotsAndBitly(new User(), util,-1);
 		// create curation setitems
 		File testRootDir=new File(AbstractTestSixBuilder.getTestRoot());
 		SetManager curationSetMgr = PersistenceUtil.getCurationSetManager(testRootDir,AbstractTestSixBuilder.PRIMARY_TEST_USER_NAME);

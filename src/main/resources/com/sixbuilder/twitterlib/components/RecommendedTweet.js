@@ -44,6 +44,13 @@ function initializeRecommendedTweet(options) {
 		btnMeh.attr("value","Meh");
 	}
 	
+	if(imgCount<=1) {
+		//toggleImgLeft.attr("disabled", 'disabled');
+		//toggleImgRight.attr("disabled", 'disabled');
+		toggleImgLeft.css({ opacity: 0.5 });
+		toggleImgRight.css({ opacity: 0.5 });
+	}
+	
 	toggleImgLeft.click(function(event) {
 		imgIdx--;
 		if(imgIdx<0) {
