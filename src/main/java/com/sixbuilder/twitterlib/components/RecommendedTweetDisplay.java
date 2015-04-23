@@ -223,7 +223,9 @@ public class RecommendedTweetDisplay {
 	
 	@OnEvent(RecommendedTweetConstants.MEH_TWEET_EVENT)
 	public void meh(TweetItem tweetItem) throws Exception {
-		tweetItem.setDataMode(TweetItem.DATAMODE_DETAIL);
+		if(tweetItem.isPublish())
+			tweetItem.setDataMode(TweetItem.DATAMODE_DETAIL);
+		else tweetItem.setDataMode(TweetItem.DATAMODE_SUMMARY);
 		boolean isMoved=tweetItem.isPublish();
 		tweetItem.setPublish(false);
 		// remove corresponding QueueItem from queue, if it exists
