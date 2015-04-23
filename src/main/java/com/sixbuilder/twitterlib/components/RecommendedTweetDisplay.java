@@ -37,6 +37,7 @@ import com.sixbuilder.datatypes.account.AccountManager;
 import com.sixbuilder.datatypes.account.User;
 import com.sixbuilder.datatypes.persistence.PersistenceUtil;
 import com.sixbuilder.datatypes.twitter.TweetItem;
+import com.sixbuilder.datatypes.twitter.TweetUtil;
 import com.sixbuilder.twitterlib.RecommendedTweetConstants;
 import com.sixbuilder.twitterlib.helpers.HolderComponentEventCallback;
 import com.sixbuilder.twitterlib.helpers.QueueSettingsRepository;
@@ -140,6 +141,8 @@ public class RecommendedTweetDisplay {
 		tweetItem.setDataMode(TweetItem.DATAMODE_DETAIL);
 		boolean isMoved=!tweetItem.isPublish();
 		tweetItem.setPublish(true);
+		// shorten the url
+		updateTweetItemWithBitly(tweetItem);
 		// get queue settings for this user
 		getQueueSettingsRunnable qsr=new getQueueSettingsRunnable(queueType,userId,queueSettingsDAO.getRepo());
 		// get current contents of queue for user
@@ -188,6 +191,25 @@ public class RecommendedTweetDisplay {
 			ajaxResponseRenderer.addRender(publishingZone);
 		}
 	}
+	
+	private void updateTweetItemWithBitly(TweetItem tweetItem) {
+		try {
+			// extract urls from tweet body
+			String url=TweetUtil.getFirstUrl(tweetItem.getSummary());
+			// determine start point of url within tweet body
+			String summary=tweetItem.getSummary();
+			int start=summary.indexOf(url);
+			// encode url
+			String accountPath=AccountManager.getAccountPath(accountsRoot.toString(), userId);
+			User user=new User(AccountManager.getUserFile(accountPath));
+			String shortUrl=shortenUrlUsingBitly(user,url);
+			// reconstruct summary
+			summary=summary.substring(0,start)+shortUrl+summary.substring(start+url.length());
+			tweetItem.setSummary(summary);
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+	}
 
 	@Persist
 	private Integer mehInc;
@@ -201,7 +223,7 @@ public class RecommendedTweetDisplay {
 	
 	@OnEvent(RecommendedTweetConstants.MEH_TWEET_EVENT)
 	public void meh(TweetItem tweetItem) throws Exception {
-		tweetItem.setDataMode(TweetItem.DATAMODE_SUMMARY);
+		tweetItem.setDataMode(TweetItem.DATAMODE_DETAIL);
 		boolean isMoved=tweetItem.isPublish();
 		tweetItem.setPublish(false);
 		// remove corresponding QueueItem from queue, if it exists
@@ -228,6 +250,9 @@ public class RecommendedTweetDisplay {
 	@OnEvent(RecommendedTweetConstants.REVISE_TWEET_EVENT)
 	public void revise(TweetItem tweetItem) throws Exception {
 		String url=tweetItem.getUrl();
+		// make sure we have protocol for snapshot worker's benefit
+		if(!url.startsWith("http"))
+			url="http://"+url;
 		tweetItem.setDataMode(TweetItem.DATAMODE_DETAIL);
 		// start thread for images
 		getNewSnapshotWorker worker=new getNewSnapshotWorker(url);
@@ -236,13 +261,13 @@ public class RecommendedTweetDisplay {
 		try {
 			String accountPath=AccountManager.getAccountPath(accountsRoot.toString(), userId);
 			User user=new User(AccountManager.getUserFile(accountPath));
-			String shortUrl=shortenUrlUsingBitly(user,url);
+			//String shortUrl=shortenUrlUsingBitly(user,url);
 			t.join();
 			tweetItem.setUrl(url);
 			String oldId=tweetItem.getTweetId();
 			tweetItem.setTweetId(String.valueOf(url.hashCode()));
-			tweetItem.setShortenedUrl(shortUrl);
-			tweetItem.setSummary(worker.resp.getUrlTitle().trim()+" "+shortUrl);
+			tweetItem.setShortenedUrl(url); // we no longer bitly encode here...it's done when they queue tweet for publication
+			tweetItem.setSummary(worker.resp.getUrlTitle().trim()+" "+url);
 			if(worker.resp.getSnapshotUrl()!=null) {
 				tweetItem.setSnapshotUrl(worker.resp.getSnapshotUrl());
 			}

@@ -3,7 +3,6 @@ package com.sixbuilder.pages;
 import java.io.File;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
@@ -27,8 +26,7 @@ import com.sixbuilder.datatypes.account.User;
 import com.sixbuilder.datatypes.persistence.PendingTweetFileUtil;
 import com.sixbuilder.datatypes.persistence.PersistenceUtil;
 import com.sixbuilder.datatypes.twitter.TweetItem;
-import com.sixbuilder.datatypes.twitter.TweetItemComparatorPending;
-import com.sixbuilder.jobsequence.discovery.JobDiscoverContentOfMutualInterest;
+import com.sixbuilder.jobsequence.discovery.JobDiscoverContentOfMutualInterestNew;
 import com.sixbuilder.twitterlib.RecommendedTweetConstants;
 import com.sixbuilder.twitterlib.components.RecommendedTweet;
 import com.sixbuilder.twitterlib.helpers.TweetItemComparatorByDisplayOrder;
@@ -77,9 +75,9 @@ public class RecommendedTweetTestPage {
 		FileUtil.copy(is, target);
 		PendingTweetFileUtil util=new PendingTweetFileUtil(AbstractTestSixBuilder.getTestUserPath()+PendingTweetFileUtil.FILENAME);	
 		// sort tweet items by score, and assign display order
-		JobDiscoverContentOfMutualInterest.sortByScoreAssignDisplayOrder(util);
+		JobDiscoverContentOfMutualInterestNew.sortByScoreAssignDisplayOrder(util);
 		// create snapshots, assign ids
-		JobDiscoverContentOfMutualInterest.createSnapshotsAndBitly(new User(), util,-1);
+		JobDiscoverContentOfMutualInterestNew.createSnapshotsAndBitly(new User(), util,-1);
 		// create curation setitems
 		File testRootDir=new File(AbstractTestSixBuilder.getTestRoot());
 		SetManager curationSetMgr = PersistenceUtil.getCurationSetManager(testRootDir,AbstractTestSixBuilder.PRIMARY_TEST_USER_NAME);
