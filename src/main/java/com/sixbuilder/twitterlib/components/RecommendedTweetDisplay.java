@@ -267,9 +267,12 @@ public class RecommendedTweetDisplay {
 			t.join();
 			tweetItem.setUrl(url);
 			String oldId=tweetItem.getTweetId();
-			tweetItem.setTweetId(String.valueOf(url.hashCode()));
+			tweetItem.setTweetId(String.valueOf(tweetItem.getDisplayOrder()+""+url.hashCode()));
 			tweetItem.setShortenedUrl(url); // we no longer bitly encode here...it's done when they queue tweet for publication
-			tweetItem.setSummary(worker.resp.getUrlTitle().trim()+" "+url);
+			String s=worker.resp.getUrlTitle();
+			if(s==null)
+				s="";
+			tweetItem.setSummary(s.trim()+" "+url);
 			if(worker.resp.getSnapshotUrl()!=null) {
 				tweetItem.setSnapshotUrl(worker.resp.getSnapshotUrl());
 			}
