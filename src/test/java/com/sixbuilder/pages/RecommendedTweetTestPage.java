@@ -75,7 +75,7 @@ public class RecommendedTweetTestPage {
 		FileUtil.copy(is, target);
 		PendingTweetFileUtil util=new PendingTweetFileUtil(AbstractTestSixBuilder.getTestUserPath()+PendingTweetFileUtil.FILENAME);	
 		// sort tweet items by score, and assign display order
-		JobDiscoverContentOfMutualInterestNew.sortByScoreAssignDisplayOrder(util);
+		//JobDiscoverContentOfMutualInterestNew.sortByScoreAssignDisplayOrder(util);
 		// create snapshots, assign ids
 		JobDiscoverContentOfMutualInterestNew.createSnapshotsAndBitly(new User(), util,-1);
 		// create curation setitems
