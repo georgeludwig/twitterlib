@@ -253,6 +253,7 @@ public class RecommendedTweetDisplay {
 	public void revise(TweetItem tweetItem) throws Exception {
 		String url=tweetItem.getUrl();
 		// make sure we have protocol for snapshot worker's benefit
+		url=url.trim();
 		if(!url.startsWith("http"))
 			url="http://"+url;
 		tweetItem.setDataMode(TweetItem.DATAMODE_DETAIL);

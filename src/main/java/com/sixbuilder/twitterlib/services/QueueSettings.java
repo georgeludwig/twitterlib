@@ -196,9 +196,9 @@ public class QueueSettings extends CouchDbDocument {
 		jso.add(START, start);
 		// end
 		JsonObject end = new JsonObject();
-		end.addProperty(HOUR, getStartHour());
-		end.addProperty(MINUTE, getStartMinute());
-		end.addProperty(MERIDIEM, getStartMeridiem().toString());
+		end.addProperty(HOUR, getEndHour());
+		end.addProperty(MINUTE, getEndMinute());
+		end.addProperty(MERIDIEM, getEndMeridiem().toString());
 		end.addProperty(TIMEZONE, getTimeZoneId());
 		end.addProperty(FROM, getRandomMin());
 		end.addProperty(TO, getRandomMax());
