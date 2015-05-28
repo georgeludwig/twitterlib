@@ -135,11 +135,11 @@ public class RecommendedTweet implements ClientElement {
 	private int getImgCount() {
 		int ret=0;
 		if(tweet.getImgOneUrl()!=null&&tweet.getImgOneUrl().length()>0)
-			ret=1;
-		if(tweet.getImgTwoUrl()!=null&&tweet.getImgTwoUrl().length()>0)
 			ret=2;
-		if(tweet.getImgThreeUrl()!=null&&tweet.getImgThreeUrl().length()>0)
+		if(tweet.getImgTwoUrl()!=null&&tweet.getImgTwoUrl().length()>0)
 			ret=3;
+		if(tweet.getImgThreeUrl()!=null&&tweet.getImgThreeUrl().length()>0)
+			ret=4;
 		return ret;
 	}
 	
