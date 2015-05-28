@@ -4,6 +4,8 @@ import static com.rosaloves.bitlyj.Bitly.as;
 import static com.rosaloves.bitlyj.Bitly.shorten;
 
 import java.io.File;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -252,57 +254,125 @@ public class RecommendedTweetDisplay {
 	@OnEvent(RecommendedTweetConstants.REVISE_TWEET_EVENT)
 	public void revise(TweetItem tweetItem) throws Exception {
 		String url=tweetItem.getUrl();
-		// make sure we have protocol for snapshot worker's benefit
-		url=url.trim();
-		if(!url.startsWith("http"))
-			url="http://"+url;
-		tweetItem.setDataMode(TweetItem.DATAMODE_DETAIL);
-		// start thread for images
-		getNewSnapshotWorker worker=new getNewSnapshotWorker(url);
-		Thread t=new Thread(worker);
-		t.start();
-		try {
-			String accountPath=AccountManager.getAccountPath(accountsRoot.toString(), userId);
-			User user=new User(AccountManager.getUserFile(accountPath));
-			//String shortUrl=shortenUrlUsingBitly(user,url);
-			t.join();
-			tweetItem.setUrl(url);
-			String oldId=tweetItem.getTweetId();
-			tweetItem.setTweetId(String.valueOf(tweetItem.getDisplayOrder()+""+url.hashCode()));
-			tweetItem.setShortenedUrl(url); // we no longer bitly encode here...it's done when they queue tweet for publication
-			String s=worker.resp.getUrlTitle();
-			if(s==null)
-				s="";
-			tweetItem.setSummary(s.trim()+" "+url);
-			if(worker.resp.getSnapshotUrl()!=null) {
-				tweetItem.setSnapshotUrl(worker.resp.getSnapshotUrl());
+			if(!checkForImageUrl(tweetItem, url)) {
+			// make sure we have protocol for snapshot worker's benefit
+			url=url.trim();
+			if(!url.startsWith("http"))
+				url="http://"+url;
+			tweetItem.setDataMode(TweetItem.DATAMODE_DETAIL);
+			// start thread for images
+			getNewSnapshotWorker worker=new getNewSnapshotWorker(url);
+			Thread t=new Thread(worker);
+			t.start();
+			try {
+				String accountPath=AccountManager.getAccountPath(accountsRoot.toString(), userId);
+				//String shortUrl=shortenUrlUsingBitly(user,url);
+				t.join();
+				tweetItem.setUrl(url);
+				String oldId=tweetItem.getTweetId();
+				tweetItem.setTweetId(String.valueOf(tweetItem.getDisplayOrder()+""+url.hashCode()));
+				tweetItem.setShortenedUrl(url); // we no longer bitly encode here...it's done when they queue tweet for publication
+				String s=worker.resp.getUrlTitle();
+				if(s==null)
+					s="";
+				tweetItem.setSummary(s.trim()+" "+url);
+				if(worker.resp.getSnapshotUrl()!=null) {
+					tweetItem.setSnapshotUrl(worker.resp.getSnapshotUrl());
+				}
+				List<String>imgList=worker.resp.getImageUrlList();
+				if(imgList!=null) {
+					if(imgList.size()>0)
+						tweetItem.setImgOneUrl(imgList.get(0));
+					if(imgList.size()>1)
+						tweetItem.setImgTwoUrl(imgList.get(1));
+					if(imgList.size()>2)
+						tweetItem.setImgThreeUrl(imgList.get(2));
+				}
+				tweetItemDAO.update(accountsRoot, userId, tweetItem);
+				if(tweetItem.isPublish()) {
+					SetManager qm=PersistenceUtil.getQueuedSetManager(accountsRoot, userId);
+					qm.removeSetItem(oldId);
+					qm.addSetItem(new SetItemImpl(tweetItem.getTweetId()));
+				} else {
+					SetManager cm=PersistenceUtil.getCurationSetManager(accountsRoot, userId);
+					cm.removeSetItem(oldId);
+					cm.addSetItem(new SetItemImpl(tweetItem.getTweetId()));
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
-			List<String>imgList=worker.resp.getImageUrlList();
-			if(imgList!=null) {
-				if(imgList.size()>0)
-					tweetItem.setImgOneUrl(imgList.get(0));
-				if(imgList.size()>1)
-					tweetItem.setImgTwoUrl(imgList.get(1));
-				if(imgList.size()>2)
-					tweetItem.setImgThreeUrl(imgList.get(2));
-			}
-			tweetItemDAO.update(accountsRoot, userId, tweetItem);
-			if(tweetItem.isPublish()) {
-				SetManager qm=PersistenceUtil.getQueuedSetManager(accountsRoot, userId);
-				qm.removeSetItem(oldId);
-				qm.addSetItem(new SetItemImpl(tweetItem.getTweetId()));
-			} else {
-				SetManager cm=PersistenceUtil.getCurationSetManager(accountsRoot, userId);
-				cm.removeSetItem(oldId);
-				cm.addSetItem(new SetItemImpl(tweetItem.getTweetId()));
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
 		}
 		triggerEvent(RecommendedTweetConstants.REVISE_TWEET_EVENT, resources.getContainerResources());
 		if(tweetItem.isPublish())
 			ajaxResponseRenderer.addRender(publishingZone);
 		else ajaxResponseRenderer.addRender(curateZone);
+	}
+	
+	private boolean checkForImageUrl(TweetItem tweetItem,String url) {
+		String s=url.toLowerCase();
+		s=s.trim();
+		boolean ret=false;
+		String ext="img";
+		if(s.endsWith("png"))
+			ret=true;
+		if(s.endsWith("jpg"))
+			ret=true;
+		if(s.endsWith("jpeg"))
+			ret=true;
+		if(s.endsWith("webp"))
+			ret=true;
+		if(s.endsWith("gif")) {
+			ret=true;
+			ext="gif";
+		}
+		// TODO skip size check for now
+//		if(ret) {
+//			// get image size
+//			URLConnection conn=null;
+//			try {
+//				URL u=new URL(url);
+//				conn = u.openConnection();
+//				Integer size = conn.getContentLength();
+//				
+//			} catch (Exception e) {
+//				e.printStackTrace();
+//			} finally {
+//				if(conn!=null) {
+//					try {
+//						conn.getInputStream().close();
+//					} catch(Exception e) {}
+//				}
+//			}
+//		}
+		if(ret) {
+			// set the appropriate image url to the incoming url
+			if(tweetItem.getImgIdx()==0)
+				tweetItem.setSnapshotUrl(url.trim());
+			if(tweetItem.getImgIdx()==1)
+				tweetItem.setImgOneUrl(url.trim());
+			if(tweetItem.getImgIdx()==2)
+				tweetItem.setImgTwoUrl(url.trim());
+			if(tweetItem.getImgIdx()==3)
+				tweetItem.setImgThreeUrl(url.trim()); 
+			try {
+				// find the un-altered tweet item, in order to get the original url
+				List<TweetItem>tiList=tweetItemDAO.getAll(accountsRoot,userId);
+				TweetItem original=null;
+				for(TweetItem ti:tiList) {
+					if(ti.getTweetId().equals(tweetItem.getTweetId()))
+						original=ti;
+				}
+				String originalUrl=tweetItem.getUrl();
+				if(original!=null)
+					originalUrl=original.getUrl();
+				tweetItem.setUrl(originalUrl);
+				// save it
+				tweetItemDAO.update(accountsRoot, userId, tweetItem);
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return ret;
 	}
 	
 	private String stripUrls(String input) {
