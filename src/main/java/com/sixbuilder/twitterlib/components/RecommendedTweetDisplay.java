@@ -9,6 +9,7 @@ import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.tapestry5.Asset;
 import org.apache.tapestry5.ComponentResources;
 import org.apache.tapestry5.alerts.AlertManager;
 import org.apache.tapestry5.annotations.Cached;
@@ -16,6 +17,7 @@ import org.apache.tapestry5.annotations.Events;
 import org.apache.tapestry5.annotations.InjectComponent;
 import org.apache.tapestry5.annotations.OnEvent;
 import org.apache.tapestry5.annotations.Parameter;
+import org.apache.tapestry5.annotations.Path;
 import org.apache.tapestry5.annotations.Persist;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.corelib.components.Zone;
@@ -254,52 +256,54 @@ public class RecommendedTweetDisplay {
 	@OnEvent(RecommendedTweetConstants.REVISE_TWEET_EVENT)
 	public void revise(TweetItem tweetItem) throws Exception {
 		String url=tweetItem.getUrl();
-			if(!checkForImageUrl(tweetItem, url)) {
+		if(!checkForImageUrl(tweetItem, url)) {
 			// make sure we have protocol for snapshot worker's benefit
 			url=url.trim();
 			if(!url.startsWith("http"))
 				url="http://"+url;
-			tweetItem.setDataMode(TweetItem.DATAMODE_DETAIL);
-			// start thread for images
-			getNewSnapshotWorker worker=new getNewSnapshotWorker(url);
-			Thread t=new Thread(worker);
-			t.start();
-			try {
-				String accountPath=AccountManager.getAccountPath(accountsRoot.toString(), userId);
-				//String shortUrl=shortenUrlUsingBitly(user,url);
-				t.join();
-				tweetItem.setUrl(url);
-				String oldId=tweetItem.getTweetId();
-				tweetItem.setTweetId(String.valueOf(tweetItem.getDisplayOrder()+""+url.hashCode()));
-				tweetItem.setShortenedUrl(url); // we no longer bitly encode here...it's done when they queue tweet for publication
-				String s=worker.resp.getUrlTitle();
-				if(s==null)
-					s="";
-				tweetItem.setSummary(s.trim()+" "+url);
-				if(worker.resp.getSnapshotUrl()!=null) {
-					tweetItem.setSnapshotUrl(worker.resp.getSnapshotUrl());
+			if(!(url.length()>4096)) {
+				tweetItem.setDataMode(TweetItem.DATAMODE_DETAIL);
+				// start thread for images
+				getNewSnapshotWorker worker=new getNewSnapshotWorker(url);
+				Thread t=new Thread(worker);
+				t.start();
+				try {
+					String accountPath=AccountManager.getAccountPath(accountsRoot.toString(), userId);
+					//String shortUrl=shortenUrlUsingBitly(user,url);
+					t.join();
+					tweetItem.setUrl(url);
+					String oldId=tweetItem.getTweetId();
+					tweetItem.setTweetId(String.valueOf(tweetItem.getDisplayOrder()+""+url.hashCode()));
+					tweetItem.setShortenedUrl(url); // we no longer bitly encode here...it's done when they queue tweet for publication
+					String s=worker.resp.getUrlTitle();
+					if(s==null)
+						s="";
+					tweetItem.setSummary(s.trim()+" "+url);
+					if(worker.resp.getSnapshotUrl()!=null) {
+						tweetItem.setSnapshotUrl(worker.resp.getSnapshotUrl());
+					}
+					List<String>imgList=worker.resp.getImageUrlList();
+					if(imgList!=null) {
+						if(imgList.size()>0)
+							tweetItem.setImgOneUrl(imgList.get(0));
+						if(imgList.size()>1)
+							tweetItem.setImgTwoUrl(imgList.get(1));
+						if(imgList.size()>2)
+							tweetItem.setImgThreeUrl(imgList.get(2));
+					}
+					tweetItemDAO.update(accountsRoot, userId, tweetItem);
+					if(tweetItem.isPublish()) {
+						SetManager qm=PersistenceUtil.getQueuedSetManager(accountsRoot, userId);
+						qm.removeSetItem(oldId);
+						qm.addSetItem(new SetItemImpl(tweetItem.getTweetId()));
+					} else {
+						SetManager cm=PersistenceUtil.getCurationSetManager(accountsRoot, userId);
+						cm.removeSetItem(oldId);
+						cm.addSetItem(new SetItemImpl(tweetItem.getTweetId()));
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
 				}
-				List<String>imgList=worker.resp.getImageUrlList();
-				if(imgList!=null) {
-					if(imgList.size()>0)
-						tweetItem.setImgOneUrl(imgList.get(0));
-					if(imgList.size()>1)
-						tweetItem.setImgTwoUrl(imgList.get(1));
-					if(imgList.size()>2)
-						tweetItem.setImgThreeUrl(imgList.get(2));
-				}
-				tweetItemDAO.update(accountsRoot, userId, tweetItem);
-				if(tweetItem.isPublish()) {
-					SetManager qm=PersistenceUtil.getQueuedSetManager(accountsRoot, userId);
-					qm.removeSetItem(oldId);
-					qm.addSetItem(new SetItemImpl(tweetItem.getTweetId()));
-				} else {
-					SetManager cm=PersistenceUtil.getCurationSetManager(accountsRoot, userId);
-					cm.removeSetItem(oldId);
-					cm.addSetItem(new SetItemImpl(tweetItem.getTweetId()));
-				}
-			} catch (Exception e) {
-				e.printStackTrace();
 			}
 		}
 		triggerEvent(RecommendedTweetConstants.REVISE_TWEET_EVENT, resources.getContainerResources());
@@ -307,6 +311,11 @@ public class RecommendedTweetDisplay {
 			ajaxResponseRenderer.addRender(publishingZone);
 		else ajaxResponseRenderer.addRender(curateZone);
 	}
+	
+	@Inject
+	@Path("classpath:com/sixbuilder/twitterlib/components/unsupportedImageFormat.png")
+	@Property
+	private Asset unsupportedImagePng;
 	
 	private boolean checkForImageUrl(TweetItem tweetItem,String url) {
 		String s=url.toLowerCase();
@@ -325,25 +334,35 @@ public class RecommendedTweetDisplay {
 			ret=true;
 			ext="gif";
 		}
-		// TODO skip size check for now
-//		if(ret) {
-//			// get image size
-//			URLConnection conn=null;
-//			try {
-//				URL u=new URL(url);
-//				conn = u.openConnection();
-//				Integer size = conn.getContentLength();
-//				
-//			} catch (Exception e) {
-//				e.printStackTrace();
-//			} finally {
-//				if(conn!=null) {
-//					try {
-//						conn.getInputStream().close();
-//					} catch(Exception e) {}
-//				}
-//			}
-//		}
+		// check size
+		if(ret) {
+			// get image size
+			URLConnection conn=null;
+			try {
+				boolean tooBig=false;
+				if(!(url.trim().length()>4096)) {
+					URL u=new URL(url);
+					conn = u.openConnection();
+					Integer size = conn.getContentLength();
+					if(ext.equals("gif")&&size>3000000) {
+						tooBig=true;
+					} else {
+						if(size>5000000)
+							tooBig=true;
+					}
+				} else tooBig=true;
+				if(tooBig)
+					url=unsupportedImagePng.toClientURL();
+			} catch (Exception e) {
+				e.printStackTrace();
+			} finally {
+				if(conn!=null) {
+					try {
+						conn.getInputStream().close();
+					} catch(Exception e) {}
+				}
+			}
+		}
 		if(ret) {
 			// set the appropriate image url to the incoming url
 			if(tweetItem.getImgIdx()==0)
