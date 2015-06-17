@@ -1,10 +1,6 @@
  package com.sixbuilder.twitterlib.components;
 
-import static com.rosaloves.bitlyj.Bitly.as;
-import static com.rosaloves.bitlyj.Bitly.shorten;
-
 import java.io.File;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -19,17 +15,6 @@ import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.json.JSONObject;
 import org.apache.tapestry5.services.javascript.JavaScriptSupport;
 
-import com.georgeludwigtech.common.setmanager.SetItem;
-import com.georgeludwigtech.common.setmanager.SetItemImpl;
-import com.georgeludwigtech.common.setmanager.SetManager;
-import com.georgeludwigtech.urlsnapshotserviceclient.UrlSnapshotServiceClient;
-import com.georgeludwigtech.urlsnapshotserviceclient.UrlSnapshotServiceRequest;
-import com.georgeludwigtech.urlsnapshotserviceclient.UrlSnapshotServiceResponse;
-import com.rosaloves.bitlyj.BitlyException;
-import com.rosaloves.bitlyj.Url;
-import com.sixbuilder.datatypes.account.AccountManager;
-import com.sixbuilder.datatypes.account.User;
-import com.sixbuilder.datatypes.persistence.PersistenceUtil;
 import com.sixbuilder.datatypes.twitter.TweetItem;
 import com.sixbuilder.twitterlib.RecommendedTweetConstants;
 import com.sixbuilder.twitterlib.helpers.HolderComponentEventCallback;

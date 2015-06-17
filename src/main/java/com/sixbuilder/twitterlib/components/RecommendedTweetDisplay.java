@@ -7,6 +7,7 @@ import java.io.File;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.apache.tapestry5.Asset;
@@ -318,24 +319,16 @@ public class RecommendedTweetDisplay {
 	private Asset unsupportedImagePng;
 	
 	private boolean checkForImageUrl(TweetItem tweetItem,String url) {
-		String s=url.toLowerCase();
-		s=s.trim();
-		boolean ret=false;
-		String ext="img";
-		if(s.endsWith("png"))
-			ret=true;
-		if(s.endsWith("jpg"))
-			ret=true;
-		if(s.endsWith("jpeg"))
-			ret=true;
-		if(s.endsWith("webp"))
-			ret=true;
-		if(s.endsWith("gif")) {
-			ret=true;
-			ext="gif";
+		url=cleanImgUrl(url);
+		boolean isImg=false;
+		for(String ext:imgExtList) {
+			if(url.endsWith(ext))
+				isImg=true;
 		}
+		if(url.toLowerCase().endsWith(".img"))
+			isImg=true;
 		// check size
-		if(ret) {
+		if(isImg) {
 			// get image size
 			URLConnection conn=null;
 			try {
@@ -344,14 +337,14 @@ public class RecommendedTweetDisplay {
 					URL u=new URL(url);
 					conn = u.openConnection();
 					Integer size = conn.getContentLength();
-					if(ext.equals("gif")&&size>3000000) {
+					if(url.toLowerCase().endsWith("gif")&&size>3000000) {
 						tooBig=true;
 					} else {
 						if(size>5000000)
 							tooBig=true;
 					}
 				} else tooBig=true;
-				if(tooBig)
+				if(tooBig||url.toLowerCase().endsWith(".img"))
 					url=unsupportedImagePng.toClientURL();
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -363,7 +356,7 @@ public class RecommendedTweetDisplay {
 				}
 			}
 		}
-		if(ret) {
+		if(isImg) {
 			// set the appropriate image url to the incoming url
 			if(tweetItem.getImgIdx()==0)
 				tweetItem.setSnapshotUrl(url.trim());
@@ -391,8 +384,24 @@ public class RecommendedTweetDisplay {
 				e.printStackTrace();
 			}
 		}
+		return isImg;
+	}
+	
+	
+	private String cleanImgUrl(String url) {
+		String ret=url;
+		for(String ext:imgExtList) {
+			if(url.contains("."+ext+"?")) {
+				String[] sa=url.split("\\."+ext+"?");
+				ret=sa[0]+"."+ext;
+			}
+		}
+		if(ret.toLowerCase().startsWith("http"))
+			ret="http://"+ret;
 		return ret;
 	}
+		
+	private static final List<String>imgExtList=Arrays.asList("jpg","JPG","jpeg","JPEG","webp","WEBP","gif","GIF");
 	
 	private String stripUrls(String input) {
 		String[] sa=input.split(" ");
