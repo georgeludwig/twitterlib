@@ -8,6 +8,7 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import org.apache.tapestry5.Asset;
@@ -35,6 +36,7 @@ import com.georgeludwigtech.urlsnapshotserviceclient.UrlSnapshotServiceResponse;
 import com.rosaloves.bitlyj.BitlyException;
 import com.rosaloves.bitlyj.Url;
 import com.sixbuilder.actionqueue.QueueItem;
+import com.sixbuilder.actionqueue.QueueItemComparatorByTargetDate;
 import com.sixbuilder.actionqueue.QueueItemRepository;
 import com.sixbuilder.actionqueue.QueueItemStatus;
 import com.sixbuilder.actionqueue.QueueType;
@@ -348,6 +350,7 @@ public class RecommendedTweetDisplay {
 					url=unsupportedImagePng.toClientURL();
 			} catch (Exception e) {
 				e.printStackTrace();
+				url=unsupportedImagePng.toClientURL();
 			} finally {
 				if(conn!=null) {
 					try {
@@ -396,7 +399,7 @@ public class RecommendedTweetDisplay {
 				ret=sa[0]+"."+ext;
 			}
 		}
-		if(ret.toLowerCase().startsWith("http"))
+		if(!ret.toLowerCase().startsWith("http"))
 			ret="http://"+ret;
 		return ret;
 	}
@@ -536,7 +539,9 @@ public class RecommendedTweetDisplay {
 		}
 		public List<QueueItem> queueItems;
 		public void run() {
-			queueItems=repo.getPending(queueType, userId);
+			List<QueueItem>qil=repo.getPending(queueType, userId);
+			Collections.sort(qil,new QueueItemComparatorByTargetDate());
+			queueItems=qil;
 		}
 	}
 	

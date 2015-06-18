@@ -1,5 +1,6 @@
 package com.sixbuilder.twitterlib.services;
 
+import java.util.Collections;
 import java.util.List;
 
 import org.ektorp.CouchDbConnector;
@@ -10,6 +11,7 @@ import org.ektorp.impl.StdCouchDbConnector;
 import org.ektorp.impl.StdCouchDbInstance;
 
 import com.sixbuilder.actionqueue.QueueItem;
+import com.sixbuilder.actionqueue.QueueItemComparatorByTargetDate;
 import com.sixbuilder.actionqueue.QueueItemRepository;
 import com.sixbuilder.actionqueue.QueueType;
 import com.sixbuilder.twitterlib.services.QueueItemDAO;
@@ -43,7 +45,10 @@ public class QueueItemDAOImpl implements QueueItemDAO {
 	}
 
 	public List<QueueItem> getPending(QueueType queueType, String userId) {
-		return repo.getPending(queueType, userId);
+		List<QueueItem>ret=repo.getPending(queueType, userId);
+		// sort them by target date
+		Collections.sort(ret,new QueueItemComparatorByTargetDate());
+		return ret;
 	}
 
 	public void delete(List<QueueItem> queueItemList) {
