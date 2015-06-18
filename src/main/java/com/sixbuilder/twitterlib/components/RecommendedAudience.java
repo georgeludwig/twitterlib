@@ -90,7 +90,7 @@ public class RecommendedAudience {
 //		setPreviousUserId(null);
 //		return ret;
 //	}
-
+	
 	@Persist
 	private Map<String,User>userMap;
 	
