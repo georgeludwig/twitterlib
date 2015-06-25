@@ -242,7 +242,8 @@ public class RecommendedTweetDisplay {
 				queueItemDAO.delete(item);
 		}
 		tweetItem.setPubTargetDisplay(null);
-		tweetItem.setDisplayOrder(getMehInc()+tweetItem.getDisplayOrder());
+		if(tweetItem.isPublish())
+			tweetItem.setDisplayOrder(getMehInc()+tweetItem.getDisplayOrder());
 		tweetItemDAO.update(accountsRoot, userId, tweetItem);
 		// adjust set managers
 		SetManager cSm = getCurationSetManager(curationSetMgr);
@@ -404,16 +405,16 @@ public class RecommendedTweetDisplay {
 		return ret;
 	}
 		
-	private static final List<String>imgExtList=Arrays.asList("jpg","JPG","jpeg","JPEG","webp","WEBP","gif","GIF");
+	private static final List<String>imgExtList=Arrays.asList("jpg","JPG","jpeg","JPEG","webp","WEBP","gif","GIF","png","PNG");
 	
-	private String stripUrls(String input) {
-		String[] sa=input.split(" ");
-		for(int i=0;i<sa.length;i++) {
-			if(sa[i].startsWith("http://")||sa[i].startsWith("https://"))
-				input=input.replaceAll(sa[i], "");
-		}
-		return input;
-	}
+//	private String stripUrls(String input) {
+//		String[] sa=input.split(" ");
+//		for(int i=0;i<sa.length;i++) {
+//			if(sa[i].startsWith("http://")||sa[i].startsWith("https://"))
+//				input=input.replaceAll(sa[i], "");
+//		}
+//		return input;
+//	}
 
 	private String shortenUrlUsingBitly(User user,String url) throws Exception {
 		// bitly encode url
