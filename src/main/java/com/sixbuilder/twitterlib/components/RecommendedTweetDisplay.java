@@ -260,7 +260,7 @@ public class RecommendedTweetDisplay {
 	@OnEvent(RecommendedTweetConstants.REVISE_TWEET_EVENT)
 	public void revise(TweetItem tweetItem) throws Exception {
 		String url=tweetItem.getUrl();
-		if(!checkForImageUrl(tweetItem, url)) {
+		if(!processImageUrl(tweetItem, url)) {
 			// make sure we have protocol for snapshot worker's benefit
 			url=url.trim();
 			if(!url.startsWith("http"))
@@ -321,15 +321,13 @@ public class RecommendedTweetDisplay {
 	@Property
 	private Asset unsupportedImagePng;
 	
-	private boolean checkForImageUrl(TweetItem tweetItem,String url) {
-		url=cleanImgUrl(url);
+	private boolean processImageUrl(TweetItem tweetItem,String url) {
+		url=cleanImgUrl(url); // make sure it starts with http
 		boolean isImg=false;
 		for(String ext:imgExtList) {
-			if(url.endsWith(ext))
+			if(url.contains(ext))
 				isImg=true;
 		}
-		if(url.toLowerCase().endsWith(".img"))
-			isImg=true;
 		// check size
 		if(isImg) {
 			// get image size
@@ -394,18 +392,18 @@ public class RecommendedTweetDisplay {
 	
 	private String cleanImgUrl(String url) {
 		String ret=url;
-		for(String ext:imgExtList) {
-			if(url.contains("."+ext+"?")) {
-				String[] sa=url.split("\\."+ext+"?");
-				ret=sa[0]+"."+ext;
-			}
-		}
+//		for(String ext:imgExtList) {
+//			if(url.contains("."+ext+"?")) {
+//				String[] sa=url.split("\\."+ext+"?");
+//				ret=sa[0]+"."+ext;
+//			}
+//		}
 		if(!ret.toLowerCase().startsWith("http"))
 			ret="http://"+ret;
 		return ret;
 	}
 		
-	private static final List<String>imgExtList=Arrays.asList("jpg","JPG","jpeg","JPEG","webp","WEBP","gif","GIF","png","PNG");
+	private static final List<String>imgExtList=Arrays.asList(".jpg",".JPG",".jpeg",".JPEG",".webp",".WEBP",".gif",".GIF",".png",".PNG",".img",".IMG");
 	
 //	private String stripUrls(String input) {
 //		String[] sa=input.split(" ");

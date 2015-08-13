@@ -54,7 +54,7 @@ function initializeRecommendedTweet(options) {
 	toggleImgLeft.click(function(event) {
 		imgIdx--;
 		if(imgIdx<0) {
-			imgIdx=imgCount;
+			imgIdx=imgCount-1;
 		}
 		selectImage();
 		// save
@@ -69,7 +69,7 @@ function initializeRecommendedTweet(options) {
 	
 	toggleImgRight.click(function(event) {
 		imgIdx++;
-		if(imgIdx>imgCount) {
+		if(imgIdx>=imgCount) {
 			imgIdx=0;
 		}
 		selectImage();
