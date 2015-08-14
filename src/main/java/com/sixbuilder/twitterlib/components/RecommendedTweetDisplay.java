@@ -323,39 +323,57 @@ public class RecommendedTweetDisplay {
 	
 	private boolean processImageUrl(TweetItem tweetItem,String url) {
 		url=cleanImgUrl(url); // make sure it starts with http
+		if((url.trim().length()>4096)) 
+			return true;
 		boolean isImg=false;
-		for(String ext:imgExtList) {
-			if(url.contains(ext))
+		String mimeType=null;
+		// get content type
+		URLConnection conn=null;
+		URL u=null;
+		try {
+			u=new URL(url);
+			conn = u.openConnection();
+			mimeType=conn.getContentType();
+			// determine if mime type is image format
+			if(mimeType.contains("image"))
 				isImg=true;
-		}
-		// check size
-		if(isImg) {
-			// get image size
-			URLConnection conn=null;
+			else conn.getInputStream().close();
+		} catch(Exception e ) {
+			System.out.println(e.getMessage());
 			try {
-				boolean tooBig=false;
-				if(!(url.trim().length()>4096)) {
-					URL u=new URL(url);
+				conn.getInputStream().close();
+			} catch(Exception ee) {}
+		}	
+		if(isImg) {
+			boolean supported=false;
+			// ensure it is a supported image type
+			for(String s:imgExtList) {
+				if(mimeType.contains(s))
+					supported=true;
+			}
+			if(supported) {
+				// get image size
+				try {
 					conn = u.openConnection();
 					Integer size = conn.getContentLength();
 					if(url.toLowerCase().endsWith("gif")&&size>3000000) {
-						tooBig=true;
+						url=unsupportedImagePng.toClientURL();
 					} else {
 						if(size>5000000)
-							tooBig=true;
+							url=unsupportedImagePng.toClientURL();
 					}
-				} else tooBig=true;
-				if(tooBig||url.toLowerCase().endsWith(".img"))
+				} catch (Exception e) {
+					e.printStackTrace();
 					url=unsupportedImagePng.toClientURL();
-			} catch (Exception e) {
-				e.printStackTrace();
-				url=unsupportedImagePng.toClientURL();
-			} finally {
-				if(conn!=null) {
-					try {
-						conn.getInputStream().close();
-					} catch(Exception e) {}
+				} finally {
+					if(conn!=null) {
+						try {
+							conn.getInputStream().close();
+						} catch(Exception e) {}
+					}
 				}
+			} else {
+				url=unsupportedImagePng.toClientURL();
 			}
 		}
 		if(isImg) {
@@ -392,18 +410,12 @@ public class RecommendedTweetDisplay {
 	
 	private String cleanImgUrl(String url) {
 		String ret=url;
-//		for(String ext:imgExtList) {
-//			if(url.contains("."+ext+"?")) {
-//				String[] sa=url.split("\\."+ext+"?");
-//				ret=sa[0]+"."+ext;
-//			}
-//		}
 		if(!ret.toLowerCase().startsWith("http"))
 			ret="http://"+ret;
 		return ret;
 	}
 		
-	private static final List<String>imgExtList=Arrays.asList(".jpg",".JPG",".jpeg",".JPEG",".webp",".WEBP",".gif",".GIF",".png",".PNG",".img",".IMG");
+	private static final List<String>imgExtList=Arrays.asList("jpg","JPG","jpeg","JPEG","webp","WEBP","gif","GIF","png","PNG","img","IMG");
 	
 //	private String stripUrls(String input) {
 //		String[] sa=input.split(" ");
