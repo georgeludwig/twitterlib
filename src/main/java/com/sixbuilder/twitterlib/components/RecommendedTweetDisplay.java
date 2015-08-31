@@ -323,8 +323,11 @@ public class RecommendedTweetDisplay {
 	
 	private boolean processImageUrl(TweetItem tweetItem,String url) {
 		url=cleanImgUrl(url); // make sure it starts with http
-		if((url.trim().length()>4096)) 
+		// reject extremely long urls...it;s probably in image encoded in-line
+		if((url.trim().length()>4096)) {
+			setNewImageUrl(tweetItem, unsupportedImagePng.toClientURL());
 			return true;
+		}
 		boolean isImg=false;
 		String mimeType=null;
 		// get content type
@@ -337,6 +340,8 @@ public class RecommendedTweetDisplay {
 			// determine if mime type is image format
 			if(mimeType.contains("image"))
 				isImg=true;
+			else if(checkForImageExt(url))
+				isImg=true;
 			else conn.getInputStream().close();
 		} catch(Exception e ) {
 			System.out.println(e.getMessage());
@@ -346,10 +351,22 @@ public class RecommendedTweetDisplay {
 		}	
 		if(isImg) {
 			boolean supported=false;
-			// ensure it is a supported image type
-			for(String s:imgExtList) {
-				if(mimeType.contains(s))
+			String mime=null;
+			// check for supported type based on mime
+			for(String ext:imgExtList) {
+				if(mimeType.contains(ext)) {
 					supported=true;
+					mime=ext;
+				}
+			}
+			// some servers report incorrect mime type, so if necessary check based on img ext
+			if(mime==null) {
+				for(String ext:imgExtList) {
+					if(url.contains("."+ext)) {
+						supported=true;
+						mime=ext;
+					}
+				}
 			}
 			if(supported) {
 				// get image size
@@ -374,39 +391,55 @@ public class RecommendedTweetDisplay {
 				}
 			} else {
 				url=unsupportedImagePng.toClientURL();
-			}
-		}
-		if(isImg) {
-			// set the appropriate image url to the incoming url
-			if(tweetItem.getImgIdx()==0)
-				tweetItem.setSnapshotUrl(url.trim());
-			if(tweetItem.getImgIdx()==1)
-				tweetItem.setImgOneUrl(url.trim());
-			if(tweetItem.getImgIdx()==2)
-				tweetItem.setImgTwoUrl(url.trim());
-			if(tweetItem.getImgIdx()==3)
-				tweetItem.setImgThreeUrl(url.trim()); 
-			try {
-				// find the un-altered tweet item, in order to get the original url
-				List<TweetItem>tiList=tweetItemDAO.getAll(accountsRoot,userId);
-				TweetItem original=null;
-				for(TweetItem ti:tiList) {
-					if(ti.getTweetId().equals(tweetItem.getTweetId()))
-						original=ti;
+				if(conn!=null) {
+					try {
+						conn.getInputStream().close();
+					} catch(Exception e) {}
 				}
-				String originalUrl=tweetItem.getUrl();
-				if(original!=null)
-					originalUrl=original.getUrl();
-				tweetItem.setUrl(originalUrl);
-				// save it
-				tweetItemDAO.update(accountsRoot, userId, tweetItem);
-			} catch(Exception e) {
-				e.printStackTrace();
 			}
 		}
+		if(isImg)
+			setNewImageUrl(tweetItem,url);
 		return isImg;
 	}
 	
+	private boolean checkForImageExt(String url) {
+		boolean ret=false;
+		for(String ext:imgExtList) {
+			if(url.contains("."+ext))
+				ret=true;
+		}
+		return ret;
+	}
+	
+	private void setNewImageUrl(TweetItem tweetItem,String imgUrl) {
+		// set the appropriate image url to the incoming url
+		if(tweetItem.getImgIdx()==0)
+			tweetItem.setSnapshotUrl(imgUrl.trim());
+		if(tweetItem.getImgIdx()==1)
+			tweetItem.setImgOneUrl(imgUrl.trim());
+		if(tweetItem.getImgIdx()==2)
+			tweetItem.setImgTwoUrl(imgUrl.trim());
+		if(tweetItem.getImgIdx()==3)
+			tweetItem.setImgThreeUrl(imgUrl.trim()); 
+		try {
+			// find the un-altered tweet item, in order to get the original url
+			List<TweetItem>tiList=tweetItemDAO.getAll(accountsRoot,userId);
+			TweetItem original=null;
+			for(TweetItem ti:tiList) {
+				if(ti.getTweetId().equals(tweetItem.getTweetId()))
+					original=ti;
+			}
+			String originalUrl=tweetItem.getUrl();
+			if(original!=null)
+				originalUrl=original.getUrl();
+			tweetItem.setUrl(originalUrl);
+			// save it
+			tweetItemDAO.update(accountsRoot, userId, tweetItem);
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+	}
 	
 	private String cleanImgUrl(String url) {
 		String ret=url;
