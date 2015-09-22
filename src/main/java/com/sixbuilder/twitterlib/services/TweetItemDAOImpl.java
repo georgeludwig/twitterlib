@@ -44,11 +44,16 @@ public class TweetItemDAOImpl implements TweetItemDAO {
 	}
 
 	public void update(File accountsRoot,String userId,TweetItem tweetItem) throws Exception {
-		// we save all at once
-		String accountPath=AccountManager.getAccountPath(accountsRoot.toString(),userId);
-		PendingTweetFileUtil util=new PendingTweetFileUtil(accountPath+PendingTweetFileUtil.FILENAME);
-		util.addRecordToCollection(tweetItem);
-		util.serialize();
+		try {
+			// we save all at once
+			String accountPath=AccountManager.getAccountPath(accountsRoot.toString(),userId);
+			PendingTweetFileUtil util=new PendingTweetFileUtil(accountPath+PendingTweetFileUtil.FILENAME);
+			util.addRecordToCollection(tweetItem);
+			util.serialize();
+		} catch(Exception e) {
+			e.printStackTrace();
+			throw e;
+		}
 	}
 
 }

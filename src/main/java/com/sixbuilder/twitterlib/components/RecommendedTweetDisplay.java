@@ -192,7 +192,11 @@ public class RecommendedTweetDisplay {
 			triggerEvent(RecommendedTweetConstants.PUBLISH_TWEET_EVENT, resources.getContainerResources());
 		}
 		// serialize tweet item, to save it's target date for proper sorting
-		tweetItemDAO.update(accountsRoot,userId,tweetItem);
+		boolean success=false;
+		while(!success) {
+			tweetItemDAO.update(accountsRoot,userId,tweetItem);
+			success=true;
+		}
 		if(isMoved) {
 			ajaxResponseRenderer.addRender(curateZone);
 			ajaxResponseRenderer.addRender(publishingZone);
@@ -244,7 +248,11 @@ public class RecommendedTweetDisplay {
 		tweetItem.setPubTargetDisplay(null);
 		if(tweetItem.isPublish())
 			tweetItem.setDisplayOrder(getMehInc()+tweetItem.getDisplayOrder());
-		tweetItemDAO.update(accountsRoot, userId, tweetItem);
+		boolean success=false;
+		while(!success) {
+			tweetItemDAO.update(accountsRoot,userId,tweetItem);
+			success=true;
+		}
 		// adjust set managers
 		SetManager cSm = getCurationSetManager(curationSetMgr);
 		SetManager qSm = getQueuedSetManager(queuedSetMgr);
