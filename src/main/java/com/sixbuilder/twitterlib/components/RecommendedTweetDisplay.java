@@ -465,9 +465,7 @@ public class RecommendedTweetDisplay {
 		String bitlyApiKey = user.getBitlyApiKey();
 		if((bitlyUserName==null||bitlyUserName.trim().length()==0) ||
 				(bitlyApiKey==null||bitlyApiKey.trim().length()==0)) {
-			bitlyUserName=User.DEFAULT_BITLY_USERNAME;
-			bitlyApiKey=User.DEFAULT_BITLY_APIKEY;
-			System.out.println("encoding bitly using default bitly credentials");
+			return url;
 		}
 		try {
 			Url u = as(bitlyUserName, bitlyApiKey).call(shorten(url));
