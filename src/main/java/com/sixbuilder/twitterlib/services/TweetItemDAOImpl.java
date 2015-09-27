@@ -3,6 +3,7 @@ package com.sixbuilder.twitterlib.services;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import com.sixbuilder.datatypes.account.AccountManager;
 import com.sixbuilder.datatypes.persistence.PendingTweetFileUtil;
@@ -33,8 +34,12 @@ public class TweetItemDAOImpl implements TweetItemDAO {
 	}
 	
 	public TweetItem findById(File accountsRoot,String userId,String id) throws Exception {
+		return findById(getAll(accountsRoot,userId),id);
+	}
+	
+	private TweetItem findById(List<TweetItem>tiList,String id) throws Exception {
 		TweetItem tweetItem = null;
-		for (TweetItem item : getAll(accountsRoot,userId)) {
+		for (TweetItem item : tiList) {
 			if (item.getTweetId().equals(id)) {
 				tweetItem = item;
 				break;
@@ -43,6 +48,22 @@ public class TweetItemDAOImpl implements TweetItemDAO {
 		return tweetItem;
 	}
 
+	public boolean deleteById(File accountsRoot,String userId,String id) throws Exception {
+		String accountPath=AccountManager.getAccountPath(accountsRoot.toString(),userId);
+		PendingTweetFileUtil util=new PendingTweetFileUtil(accountPath+PendingTweetFileUtil.FILENAME);
+		List<TweetItem>tiList=new ArrayList<TweetItem>();
+		tiList.addAll(util.getPendingTweetMap().values());
+		TweetItem ti=findById(tiList,id);
+		if(ti==null)
+			return false;
+		Map<String, TweetItem>tiMap=util.getPendingTweetMap();
+		if(!tiMap.containsKey(ti.getUrl()))
+			return false;
+		tiMap.remove(ti.getUrl());
+		util.serialize();
+		return true;
+	}
+	
 	public void update(File accountsRoot,String userId,TweetItem tweetItem) throws Exception {
 		try {
 			// we save all at once

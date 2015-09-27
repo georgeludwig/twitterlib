@@ -39,6 +39,6 @@ public interface TweetItemDAO {
 	 */
 	void update(File accountsRoot,String userId,TweetItem tweetItem) throws Exception;
 	
-	
+	boolean deleteById(File accountsRoot,String userId,String id) throws Exception;
 	
 }

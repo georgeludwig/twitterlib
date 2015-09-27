@@ -194,6 +194,7 @@ public class RecommendedTweetDisplay {
 		// serialize tweet item, to save it's target date for proper sorting
 		boolean success=false;
 		while(!success) {
+			tweetItemDAO.deleteById(accountsRoot, userId, tweetItem.getTweetId()); // this is a hack in case the user entered something in the url field just before clicking on publish
 			tweetItemDAO.update(accountsRoot,userId,tweetItem);
 			success=true;
 		}
