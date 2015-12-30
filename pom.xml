@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.sixbuilder</groupId>
 	<artifactId>twitterlib</artifactId>
-	<version>1.0.38-SNAPSHOT</version>
+	<version>1.0.37-SNAPSHOT</version>
 	<packaging>jar</packaging>
 	<name>twitterlib Tapestry 5 Application</name>
 
