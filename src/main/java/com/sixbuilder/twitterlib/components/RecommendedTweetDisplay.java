@@ -68,7 +68,7 @@ import com.sixbuilder.twitterlib.services.TweetItemDAO;
 public class RecommendedTweetDisplay {
 	
 	public static final String UPDATE_ALL_LISTS = "updateAllLists";
-	public static final String URLSNAPSHOTSERVICEURL="http://54.149.169.188:3001";
+	public static final String URLSNAPSHOTSERVICEURL="http://166.78.1.27:80";
 	
 	private static final Object[] EMPTY_OBJECT_ARRAY = new Object[0];
 	
