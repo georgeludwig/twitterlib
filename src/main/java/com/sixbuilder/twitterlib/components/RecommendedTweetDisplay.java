@@ -68,7 +68,7 @@ import com.sixbuilder.twitterlib.services.TweetItemDAO;
 public class RecommendedTweetDisplay {
 	
 	public static final String UPDATE_ALL_LISTS = "updateAllLists";
-	public static final String URLSNAPSHOTSERVICEURL="http://54.167.23.23:8080";
+	public static final String URLSNAPSHOTSERVICEURL=System.getProperty("urlsnapshotservice");
 	
 	private static final Object[] EMPTY_OBJECT_ARRAY = new Object[0];
 	
@@ -504,7 +504,7 @@ public class RecommendedTweetDisplay {
 				req.setServiceUrl(URLSNAPSHOTSERVICEURL);
 				resp=UrlSnapshotServiceClient.snap(req);
 			} catch(Exception e) {
-				// 
+				e.printStackTrace();
 			}
 		}
 	

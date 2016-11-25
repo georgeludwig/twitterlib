@@ -125,7 +125,7 @@ public class RenderTweet implements ClientElement {
 		}
 	}
 
-	private JSONObject setupJavaScript(JavaScriptSupport javaScriptSupport) {
+	JSONObject setupJavaScript(JavaScriptSupport javaScriptSupport) {
 		final JSONObject options = new JSONObject();
 		options.put("id", clientId);
 		options.put("actionUrl", getEventLink().toAbsoluteURI());
