@@ -76,9 +76,13 @@ public class RecommendedAudience {
 			SetManager tasm=PersistenceUtil.getTargetAudienceSetManager(accountsRoot, userId);
 			List<SetItem>siList=new ArrayList<SetItem>(tasm.getSet());
 			if(siList.size()>0) {
-				SetItem si=siList.get(0);
-				user=getUserMap().get(si.getName());
-				currentUserId=user.getScreenName();
+				try {
+					SetItem si=siList.get(0);
+					user=getUserMap().get(si.getName());
+					currentUserId=user.getScreenName();
+				} catch(Exception e) {
+					e.printStackTrace();
+				}
 			}
 		}
 		return user;
