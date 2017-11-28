@@ -219,11 +219,11 @@ function initializeRecommendedTweet(options) {
 			count=count+23;
 		}
 		characterCount.text(count);
-		if (count < 137) {
+		if (count < 277) {
 			characterCount.removeClass(TWEET_COUNT_WARNING);
 			characterCount.removeClass(TWEET_COUNT_ERROR);
 		}
-		else if (count <= 140) {
+		else if (count <= 280) {
 			characterCount.addClass(TWEET_COUNT_WARNING);
 			characterCount.removeClass(TWEET_COUNT_ERROR);
 		}
@@ -233,7 +233,7 @@ function initializeRecommendedTweet(options) {
 		}
 		
 		var btn=outerDiv.find('.tweetSave');
-		if(count>140) {
+		if(count>280) {
 			btn.attr("disabled", 'disabled');
 		} else {
 			btn.removeAttr('disabled');
