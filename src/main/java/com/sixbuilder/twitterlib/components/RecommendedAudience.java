@@ -70,6 +70,7 @@ public class RecommendedAudience {
 	 * returns the current twitter user that we are going to follow (or not)
 	 */
 	public User getUser() throws Exception {
+<<<<<<< HEAD
 		if(user==null) {
 			// get the list of users
 			// only use those that have not already been followed/ignored/processed
@@ -83,6 +84,22 @@ public class RecommendedAudience {
 				} catch(Exception e) {
 					e.printStackTrace();
 				}
+=======
+		if (user == null) {
+			try {
+				// get the list of users
+				// only use those that have not already been
+				// followed/ignored/processed
+				SetManager tasm = PersistenceUtil.getTargetAudienceSetManager(accountsRoot, userId);
+				List<SetItem> siList = new ArrayList<SetItem>(tasm.getSet());
+				if (siList.size() > 0) {
+					SetItem si = siList.get(0);
+					user = getUserMap().get(si.getName());
+					currentUserId = user.getScreenName();
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+>>>>>>> bf2c003162b38136fb126c7e98376dab4bf7c3e3
 			}
 		}
 		return user;
