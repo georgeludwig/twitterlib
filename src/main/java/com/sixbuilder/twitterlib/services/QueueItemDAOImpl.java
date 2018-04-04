@@ -18,15 +18,16 @@ import com.sixbuilder.twitterlib.services.QueueItemDAO;
 
 public class QueueItemDAOImpl implements QueueItemDAO {
 	
-	private final String DB_ACCOUNT=System.getProperty("dbAccountName");
+	private final String DB_USERNAME=System.getProperty("dbUsername");
 	private final String DB_PASSWORD=System.getProperty("dbPassword");
+	private final String DB_HOST=System.getProperty("dbHost");
 	
 	public QueueItemDAOImpl() {
 		HttpClient httpClient = new StdHttpClient.Builder()
-		.host(DB_ACCOUNT+".cloudant.com").port(443)
+		.host(DB_HOST).port(443)
 		.socketTimeout(120000)
 		.connectionTimeout(120000)
-		.username(DB_ACCOUNT).password(DB_PASSWORD)
+		.username(DB_USERNAME).password(DB_PASSWORD)
 		.enableSSL(true).relaxedSSLSettings(true).build();
 		CouchDbInstance dbInstance = new StdCouchDbInstance(httpClient);
 		CouchDbConnector db = new StdCouchDbConnector(QueueItemRepository.DBNAME, dbInstance);
